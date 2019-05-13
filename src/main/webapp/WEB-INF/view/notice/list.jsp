@@ -55,7 +55,7 @@
          });
        });  
  </script>
- 
+
 </head>
 
 <body>
@@ -70,37 +70,91 @@
 							<th class="notice-menu-number">번호</th>
 							<th
 								class="notice-menu-contents mdl-data-table__cell--non-numeric">제목</th>
-							<th class="mdl-data-table__cell--non-numeric">날짜</th>
-							<th>조회수</th>
+							<th class="mdl-data-table__cell--non-numeric">게시일자</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="notice" items="${noticeList}">
 							<tr>
 								<td>${notice.noticeNum}</td>
-								<td class="mdl-data-table__cell--non-numeric"><a
-									href="/notice/list${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}">${notice.noticeTitle}</a></td>
+								<td class="mdl-data-table__cell--non-numeric"
+									style="cursor: pointer;"
+									onClick="location.href='/notice/list${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}' "
+									onMouseOver=" window.status = '/notice/list${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}' "
+									onMouseOut=" window.status = '' ">${notice.noticeTitle}</td>
 								<td class="mdl-data-table__cell--non-numeric"><fmt:formatDate
 										value="${notice.noticeDate}" pattern="yyyy-MM-dd" /></td>
-								<td>${notice.noticeHits}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-
+				<div class="notice-btn-wrapper">
+					<a
+						class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined"
+						href="/notice/write">글쓰기</a>
+				</div>
 				<!-- 페이징 -->
 				<div class="pagination">
 					<c:if test="${pageMaker.prevPageNum}">
-						<a href='<c:url value="/notice/list${pageMaker.makeSearch(pageMaker.startPageNum - 1) }"/>'>&laquo;</a>
+						<a
+							href='<c:url value="/notice/list${pageMaker.makeSearch(pageMaker.startPageNum - 1) }"/>'>&laquo;</a>
 					</c:if>
 					<c:forEach begin="${pageMaker.startPageNum}"
 						end="${pageMaker.endPageNum}" var="number">
 						<c:out value="${pageMaker.cri.page == number?'':''}" />
-						<a href='<c:url value="/notice/list${pageMaker.makeSearch(number)}"/>'>${number}</a>
+						<c:set var="currentPage" value="${param.page}" />
+						<c:choose>
+							<c:when test="${empty currentPage && number == 1}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:when test="${number == currentPage}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:otherwise>
+								<a
+									href='<c:url value="/notice/list${pageMaker.makeSearch(number)}"/>'>${number}</a>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 					<c:if test="${pageMaker.nextPageNum && pageMaker.endPageNum > 0}">
-						<a href='<c:url value="/notice/list${pageMaker.makeSearch(pageMaker.endPageNum +1) }"/>'>&raquo;</a>
+						<a
+							href='<c:url value="/notice/list${pageMaker.makeSearch(pageMaker.endPageNum +1) }"/>'>&raquo;</a>
 					</c:if>
+				</div>
+				<div
+					class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label notice-search">
+					<form class="mdl-textfield__input" name="search" method="get">
+						<select name="searchType">
+							<option value="n"
+								<c:out value="${cri.searchType == null ? 'selected' : ''}"/>>---</option>
+							<option value="t"
+								<c:out value="${cri.searchType == 't' ? 'selected' : ''}"/>>제목</option>
+							<option value="c"
+								<c:out value="${cri.searchType == 'c' ? 'selected' : ''}"/>>내용</option>
+						</select> <input class="form-control" type="text" name='keyword'
+							id="keywordInput" value="${cri.keyword}" />
+						<button type="submit"
+							class="mdl-button mdl-js-button mdl-button--icon">
+							<i class="material-icons md-dark" id="searchBtn">search</i>
+						</button>
+						<script type="text/javascript">
+                            $(document).ready(
+                                function() {
+                                    $('#searchBtn').on(
+                                        "click".
+                                        function(event) {
+                                        str = "noticeList"
+                                            + '${pageMaker.makeQuery(1)}'
+                                            + "&searchType="
+                                            + $("select option:selected").val()
+                                            + "&keyword="
+                                            + $('#keywordInput').val());
+                                    console.log(str);
+                                    location.href = str;
+                                });
+                            });
+                        </script>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -110,73 +164,3 @@
 	<!-- footer -->
 </body>
 </html>
-<!-- 
-<body>
-<form name="search" method="get">
-	<select name="searchType">
-		<option value="n"<c:out value="${cri.searchType == null ? 'selected' : ''}"/>>---</option>
-		<option value="t"<c:out value="${cri.searchType == 't' ? 'selected' : ''}"/>>제목</option>
-		<option value="c"<c:out value="${cri.searchType == 'c' ? 'selected' : ''}"/>>내용</option>
-	</select>
-	
-	<input type="text" name='keyword' id="keywordInput" value="${cri.keyword}"/>
- <button id="searchBtn">검색</button>
-  <script type="text/javascript">
- $(document).ready(
-   function() {
-     $('#searchBtn').on(
-       "click".
-         function(event) {
-           str = "noticeList"
-           + '${pageMaker.makeQuery(1)}'
-           + "&searchType="
-           + $("select option:selected").val()
-           + "&keyword=" 
-           + $('#keywordInput').val());          
-           console.log(str);          
-           location.href = str;
-         });
-       });  
- </script>
-</form>	
-
-    <table border="1">
-        <tr>
-            <th>글번호</th>
-            <th>제목</th>
-            <th>작성일</th>
-            <th>조회수</th>
-        </tr>
-        <c:forEach var="notice" items="${noticeList}">
-			<tr>
-				<td>${notice.noticeNum}</td>
-				<td><a href="noticeList${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}">${notice.noticeTitle}</a></td>
-				<td><fmt:formatDate value="${notice.noticeDate}" pattern="yyyy-MM-dd"/></td>
-				<td>${notice.noticeHits}</td>
-			</tr>
-		</c:forEach>
-
-    </table>
-    <c:if test="${pageMaker.prevPageNum}">
-    <li>
-    <a href='<c:url value="noticeList${pageMaker.makeSearch(pageMaker.startPageNum - 1) }"/>'>이전페이지</a>
-    </li>
-    </c:if>
-    <c:forEach begin="${pageMaker.startPageNum}" end="${pageMaker.endPageNum}" var ="number">
-    <li>
-    <c:out value="${pageMaker.cri.page == number?'':''}" />
-    <a href='<c:url value="noticeList${pageMaker.makeSearch(number)}"/>'>${number}</a>
-    </li>
-    </c:forEach>
-    <c:if test="${pageMaker.nextPageNum && pageMaker.endPageNum > 0}" >
-    <li>
-    <a href='<c:url value="noticeList${pageMaker.makeSearch(pageMaker.endPageNum +1) }"/>'>다음페이지</a>
-    </li>
-    </c:if>
-    <a class="btn btn-primary" href="/noticeWrite">글쓰기</a>
-    
-
-</body>
-
-</html>
- -->

@@ -9,9 +9,12 @@ public class IndexController {
 	
 	@RequestMapping("/") // URL 주소
 	public String index(Model model) {
-
 		return "index"; // JSP 파일명
 	}
 	
+	@RequestMapping("/intro") // URL 주소
+	public String intro(Model model) {
+		return "intro"; // JSP 파일명
+	}
 	
 }

@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <div id="nav-upper">
 	<div id="nav-search">
 		<i class="material-icons md-light">search</i>
 	</div>
 	<div id="nav-member">
 		<ul>
-			<li><a href="/member/login.jsp">·Î±×ÀÎ</a></li>
-			<li><a href="/member/register.jsp">È¸¿ø°¡ÀÔ</a></li>
+			<li><a href="/login">ë¡œê·¸ì¸</a></li>
+			<li><a href="/register">íšŒì›ê°€ìž…</a></li>
 		</ul>
 	</div>
 </div>

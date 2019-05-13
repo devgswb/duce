@@ -37,7 +37,7 @@ public class LoginController {
 	@RequestMapping(value ="/register", method = {RequestMethod.POST,RequestMethod.GET})
 	public String viewRegiFrom() {
 		
-		return "redirect:/";
+		return "member/register";
 	}
 	
 	//권한 확인위한 임시 메서드. 나중에 삭제 요망

@@ -24,7 +24,8 @@
 		</tr>
 		<c:forEach var="board" items="${boardList}">
 			<tr>
-				<td><a href="ProjectBoard?page=${page}&content=${board.pNo}">${board.pNo}</a></td>
+				<td><a
+				 href="ProjectBoard?page=${page}&content=${board.pNo}">${board.pNo}</a></td>
 				<td><a href="ProjectBoard?page=${page}&content=${board.pNo}">${board.title}</a></td>
 				<td>${board.id}</td>
 				<td>${board.pDate}</td>
@@ -37,3 +38,4 @@
 </body>
 
 </html>
+

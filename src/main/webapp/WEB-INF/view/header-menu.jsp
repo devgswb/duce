@@ -1,16 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <div id="nav-lower">
 	<div id="nav-logo">
-		<img class="logo" src="/res/img/daelim_logo.gif" alt="·Î°í" /> <img
-			class="text-logo" src="/res/img/text_logo.png" alt="ÅØ½ºÆ® ·Î°í" />
+		<a href="https://www.daelim.ac.kr"><img class="logo" src="/res/img/daelim_logo.gif" alt="ë¡œê³ " /></a> 
+		<a href="/"><img class="text-logo" src="/res/img/text_logo.png" alt="í…ìŠ¤íŠ¸ ë¡œê³ " /></a>
 	</div>
 	<div id="nav-menu">
 		<ul id="nav-list">
-			<li>¼Ò°³</li>
-			<li>ÇÁ·ÎÁ§Æ® º¸±â</li>
-			<li><a href="/notice/list">°øÁö»çÇ×</a></li>
-			<li>FAQ</li>
+			<li><a href="/intro">ì†Œê°œ</a></li>
+			<li><a href="/project">í”„ë¡œì íŠ¸ ë³´ê¸°</a></li>
+			<li><a href="/notice/list">ê³µì§€ì‚¬í•­</a></li>
+			<li><a href="/faq">FAQ</a></li>
 		</ul>
 	</div>
 </div>
