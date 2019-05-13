@@ -1,7 +1,9 @@
 /target/
+/src/main/resources/static/vendor
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
+.metadata
 .apt_generated
 .classpath
 .factorypath
@@ -23,9 +25,8 @@
 /nbdist/
 /.nb-gradle/
 /build/
-
 ### application.yml ###
-src/main/resources/application.yml
+*/application.yml
 
 ### VS Code ###
 .vscode/
