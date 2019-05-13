@@ -6,6 +6,7 @@ public class BoardModel {
 	private String subject;
 	private String content;
 	private Date reg_date;
+	
 	public int getId() {
 		return id;
 	}

@@ -58,14 +58,14 @@ public class JsmBoardController {
 		JsmBoardModel board = JsmBoardService.findByNo(bno).get(0);
 		model.addAttribute("board", board);
 		model.addAttribute("bno", bno);
-		System.out.println("test");
+//		System.out.println("test");
 		return "jsmb/modify"; // JSP 파일명
 	}
 
 	@PostMapping(value = "/jsmb/modify.do", params = { "bno", "bcontent", "bsubject" }) // URL 주소
 	public String modifyOK(Model model, @RequestParam String bno, @RequestParam String bcontent,
 			@RequestParam String bsubject) {
-		System.out.println(bno + bsubject + bcontent);
+//		System.out.println(bno + bsubject + bcontent);
 		JsmBoardModel modModel = new JsmBoardModel();
 		modModel.setNo(Integer.parseInt(bno));
 		modModel.setSubject(bsubject);
