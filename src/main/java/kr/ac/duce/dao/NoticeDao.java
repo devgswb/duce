@@ -59,7 +59,7 @@ public interface NoticeDao {
 	@Select("SELECT * FROM hsbBoard WHERE noticeNum < #{noticeNum} ORDER BY noticeNum DESC LIMIT 1")
 	public List<NoticeModel> prev(@Param("noticeNum") int noticeNum);
 
-	@Select("SELECT * FROM hsbBoard WHERE IF(noticeNum > #{noticeNum},noticeNum > #{noticeNum} ORDER BY noticeNum LIMIT 1,noticeNum = #{noticeNum})")
+	@Select("SELECT * FROM hsbBoard WHERE noticeNum > #{noticeNum} ORDER BY noticeNum LIMIT 1")
 	public List<NoticeModel> next(@Param("noticeNum") int noticeNum);
 	
 }

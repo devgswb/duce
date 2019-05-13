@@ -48,7 +48,7 @@ public class NoticeController {
 //		return "noticeList"; 
 //	}
 	
-	@GetMapping(value = "/noticeList", params = { "number" }) // URL 주소
+	@GetMapping(value = "/notice/list", params = { "number" }) // URL 주소
 	public String list(Model model, @RequestParam String number) {
 		int prev = Integer.parseInt(number);
 		int next = Integer.parseInt(number);
@@ -59,16 +59,16 @@ public class NoticeController {
 		model.addAttribute("notice", notice);
 		model.addAttribute("prev", prevPage);
 		model.addAttribute("next", nextPage);
-		return "noticeView"; // JSP 파일명
+		return "notice/view"; // JSP 파일명
 	}
 	
 	
-	@GetMapping("/noticeWrite") // URL 주소
+	@GetMapping("/notice/write") // URL 주소
 	public String write(Model model) {
-		return "noticeWrite"; // JSP 파일명
+		return "notice/write"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/noticeWrite.do", params = { "noticeTitle", "noticeContent" }) // URL 주소
+	@PostMapping(value = "/notice/write.do", params = { "noticeTitle", "noticeContent" }) // URL 주소
 	public String writeOK(Model model, @RequestParam String noticeTitle, @RequestParam String noticeContent) {
 		Date createDate = Calendar.getInstance().getTime();	
 		NoticeModel insertModel = new NoticeModel();
@@ -78,19 +78,19 @@ public class NoticeController {
 		insertModel.setNoticeContent(noticeContent);
 		insertModel.setNoticeHits(1);
 		Service.insert(insertModel);
-		return "redirect:/noticeList"; // JSP 파일명
+		return "redirect:notice/list"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/noticeUpdate", params = "noticeNum") // URL 주소
+	@PostMapping(value = "/notice/update", params = "noticeNum") // URL 주소
 	public String update(Model model, @RequestParam int noticeNum) {
 		NoticeModel notice = Service.findNum(noticeNum).get(0);
 		model.addAttribute("notice", notice);
 		model.addAttribute("noticeNum", noticeNum);
 		System.out.println("test");
-		return "noticeUpdate"; // JSP 파일명
+		return "notice/update"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/noticeUpdate.do", params = { "noticeNum", "noticeTitle", "noticeContent" }) // URL 주소
+	@PostMapping(value = "/notice/update.do", params = { "noticeNum", "noticeTitle", "noticeContent" }) // URL 주소
 	public String updateOK(Model model, @RequestParam String noticeNum, @RequestParam String noticeTitle,
 			@RequestParam String noticeContent) {
 		System.out.println(noticeNum + noticeTitle + noticeContent);
@@ -99,41 +99,41 @@ public class NoticeController {
 		updatenotice.setNoticeTitle(noticeTitle);
 		updatenotice.setNoticeContent(noticeContent);
 		Service.update(updatenotice);
-		return "redirect:/noticeList"; // JSP 파일명
+		return "redirect:notice/list"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/noticeDelete.do", params = {"noticeNum"})
+	@PostMapping(value = "/notice/delete.do", params = {"noticeNum"})
 	public String deleteOK(Model model, @RequestParam String noticeNum) {
 		Service.delete(Integer.parseInt(noticeNum));
-		return "redirect:/noticeList";
+		return "redirect:notice/list";
 	}
 	
-	@GetMapping(value="/noticeList")
-	public void searchNoticeList(@ModelAttribute("cri") SearchCriteria cri,Model model) {
-		List<Map<String, Object>> noticeList = Service.searchNoticeList(cri);
-		model.addAttribute("noticeList",noticeList);
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(Service.countNoticeListTotal(cri));
-		model.addAttribute("pageMaker", pageMaker);
-	}
-
-//	@GetMapping(value="/noticeList")
-//	public ModelAndView NoticeList(@ModelAttribute("cri")SearchCriteria cri,Model model, 
-//			@RequestParam(required = false, defaultValue = "n") String searchType, 
-//			@RequestParam(required = false) String keyword){
-//		ModelAndView mav = new ModelAndView("/noticeList");
-//							
+//	@GetMapping(value="/notice/list")
+//	public void searchNoticeList(@ModelAttribute("cri") SearchCriteria cri,Model model) {
+//		List<Map<String, Object>> noticeList = Service.searchNoticeList(cri);
+//		model.addAttribute("noticeList",noticeList);
+//		
 //		PageMaker pageMaker = new PageMaker();
 //		pageMaker.setCri(cri);
 //		pageMaker.setTotalCount(Service.countNoticeListTotal(cri));
-//		
-//		List<Map<String,Object>> noticeList = Service.searchNoticeList(cri);
-//		mav.addObject("noticeList",noticeList);
-//		mav.addObject("pageMaker",pageMaker);
-//		return mav;		
+//		model.addAttribute("pageMaker", pageMaker);
 //	}
+
+	@GetMapping(value="/notice/list")
+	public ModelAndView NoticeList(@ModelAttribute("cri")SearchCriteria cri,Model model, 
+			@RequestParam(required = false, defaultValue = "n") String searchType, 
+			@RequestParam(required = false) String keyword){
+		ModelAndView mav = new ModelAndView("notice/list");
+							
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(Service.countNoticeListTotal(cri));
+		
+		List<Map<String,Object>> noticeList = Service.searchNoticeList(cri);
+		mav.addObject("noticeList",noticeList);
+		mav.addObject("pageMaker",pageMaker);
+		return mav;		
+	}
 	
 	
 	

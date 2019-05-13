@@ -1,0 +1,539 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Noto Serif KR', serif;
+}
+
+body {
+    overflow-y: overlay;
+}
+
+#nav-upper {
+    height: 42px;
+    background: #6388c3;
+}
+#nav-upper div {
+    margin-top: 10px;
+}
+
+#nav-lower {
+    padding-left: 15%;
+    padding-right: 15%;
+    height: 90px;
+    border-bottom: 1px solid #ededed;
+    /*background: coral;*/
+}
+
+#carou {
+    height: 570px;
+}
+
+
+#nav-logo {
+    float: left;
+}
+/* 상단 내비게이션바 회원 관련 메뉴 */
+#nav-member {
+    float:right;
+}
+#nav-member ul {
+    list-style: none;
+    margin-right: 10px;
+}
+#nav-member li {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-right: 10px;
+    color: white;
+    float: left;
+}
+/* 상단 내비게이션바 검색 창 */
+#nav-search {
+    float:right;
+    margin-right: 18%;
+}
+
+/* 하단 내비게이션바 메인 메뉴 */
+#nav-menu {
+    width: 70%;
+    height:100%;
+    /*text-align: center;*/
+    /*!*background: darkcyan;*!*/
+    float: left;
+}
+
+#nav-menu ul {
+    display:inline-table;
+    width: 70%;
+    margin-right: 15%;
+    height: 60%;
+    list-style: none;
+    margin-top: 30px;
+    /*padding: 0;*/
+    /*background: aquamarine;*/
+}
+
+#nav-menu li {
+     font-size: 18px;
+     display:inline;
+     padding: 0 0 0 0;
+     margin-left: 15%;
+     border: 0;
+     float: left;
+ }
+
+#nav-menu li:first-child {
+    font-size: 18px;
+    display:inline;
+    padding: 0 0 0 0;
+    margin-left: 10%;
+    border: 0;
+    float: left;
+}
+
+.nav-search {
+    padding-top: 0px;
+    margin-top: 0px;
+}
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+
+.con {
+    width:64%;
+    margin-left: 18%;
+    margin-right: 18%;
+    min-height: 740px;
+    text-align: center;
+    clear: both;
+}
+.con > * {
+
+}
+
+.logo {
+    margin-top: 8px;
+    height: 75px;
+}
+.text-logo {
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+footer {
+    clear: both;
+    border-top: 1px solid #ededed;
+    height: 90px;
+}
+
+article {
+    /*background: darkcyan;*/
+}
+
+footer p {
+    margin-top: 30px;
+    font-family: 'Titillium Web', sans-serif;
+    text-align: center;
+}
+/* 공지사항 */
+.notice-contents-wrapper {
+    padding: 15px 30px 15px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin: 30px auto;
+    display: inline-block;
+    /*background: blueviolet;*/
+    width: 100%;
+}
+.notice-contents-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    text-align: left;
+}
+.notice-contents-header ul {
+    width: 100%;
+}
+
+.notice-contents-header li{
+    font-size: 16px;
+    display: inline-block;
+    text-align: right;
+}
+.notice-contents-header li:first-child{
+    text-align: center;
+    width: 90%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.notice-contents-body p{
+    text-align: left;
+}
+
+.notice-contents-attach {
+    width: 100%;
+    text-align: left;
+}
+.notice-content-attach ul {
+    width: 100%;
+}
+.notice-contents-attach  li{
+    font-size: 14px;
+    display: inline-block;
+    text-align: right;
+}
+.notice-contents-attach li:first-child{
+    text-align: left;
+    width: 10%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.notice-contents-former {
+    width: 100%;
+    text-align: left;
+}
+.notice-contents-former li{
+    font-size: 14px;
+    display: inline-block;
+    text-align: right;
+}
+.notice-contents-former li:first-child{
+    text-align: left;
+    width: 10%;
+    font-size: 14px;
+    font-weight: bold;
+}
+.notice-contents-latter {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px;
+}
+.notice-contents-latter  li{
+    font-size: 14px;
+    display: inline-block;
+    text-align: right;
+}
+.notice-contents-latter li:first-child{
+    text-align: left;
+    width: 10%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.notice-contents-footer {
+    text-align: right;
+}
+/* notice-ceontents */
+.notice-write-wrapper {
+    padding: 15px 30px 15px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin: 30px auto;
+    display: inline-block;
+    font-size: 18px;
+    /*background: blueviolet;*/
+    width: 100%;
+    text-align: right;
+}
+
+.notice-write-wrapper * {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.notice-write-wrapper-header {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.notice-write-attach-addr {
+    text-align: left;
+}
+.notice-write-attach-addr * {
+    display: inline-block;
+    margin-bottom: 0px;
+}
+.notice-write-attach-addr p {
+    text-align: right;
+}
+
+/* notice-write */
+.notice-wrapper {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+    /*background: blueviolet;*/
+    width: 100%;
+}
+
+.notice-wrapper a {
+    color: #000;
+    text-decoration: none;
+}
+
+.mdl-data-table th {
+    text-align: center;
+}
+
+.mdl-data-table td {
+    text-align: center;
+}
+
+.mdl-data-table__cell--non-numeric th {
+    text-align: center;
+}
+
+.mdl-data-table__cell--non-numeric td {
+    text-align: center;
+}
+
+.notice-fullwidth {
+    width: 90%;
+}
+
+.notice-menu-number {
+    width: 10%;
+}
+
+.notice-menu-contents {
+    width: 60%;
+}
+/*버튼 아웃라인*/
+.btn-outlined {
+    border: 2px solid #6388c3;
+}
+/* */
+
+
+/* 로그인 */
+.login-con {
+    margin-top: 5px;
+    width: 70%;
+    margin-left: 150px;
+    font-size: 36px;
+    text-align: left;
+}
+.login-con hr {
+    margin-top: 2px;
+}
+
+.login-wrapper {
+    text-align: center;
+}
+
+.login-area {
+    margin-top: 40px;
+    width:70%;
+}
+.login-area > .form-group > input {
+    width: 40%;
+    display: inline-block;
+}
+
+.login-text {
+    width: 10%;
+    font-size: 18px;
+    margin: 5px;
+}
+
+.login-btn-text {
+    width: 10%;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Noto Serif KR', serif;
+    color: #6388c3;
+    margin: 5px;
+}
+.login-btn {
+    width: 120px;
+    height: 40px;
+}
+
+.login-textbox {
+    width:40%;
+}
+.login-btn-area {
+    text-align: right;
+    margin-right: 24%;
+}
+.login-search-area {
+    width:75%
+}
+.login-search-area > button {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    display: block;
+    clear:both;
+    float:right;
+}
+/* 회원 가입 */
+.member-con {
+    margin-top: 5px;
+    width: 70%;
+    margin-left: 150px;
+    font-size: 36px;
+    text-align: left;
+}
+.member-con hr {
+    margin-top: 2px;
+}
+.member-wrapper {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+}
+.member-area {
+    margin-top: 40px;
+    width:100%;
+}
+.member-area > .form-group > input {
+    width: 60%;
+    display: inline;
+}
+.signin-textbox {
+    width:70%;
+}
+.member-btn-area {
+    text-align: right;
+    margin-right: 14%;
+}
+/* duce 카드 */
+.duce-card {
+    display: inline-block;
+    margin: 8px;
+}
+.duce-card-img {
+    height: 200px;
+}
+
+.duce-card-con {
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+.duce-card-con * {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.duce-card-con > div {
+    width: 100%;
+    clear: both;
+}
+.duce-card-con > .category {
+    padding-top: 10px;
+    height: 30px;
+    border-bottom: 1px solid #ededed;
+}
+.duce-card-con > .category > .major {
+    margin-left: 0;
+    padding-left: 2%;
+    width: 38%;
+    color: royalblue;
+    float: left;
+    display: inline-block;
+    height: 100%;
+}
+.duce-card-con > .category > .branch {
+    margin-left: 0;
+    width: 25%;
+    padding-left: 5%;
+    text-align: right;
+    float: left;
+    display: inline-block;
+    height: 100%;
+}
+.duce-card-con > .category > .year {
+    margin-left: 0;
+    width: 25%;
+    padding-right: 5%;
+    float: left;
+    display: inline-block;
+    height: 100%;
+    font-weight: bold;
+    text-align: right;
+}
+
+.duce-card-con > .title {
+    padding-top: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    height: 30px;
+}
+
+.duce-card-con > .participant {
+    padding-top: 10px;
+    text-align: left;
+    height: 30px;
+}
+
+.duce-card-con > .contents {
+    width: 94%;
+    height: 70px;
+    padding: 10px 3% 15px;
+    border-bottom: 1px solid #ededed;
+}
+
+.duce-card-con > div {
+    width: 100%;
+}
+.duce-card-con > div > .title {
+    margin-left: 0;
+    padding-left: 4%;
+    width: 16%;
+    color: black;
+    font-weight: bold;
+    float: left;
+    display: inline-block;
+    height: 100%;
+}
+
+.duce-card-con > div > .name {
+    margin-left: 0;
+    padding-left: 4%;
+    text-align: left;
+    width: 26%;
+    float: left;
+    display: inline-block;
+    height: 100%;
+}
+
+/*페이징*/
+.pagination {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+.pagination a.active {
+    background-color: #6388c3;
+    color: white;
+    border: 1px solid #6388c3;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+/* box slider 커스텀 */
+.bx-wrapper {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 0;
+}
+
+.ap-basic-slider-wrapper .bx-pager-item .bx-pager-link.active:before,
+.ap-basic-slider-wrapper .bx-pager-item .bx-pager-link:hover:before {
+    background: #fff;
+}

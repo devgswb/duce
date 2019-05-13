@@ -1,0 +1,4 @@
+bootstrap
+fontawesome-free
+jquery
+jquery-easing

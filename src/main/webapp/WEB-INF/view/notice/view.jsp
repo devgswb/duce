@@ -1,9 +1,87 @@
-<!-- jsmb.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
+<html>
 
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Duce</title>
+<!-- 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="main.js"></script>
+        -->
+<!-- cdn -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<!-- css -->
+<link
+	href="https://fonts.googleapis.com/css?family=Noto+Serif+KR|Titillium+Web"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR"
+	rel="stylesheet">
+<!-- web font -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<!-- material -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet"
+	href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<!-- script -->
+<!-- local css -->
+<link rel="stylesheet" href="/res/css/inwork.css">
+<!--  page logic -->
+
+ 
+</head>
+
+<body>
+	<jsp:include page="../header-nav.jsp" />
+	<!-- Navigation Bar -->
+	<article>
+		<div class="con">
+        <div class="notice-contents-wrapper">
+            <div class="notice-contents-header">
+                <ul>
+                    <li>${notice.noticeTitle}</li>
+                    <li><fmt:formatDate value="${notice.noticeDate}" pattern="yyyy-MM-dd"/></li>
+                </ul>
+            </div> <!-- 공지사항 제목, 날짜 -->
+            <div class="notice-contents-body">
+                <p>${notice.noticeContent}</p>
+            </div> <!-- 공지사항 내용 -->
+            <div class="notice-contents-footer">
+                <ul class="notice-contents-attach">
+                    <li>첨부파일</li>
+                    <li>첨부파일.gif</li>
+                </ul>
+                <ul class="notice-contents-former">
+                    <li>이전글</li>
+                    <li><a href="/notice/list?number=${next.noticeNum}">${next.noticeTitle}</a></li>
+                </ul>
+                <ul class="notice-contents-latter">
+                    <li>다음글</li>
+                    <li><a href="/notice/list?number=${prev.noticeNum}">${prev.noticeTitle}</a></li>
+                </ul>
+                <a href="/notice/list"><button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록</button></a>
+            </div> <!-- 첨부파일 / 이전글 / 다음글 / 목록 -->
+        </div>
+    </div>
+    <!-- contents box -->
+	</article>
+	<jsp:include page="../footer.jsp" />
+	<!-- footer -->
+</body>
+
+</html>
+<!-- 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
                                         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,3 +128,4 @@
 </body>
 
 </html>
+ -->

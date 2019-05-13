@@ -12,4 +12,6 @@ public class IndexController {
 
 		return "index"; // JSP 파일명
 	}
+	
+	
 }
