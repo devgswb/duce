@@ -63,7 +63,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="#">공지사항</a>
+            <a class="nav-link text-dark" href="noticeList">공지사항</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" href="#">프로젝트보기</a>
