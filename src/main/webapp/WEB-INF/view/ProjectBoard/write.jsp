@@ -15,7 +15,7 @@
 <title>전시관 글 쓰기</title>
 </head>
 <body> 
-	<form action="/ProjectBoard/write.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
+	<form action="/projectboard/write.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="exampleInputEmail1">작성자 이름</label> <input type="text"
 				class="form-control" name="id" aria-describedby="">
@@ -35,10 +35,9 @@
 		</div>
 		<div class="form-group">
 			
-			<label for="exampleInputEmail1">사진</label> <input type="text"
-				class="form-control" name="photo" aria-describedby="">
-				
-				<input type="file" name="uploadFile" id="uploadFile" />
+			<label for="exampleInputEmail1">사진</label>
+			<input type="file" name="uploadFile" id="uploadFile" />
+			
 		</div>
 		<div class="form-group">
 		<label for="exampleInputEmail1">전공</label>

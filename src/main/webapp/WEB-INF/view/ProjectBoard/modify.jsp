@@ -13,7 +13,7 @@
 <title>게시판 글 쓰기</title>
 </head>
 <body> 
-	<form action="/ProjectBoard/modify.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
+	<form action="/projectboard/modify.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
 	    <input type="hidden" name="pNo" value="${board.pNo}"  />
 		<div class="form-group">
 			<label for="exampleInputEmail1">제목</label> <input type="text"
@@ -30,10 +30,10 @@
 				placeholder="등록하려는 영상의 주소창에서  https://www.youtube.com/watch?v=<<이 부분>> 만 복사해서 넣어주세요!">
 		</div>
 		<div class="form-group">
-			<label for="exampleInputEmail1">사진</label> <input type="text"
-				class="form-control" name="photo" aria-describedby="">
-				
-				<input type="file" name="uploadFile" id="uploadFile" />
+			
+			<label for="exampleInputEmail1">사진</label>		
+			<input type="file" name="uploadFile" id="uploadFile" />
+			
 		</div>
 		<div class="form-group">
 		<label for="exampleInputEmail1">전공</label>

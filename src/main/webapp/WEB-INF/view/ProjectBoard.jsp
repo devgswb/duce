@@ -24,15 +24,15 @@
 		</tr>
 		<c:forEach var="board" items="${boardList}">
 			<tr>
-				<td><a href="ProjectBoard?page=${page}&content=${board.pNo}">${board.pNo}</a></td>
-				<td><a href="ProjectBoard?page=${page}&content=${board.pNo}">${board.title}</a></td>
+				<td><a href="projectboard?page=${page}&content=${board.pNo}">${board.pNo}</a></td>
+				<td><a href="projectboard?page=${page}&content=${board.pNo}">${board.title}</a></td>
 				<td>${board.id}</td>
 				<td>${board.pDate}</td>
 			</tr>
 		</c:forEach>
 	</table>
 	<div align="right" style="height: 30%;">	    
-		<a class="btn btn-primary" href="ProjectBoard/write" role="button">글쓰기</a>
+		<a class="btn btn-primary" href="projectboard/write" role="button">글쓰기</a>
 	</div>
 </body>
 

@@ -33,14 +33,13 @@
 			<tr>
 				<td colspan="4">${board.content}</td>
 			</tr>	
-
 		</table>
 
-		<img src="123.jpg" alt="불러오기 실패" />
-		
+			<img src="${board.photo}" onerror="this.style.display='none'" alt="불러오기 실패" style="width: 100%; height:auto;" /><br><br>
+
 		<div class="video-container" style="TEXT-ALIGN: center">
 			<object type="text/html" width="100%" height="500" data="//www.youtube.com/embed/${board.video}" allowfullscreen=""></object>
-		</div>
+		</div><br><br>
 		
 		<table class="table table-boardred" style="height: 70%">
 			<tr>
@@ -58,10 +57,10 @@
 		</table>
 		
 		<div align="right" style="height: 30%;">	    
-		    <form action="ProjectBoard/modify" method="post">
+		    <form action="projectboard/modify" method="post">
                 <button class="btn btn-warning" name="pNo" value="${board.pNo}">수정하기</button>
             </form> 
-		    <form action="ProjectBoard/delete.do" method="post">
+		    <form action="projectboard/delete.do" method="post">
                 <button class="btn btn-danger" name="pNo" value="${board.pNo}">삭제</button>
             </form> 
 		</div>

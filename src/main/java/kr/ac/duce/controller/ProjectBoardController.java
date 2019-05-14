@@ -30,7 +30,7 @@ public class ProjectBoardController {
 	@Autowired
 	ProjectBoardService ProjectBoardService;
 
-	@GetMapping(value = "/ProjectBoard", params = { "page", "content"}) // URL 주소
+	@GetMapping(value = "/projectboard", params = { "page", "content"}) // URL 주소
 	public String list(Model model, @RequestParam String page, @RequestParam String content) {
 		int contNo = Integer.parseInt(content);
 		ProjectBoardModel board = ProjectBoardService.findByNo(contNo).get(0);
@@ -39,7 +39,7 @@ public class ProjectBoardController {
 		return "ProjectBoardcont"; // JSP 파일명
 	}
 
-	@GetMapping(value = "/ProjectBoard", params = "page") // URL 주소
+	@GetMapping(value = "/projectboard", params = "page") // URL 주소
 	public String list(Model model, @RequestParam String page) {
 		List<ProjectBoardModel> boardList = ProjectBoardService.findPage(Integer.parseInt(page));
 		model.addAttribute("boardList", boardList);
@@ -47,7 +47,7 @@ public class ProjectBoardController {
 		return "ProjectBoard"; // JSP 파일명
 	}
 
-	@GetMapping(value = "/ProjectBoard") // URL 주소
+	@GetMapping(value = "/projectboard") // URL 주소
 	public String index(Model model) {
 		List<ProjectBoardModel> boardList = ProjectBoardService.findPage(1);
 		model.addAttribute("boardList", boardList);
@@ -55,38 +55,43 @@ public class ProjectBoardController {
 		return "ProjectBoard"; // JSP 파일명
 	}
 	
-	@GetMapping("/ProjectBoard/write") // URL 주소
+	@GetMapping("/projectboard/write") // URL 주소
 	public String write(Model model) {
 		return "ProjectBoard/write"; // JSP 파일명
 	}
 
-	@PostMapping(value = "/ProjectBoard/modify", params = "pNo") // URL 주소
+	@PostMapping(value = "/projectboard/modify", params = "pNo") // URL 주소
 	public String modify(Model model, @RequestParam int pNo) {
 		ProjectBoardModel board = ProjectBoardService.findByNo(pNo).get(0);
 		model.addAttribute("board", board);
 		model.addAttribute("pno", pNo);
-		System.out.println("test");
 		return "ProjectBoard/modify"; // JSP 파일명
 	}
 
 	
-	@PostMapping(value = "/ProjectBoard/delete.do", params = "pNo")
+	@PostMapping(value = "/projectboard/delete.do", params = "pNo")
 	public String delete(Model model, @RequestParam String pNo) {
 		ProjectBoardService.delete(Integer.parseInt(pNo));
-		return "redirect:/ProjectBoard"; // JSP 파일명
+		return "redirect:/projectboard"; // JSP 파일명
 	}
 
 
-	@PostMapping(value = "/ProjectBoard/modify.do") // URL 주소
+	@PostMapping(value = "/projectboard/modify.do") // URL 주소
 	public String modifyOK(Model model, @RequestParam String pNo, @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
 			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam("uploadFile") MultipartFile file
 	        ,HttpServletRequest request) throws Exception {
 		
-		File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\resources\\img\\"+file.getOriginalFilename());
-	    file.transferTo(f);
-	    String fn = f.toString();
+		String path = "";
 		
-		System.out.println(pNo + content + title);
+		if(! file.getOriginalFilename().equals("")) {
+			UUID uuid = UUID.randomUUID();
+			
+			String fileName =  uuid.toString() + "_"+ file.getOriginalFilename();
+			File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\webapp\\img\\" + fileName);
+		    file.transferTo(f);
+		    path = "/img/" + fileName;
+		}
+		
 		int No = Integer.parseInt(pNo);
 		ProjectBoardModel modModel = new ProjectBoardModel();
 		modModel.setpNo(No);
@@ -97,27 +102,28 @@ public class ProjectBoardController {
 		modModel.setBranchNo(branch);
 		modModel.setMajorNo(major);
 		modModel.setVideo(video);
-		modModel.setPhoto(fn);
+		modModel.setPhoto(path);
 		ProjectBoardService.update(modModel);
-		return "redirect:/ProjectBoard"; // JSP 파일명
+		return "redirect:/projectboard"; // JSP 파일명
 	}
 	
 	
-	@PostMapping(value = "/ProjectBoard/write.do", params = {"id", "title", "content"}) // URL 주소
+	@PostMapping(value = "/projectboard/write.do", params = {"id", "title", "content"}) // URL 주소
 	public String writeOK(Model model, @RequestParam String id,  @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
 			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam("uploadFile") MultipartFile file
 	        ,HttpServletRequest request) throws Exception {
+				
+		String path = "";
 		
-		UUID uuid = UUID.randomUUID();
-		
-		String RealPath = application.getRealPath("/");
-		
-		File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\resources\\img\\" + uuid.toString()+ "_"+file.getOriginalFilename());
-	    file.transferTo(f);
-	    String path = f.getParentFile() + f.getName().toString();
-	    System.out.println(path);
-//	    fn = fn.replaceAll("\\\\", "/");
-	     
+		if(! file.getOriginalFilename().equals("")) {
+			UUID uuid = UUID.randomUUID();
+			
+			String fileName =  uuid.toString() + "_"+ file.getOriginalFilename();
+			File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\webapp\\img\\" + fileName);
+		    file.transferTo(f);
+		    path = "/img/" + fileName;
+		}
+     
 		Date writedate = Calendar.getInstance().getTime();
 //		int No = ContentsBoardService.getTopbNo() + 1;
 		int Hit = 0;
@@ -134,18 +140,7 @@ public class ProjectBoardController {
 		insertModel.setVideo(video);
 		insertModel.setPhoto(path);
 		ProjectBoardService.insert(insertModel);
-		return "redirect:/ProjectBoard"; // JSP 파일명
+		return "redirect:/projectboard"; // JSP 파일명
 	}
 
-//	@RequestMapping(value = "/ProjectBoard/write")
-//	public String action(@RequestParam("uploadFile") MultipartFile file
-//	        ,HttpServletRequest request
-//	        , Model model) throws Exception {
-//	     
-//	     File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\resources\\img\\"+file.getOriginalFilename());
-//	     file.transferTo(f);
-//	             
-//	    return "redirect:/ProjectBoard";
-//	}
-	
 }
