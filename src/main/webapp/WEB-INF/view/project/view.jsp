@@ -1,4 +1,4 @@
-<!-- ContentsBoardcont.jsp -->
+<!-- ProjectBoardcont.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -22,7 +22,7 @@
 				<th style="text-align: right;">작성일</th>
 			</tr>
 			<tr>
-				<td>${board.pNo}</td>
+				<td>${board.pNo}</td> 
 				<td>${board.id}</td>
 				<td style="text-align: right;">${board.pDate}</td>
 			</tr>
@@ -57,10 +57,10 @@
 		</table>
 		
 		<div align="right" style="height: 30%;">	    
-		    <form action="projectboard/modify" method="post">
+		    <form action="project/update" method="post">
                 <button class="btn btn-warning" name="pNo" value="${board.pNo}">수정하기</button>
             </form> 
-		    <form action="projectboard/delete.do" method="post">
+		    <form action="project/delete.do" method="post">
                 <button class="btn btn-danger" name="pNo" value="${board.pNo}">삭제</button>
             </form> 
 		</div>

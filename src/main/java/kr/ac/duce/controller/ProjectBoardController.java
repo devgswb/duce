@@ -2,11 +2,13 @@ package kr.ac.duce.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,67 +31,70 @@ public class ProjectBoardController {
 
 	@Autowired
 	ProjectBoardService ProjectBoardService;
-
-	@GetMapping(value = "/projectboard", params = { "page", "content"}) // URL 주소
+	
+	@GetMapping(value = "/project", params = { "page", "content"}) // URL 주소
 	public String list(Model model, @RequestParam String page, @RequestParam String content) {
 		int contNo = Integer.parseInt(content);
 		ProjectBoardModel board = ProjectBoardService.findByNo(contNo).get(0);
 		model.addAttribute("board", board);
-		model.addAttribute("page", Integer.parseInt(page));
-		return "ProjectBoardcont"; // JSP 파일명
+		model.addAttribute("page", Integer.parseInt(page));		
+		return "project/view"; // JSP 파일명
 	}
 
-	@GetMapping(value = "/projectboard", params = "page") // URL 주소
+	@GetMapping(value = "/project", params = "page") // URL 주소
 	public String list(Model model, @RequestParam String page) {
 		List<ProjectBoardModel> boardList = ProjectBoardService.findPage(Integer.parseInt(page));
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("page", Integer.parseInt(page));
-		return "ProjectBoard"; // JSP 파일명
+		return "project/list"; // JSP 파일명
 	}
 
-	@GetMapping(value = "/projectboard") // URL 주소
+	@GetMapping(value = "/project") // URL 주소
 	public String index(Model model) {
 		List<ProjectBoardModel> boardList = ProjectBoardService.findPage(1);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("page", 1);
-		return "ProjectBoard"; // JSP 파일명
+		return "project/list"; // JSP 파일명
 	}
 	
-	@GetMapping("/projectboard/write") // URL 주소
+	@GetMapping("/project/write") // URL 주소
 	public String write(Model model) {
-		return "ProjectBoard/write"; // JSP 파일명
+		return "project/write"; // JSP 파일명
 	}
 
-	@PostMapping(value = "/projectboard/modify", params = "pNo") // URL 주소
+	@PostMapping(value = "/project/update", params = "pNo") // URL 주소
 	public String modify(Model model, @RequestParam int pNo) {
 		ProjectBoardModel board = ProjectBoardService.findByNo(pNo).get(0);
 		model.addAttribute("board", board);
 		model.addAttribute("pno", pNo);
-		return "ProjectBoard/modify"; // JSP 파일명
+		System.out.println("test");
+		return "/project/update"; // JSP 파일명
 	}
 
 	
-	@PostMapping(value = "/projectboard/delete.do", params = "pNo")
+	@PostMapping(value = "/project/delete.do", params = "pNo")
 	public String delete(Model model, @RequestParam String pNo) {
 		ProjectBoardService.delete(Integer.parseInt(pNo));
-		return "redirect:/projectboard"; // JSP 파일명
+		return "redirect:/project"; // JSP 파일명
 	}
 
 
-	@PostMapping(value = "/projectboard/modify.do") // URL 주소
+	@PostMapping(value = "/project/update.do") // URL 주소
 	public String modifyOK(Model model, @RequestParam String pNo, @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
 			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam("uploadFile") MultipartFile file
 	        ,HttpServletRequest request) throws Exception {
 		
-		String path = "";
+		String imgPath = "";
 		
 		if(! file.getOriginalFilename().equals("")) {
 			UUID uuid = UUID.randomUUID();
-			
+			String path = ProjectBoardController.class.getResource("").getPath();
+			path = URLDecoder.decode(path, "UTF-8");
+			path = path.split("/target")[0]+"/src/main/webapp/img/";
 			String fileName =  uuid.toString() + "_"+ file.getOriginalFilename();
-			File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\webapp\\img\\" + fileName);
+			File f = new File(path, fileName);
 		    file.transferTo(f);
-		    path = "/img/" + fileName;
+		    imgPath = "/img/" + fileName;
 		}
 		
 		int No = Integer.parseInt(pNo);
@@ -102,28 +107,30 @@ public class ProjectBoardController {
 		modModel.setBranchNo(branch);
 		modModel.setMajorNo(major);
 		modModel.setVideo(video);
-		modModel.setPhoto(path);
+		modModel.setPhoto(imgPath);
 		ProjectBoardService.update(modModel);
-		return "redirect:/projectboard"; // JSP 파일명
+		return "redirect:/project"; // JSP 파일명
 	}
 	
 	
-	@PostMapping(value = "/projectboard/write.do", params = {"id", "title", "content"}) // URL 주소
+	@PostMapping(value = "/project/write.do", params = {"id", "title", "content"}) // URL 주소
 	public String writeOK(Model model, @RequestParam String id,  @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
 			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam("uploadFile") MultipartFile file
 	        ,HttpServletRequest request) throws Exception {
-				
-		String path = "";
+	
+		String imgPath = "";
 		
 		if(! file.getOriginalFilename().equals("")) {
 			UUID uuid = UUID.randomUUID();
-			
+			String path = ProjectBoardController.class.getResource("").getPath();
+			path = URLDecoder.decode(path, "UTF-8");
+			path = path.split("/target")[0]+"/src/main/webapp/img/";
 			String fileName =  uuid.toString() + "_"+ file.getOriginalFilename();
-			File f = new File("C:\\Users\\user\\Desktop\\git\\De\\src\\main\\webapp\\img\\" + fileName);
+			File f = new File(path, fileName);
 		    file.transferTo(f);
-		    path = "/img/" + fileName;
+		    imgPath = "/img/" + fileName;
 		}
-     
+	     
 		Date writedate = Calendar.getInstance().getTime();
 //		int No = ContentsBoardService.getTopbNo() + 1;
 		int Hit = 0;
@@ -138,9 +145,9 @@ public class ProjectBoardController {
 		insertModel.setHit(Hit);
 		insertModel.setMajorNo(major);
 		insertModel.setVideo(video);
-		insertModel.setPhoto(path);
+		insertModel.setPhoto(imgPath);
 		ProjectBoardService.insert(insertModel);
-		return "redirect:/projectboard"; // JSP 파일명
+		return "redirect:/project"; // JSP 파일명
 	}
 
 }

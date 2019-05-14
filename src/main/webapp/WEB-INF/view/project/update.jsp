@@ -13,7 +13,7 @@
 <title>게시판 글 쓰기</title>
 </head>
 <body> 
-	<form action="/projectboard/modify.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
+	<form action="/project/update.do" accept-charset="utf-8" name="write" method="post" enctype="multipart/form-data">
 	    <input type="hidden" name="pNo" value="${board.pNo}"  />
 		<div class="form-group">
 			<label for="exampleInputEmail1">제목</label> <input type="text"
