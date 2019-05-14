@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Duce</title>
-<!-- 
+<!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script>
@@ -48,14 +48,14 @@
            + '${pageMaker.makeQuery(1)}'
            + "&searchType="
            + $("select option:selected").val()
-           + "&keyword=" 
-           + $('#keywordInput').val());          
+           + "&keyword="
+           + $('#keywordInput').val());
            console.log(str);          
            location.href = str;
          });
-       });  
+       });
  </script>
-
+<!-- -->
 </head>
 
 <body>
