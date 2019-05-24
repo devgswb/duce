@@ -60,17 +60,48 @@
             <div class="notice-contents-footer">
                 <ul class="notice-contents-attach">
                     <li>첨부파일</li>
-                    <li>첨부파일.gif</li>
+                    <li>
+                    <c:forEach var="notice" items="${noticeFile}">
+			         <c:if test="${!empty notice.outFileName}">
+                    <a download="" href="/notice/download.do/${notice.noticeNum}">${notice.inFileName}</a>(${notice.fileSize/1024}Byte)
+                   </c:if>
+			        </c:forEach>
+                    </li>               
                 </ul>
                 <ul class="notice-contents-former">
                     <li>이전글</li>
-                    <li><a href="/notice/list?number=${next.noticeNum}">${next.noticeTitle}</a></li>
+                    <li>
+                     <c:choose>
+		             <c:when test="${notice.noticeNum > 1}">
+		             <a href="/notice/list?number=${prev.noticeNum}">${prev.noticeTitle}</a>
+		             </c:when>
+		             <c:otherwise>
+				            이전 게시글이 없습니다.
+		             </c:otherwise>
+		             </c:choose>
+                    </li>
                 </ul>
                 <ul class="notice-contents-latter">
                     <li>다음글</li>
-                    <li><a href="/notice/list?number=${prev.noticeNum}">${prev.noticeTitle}</a></li>
+                    <li>
+                    <c:choose>
+		            <c:when test="${maxPage > notice.noticeNum}">
+		            <a href="/notice/list?number=${next.noticeNum}">${next.noticeTitle}</a>
+		            </c:when>
+		            <c:otherwise>
+			        	다음 게시글이 없습니다.
+		            </c:otherwise>
+		            </c:choose>
+                    </li>
                 </ul>
                 <a href="/notice/list"><button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록</button></a>
+                <form action="/notice/update" method="post">
+                     <button name="noticeNum" value="${notice.noticeNum}">수정하기</button>
+                </form> 
+                <form action="/notice/delete.do" method="post">
+                     <button name="noticeNum" value="${notice.noticeNum}">삭제하기</button>
+                </form> 
+            
             </div> <!-- 첨부파일 / 이전글 / 다음글 / 목록 -->
         </div>
     </div>

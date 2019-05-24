@@ -48,7 +48,21 @@
 <link rel="stylesheet" href="/res/css/inwork.css">
 <!--  page logic -->
 
-
+<script type="text/javascript">
+  
+        function checkWrite()
+        {
+            if(!document.noticeWrite.noticeTitle.value){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            
+            if(!document.noticeWrite.noticeContent.value){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+        }
+</script>
 </head>
 
 <body>
@@ -57,7 +71,7 @@
 	<article>
 		<div class="con">
 			<div class="notice-write-wrapper">
-				<form action="/notice/write.do" accept-charset="utf-8" method="post">
+				<form action="/notice/write.do" accept-charset="utf-8" method="post" name="noticeWrite" enctype="multipart/form-data" onsubmit="return checkWrite()">
 					<div class="notice-write-wrapper-header">공지사항 작성</div>
 					<div class="form-group">
 						<input type="text" class="form-control" id="subject"
@@ -66,10 +80,7 @@
 							name="noticeContent" placeholder="내용"></textarea>
 					</div>
 					<div class="notice-write-attach-addr">
-						<a href="#">
-							<input type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect" value ="첨부 파일 추가">
-						</a>
-						<p>첨부파일.gif</p>
+						첨부파일 <input multiple="multiple" type="file" id="inFileName" name="inFileName" value=""/>
 					</div>
 					<input type="text" class="form-control" id="referlink"
 						placeholder="참조 주소">

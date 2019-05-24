@@ -3,14 +3,17 @@ package kr.ac.duce.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.duce.dao.NoticeDao;
+import kr.ac.duce.model.NoticeFileModel;
 import kr.ac.duce.model.NoticeModel;
 import kr.ac.duce.page.SearchCriteria;
 import kr.ac.duce.service.NoticeService;
+
 
 @Service
 public class NoticeServiceImpl implements NoticeService{
@@ -18,23 +21,18 @@ public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private NoticeDao Dao;
 	
-//	@Override
-//	public List<NoticeModel> findAll() {
-//		return Dao.findAll();
-//	}
 	
 	@Override
-	public void insert(NoticeModel hsbBoard) {
-		Dao.insert(hsbBoard);
+	public void insert(NoticeModel noticeBoard){
+		Dao.insert(noticeBoard);	
+		
 	}
-
-//	@Override
-//	public List<NoticeModel> listPage(int page) {
-//		int min = (page - 1) * 10;
-//		int max = page * 10;
-//		List<NoticeModel> resList = Dao.listPage(min, max);
-//		return resList;	
-//	}
+	
+	@Override
+	public void insertFile(NoticeFileModel noticeFile,HttpServletRequest request) {
+		Dao.insertFile(noticeFile);
+		
+	}
 
 	@Override
 	public List<NoticeModel> findNum(int noticeNum) {
@@ -43,14 +41,28 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public void update(NoticeModel hsbBoard) {
-		Dao.update(hsbBoard);
+	public void update(NoticeModel noticeBoard) {
+		Dao.update(noticeBoard);
+		
+	}
+	
+	@Override
+	public void updateFile(NoticeFileModel noticeFile){
+		Dao.updateFile(noticeFile);
 		
 	}
 
 	@Override
 	public void delete(int noticeNum) {
 		Dao.delete(noticeNum);
+		Dao.updateNoticeNum(noticeNum);
+		
+	}
+	
+	@Override
+	public void deleteFile(int noticeNum) {
+		Dao.deleteFile(noticeNum);
+		Dao.updateFileNum(noticeNum);
 		
 	}
 
@@ -74,10 +86,15 @@ public class NoticeServiceImpl implements NoticeService{
 		return Dao.next(noticeNum);		
 	}
 
-//	@Override
-//	public List<NoticeModel> listSearch(SearchCriteria scri) {
-//		return Dao.listSearch(scri);
-//	}
+	@Override
+	public Integer max(int max) {
+		return Dao.max(max);
+	}
+	
+	public List<NoticeFileModel> fileName(int noticeNum){
+		return Dao.fileName(noticeNum);
+	}
+
 
 
 	

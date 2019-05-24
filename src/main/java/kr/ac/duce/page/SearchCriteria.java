@@ -4,6 +4,7 @@ public class SearchCriteria extends PageCriteria{
 
 	private String searchType = "";
 	private String keyword = "";
+	private String searchBtn = "";
 	
 	public String getSearchType() {
 		return searchType;
@@ -17,5 +18,10 @@ public class SearchCriteria extends PageCriteria{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	
+	public String getSearchBtn() {
+		return searchBtn;
+	}
+	public void setSearchBtn(String searchBtn) {
+		this.searchBtn = searchBtn;
+	}	
 }

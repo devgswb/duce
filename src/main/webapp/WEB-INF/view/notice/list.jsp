@@ -85,6 +85,7 @@
 								<td class="mdl-data-table__cell--non-numeric"><fmt:formatDate
 										value="${notice.noticeDate}" pattern="yyyy-MM-dd" /></td>
 							</tr>
+							
 						</c:forEach>
 					</tbody>
 				</table>
