@@ -50,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider  {
 		}else {
 			String name = userDao.readName(id);
 			request.setAttribute("name", name);
-		//	System.out.println(userDao.readAuthority(id));
+			System.out.println(userDao.readAuthority(id));
 			
 			String au = cs.getAuthority(id).toString();
 			
