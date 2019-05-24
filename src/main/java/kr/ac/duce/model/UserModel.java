@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserModel implements UserDetails{
 	
 	
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String authority;
 	private String id;
 	private String name;
@@ -22,6 +25,7 @@ public class UserModel implements UserDetails{
 	
 	private boolean isAccountNonExpired; 
 	private boolean isAccountNonLocked;
+	@SuppressWarnings("unused")
 	private boolean isCredentialsNonExpired; 
 	private boolean isEnabled;
 	private Collection <? extends GrantedAuthority> authorities;
@@ -47,23 +51,24 @@ public class UserModel implements UserDetails{
 //	}
 
 	
-	
-	public void setAccountNonExpired(boolean isAccountNonExpired) {
-		this.isAccountNonExpired = isAccountNonExpired;
-	}
-	public void setAccountNonLocked(boolean isAccountNonLocked) {
-		this.isAccountNonLocked = isAccountNonLocked;
-	}
-	public void setCredentialsNonExpired(boolean isCredentialsNonExpired) {
-		this.isCredentialsNonExpired = isCredentialsNonExpired;
-	}
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
-	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-		this.authorities = authorities;
+	@Override
+	public String getUsername() {
+		return this.id;
 	}
 	
+	public void setUsername(String id) {
+		this.id = id;
+	}
+	
+	
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 	public String getName() {
 		return name;
@@ -92,24 +97,7 @@ public class UserModel implements UserDetails{
 		return this.authorities;
 	}
 	
-	@Override
-	public String getUsername() {
-		return this.id;
-	}
 	
-	public void setUsername(String id) {
-		this.id = id;
-	}
-	
-	
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	
 	@Override
 	public boolean isAccountNonExpired() {
@@ -128,6 +116,24 @@ public class UserModel implements UserDetails{
 		return this.isEnabled;
 	}
 	
+
+	
+	
+	public void setAccountNonExpired(boolean isAccountNonExpired) {
+		this.isAccountNonExpired = isAccountNonExpired;
+	}
+	public void setAccountNonLocked(boolean isAccountNonLocked) {
+		this.isAccountNonLocked = isAccountNonLocked;
+	}
+	public void setCredentialsNonExpired(boolean isCredentialsNonExpired) {
+		this.isCredentialsNonExpired = isCredentialsNonExpired;
+	}
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
 	
 	
 	

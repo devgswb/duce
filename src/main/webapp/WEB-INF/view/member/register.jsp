@@ -54,33 +54,39 @@
 	<jsp:include page="../header-nav.jsp" />
 	<!-- Navigation Bar -->
 	<article>
+	
 		<div class="con">
 			<div class="member-wrapper">
 				<div class="member-con">
 					회원가입
 					<hr />
 				</div>
+				<c:url var="register.do" value="/register "/>
+				<form action="register.do" value="register" method="post">
 				<div class="member-area">
 					<p class="form-group">
 						<label for="usr" class="login-text">계정 ID</label><input
-							type="text" class="form-control signin-textbox" placeholder="학번"
+							type="text" class="form-control signin-textbox" placeholder="학번" name="id"
 							id="usr">
 					</p>
 					<p class="form-group">
 						<label for="pwd" class="login-text">비밀번호</label><input
-							type="password" class="form-control signin-textbox" id="pwd">
+							type="password" class="form-control signin-textbox" name="password" id="pwd">
 					</p>
 					<p class="form-group">
 						<label for="name" class="login-text">이름</label><input type="text"
-							class="form-control signin-textbox" id="name">
+							class="form-control signin-textbox" name="name" id="name">
+					</p>
+					<p>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</p>
 					<p class="form-group">
 						<label for="email" class="login-text">e-mail</label><input
-							type="email" class="form-control signin-textbox" id="email">
+							type="email" class="form-control signin-textbox" name="mail" id="email">
 					</p>
 					<p class="form-group">
 						<label for="tel" class="login-text">연락처</label><input type="tel"
-							class="form-control signin-textbox" id="tel">
+							class="form-control signin-textbox" name="hp" id="tel">
 					</p>
 					<p class="member-btn-area">
 						<button
@@ -89,8 +95,10 @@
 							class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">취소</button>
 					</p>
 				</div>
+				</form>
 			</div>
 		</div>
+	
 		<!-- contents box -->
 	</article>
 	<jsp:include page="../footer.jsp" />
@@ -109,7 +117,7 @@
 	<form action={"/register"} value="register" method="post">
 		
 		<div><label>아이디 : <input type="text" name="id" placeholder="학번" required="required"/></label></div>
-		<div><label>비밀번호 : <input type="password" name="pw" placeholder="암호" required="required"/></label></div>
+		<div><label>비밀번호 : <input type="password" name="password" placeholder="암호" required="required"/></label></div>
 		<div><label>이름 : <input type="text" name="name" placeholder="이름" required="required"/></label></div>
 		<div><label>메일 <input type="text" name="mail" placeholder="암호" required="required"/></label></div>
 		<div><label>연락처 <input type="text" name="hp" placeholder="암호" required="required"/></label></div>

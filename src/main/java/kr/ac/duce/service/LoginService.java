@@ -12,8 +12,7 @@ public interface LoginService {
 	public UserModel findByUserid(String id);
 
 	//회원가입
-	public UserModel register(UserModel id, UserModel password, UserModel name, UserModel mail, UserModel hp, 
-			UserModel isAccountNonExpired, UserModel isAccountNonLocked, UserModel isCredentialsNonExpired, UserModel isEnabled);
+	public UserModel register(UserModel usermodel) throws Exception;
 
-
+	
 }

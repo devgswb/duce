@@ -48,25 +48,31 @@
 <!-- local css -->
 <link rel="stylesheet" href="/res/css/inwork.css">
 <!--  page logic -->
+
+
 </head>
 <body>
+
 	<jsp:include page="../header-nav.jsp" />
 	<!-- Navigation Bar -->
 	<article>
+	<c:url var="login" value="/login" />
+	
 		<div class="con">
 			<div class="login-wrapper">
 				<div class="login-con">
 					로그인
 					<hr />
 				</div>
+				<form action="login.do" method="POST">
 				<div class="login-area">
 					<p class="form-group">
 						<label for="usr" class="login-text">계정 ID</label><input
-							type="text" class="form-control login-textbox" id="usr">
+							type="text" class="form-control login-textbox" name ="id" id="usr">
 					</p>
 					<p class="form-group">
 						<label for="pwd" class="login-text">비밀번호</label><input
-							type="password" class="form-control login-textbox" id="pwd">
+							type="password" class="form-control login-textbox" name="password" id="pwd">
 					</p>
 					<p class="login-btn-area">
 						<button
@@ -80,9 +86,14 @@
 						<button class="mdl-button mdl-js-button mdl-js-ripple-effect">비밀번호
 							찾기</button>
 					</p>
+					<p>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</p>
 				</div>
+				</form>
 			</div>
 		</div>
+		
 		<!-- contents box -->
 	</article>
 	<jsp:include page="../footer.jsp" />
@@ -109,7 +120,7 @@
 <!--        <label> ID : <input type="text" name="id" placeholder="학번" /></label>-->
 <!--    </div>-->
 <!--    <div>-->
-<!--        <label> Password : <input type="text" name="pw" /></label>-->
+<!--        <label> Password : <input type="text" name="password" /></label>-->
 <!--    </div>-->
 <!--    <input type="hidden" name="${_csrf.parameterName}"-->
 <!--           value="${_csrf.token}" />-->

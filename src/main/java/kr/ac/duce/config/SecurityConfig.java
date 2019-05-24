@@ -1,7 +1,5 @@
 package kr.ac.duce.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import kr.ac.duce.service.impl.CustomAuthenticationFailure;
+import kr.ac.duce.service.impl.CustomAuthenticationProvider;
 import kr.ac.duce.service.impl.CustomAuthenticationSuccess;
-import kr.ac.duce.service.impl.LoginServiceImpl;
+import kr.ac.duce.service.impl.CustomUserDetailsService;
 
 
 
@@ -28,8 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Bean 
+	AuthenticationSuccessHandler successHandler() {
+		return new CustomAuthenticationSuccess("/");
+	}
+	
+	
 	@Autowired
-	LoginServiceImpl loginServiceImpl;
+	CustomUserDetailsService customUserDetailsService;
+	
+	@Autowired
+	private CustomAuthenticationProvider caProvider;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception{
@@ -40,33 +50,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 			.authorizeRequests()
-			.antMatchers("/").permitAll()
-//			.antMatchers("/admin", "/admin/*").hasAnyAuthority("admin")
-//			.anyRequest().authenticated()
+			.antMatchers("/**").permitAll()
+			.antMatchers("/member/**").permitAll()
+			.antMatchers("/notice/write").hasRole("user")
+			.anyRequest().authenticated()
 			.and()
 		.formLogin()
-			.loginPage("/login")
-			.loginProcessingUrl("/login")
-			.defaultSuccessUrl("/index")
-			.failureUrl("/loginFailure")
-//			.successHandler(new CustomAuthenticationSuccess())
-//			.failureHandler(new CustomAuthenticationFailure())
+			.loginPage("/member/login")
+			.loginProcessingUrl("/login.do")
+			.defaultSuccessUrl("/")
+			.successHandler(successHandler())
+			.failureHandler(new CustomAuthenticationFailure())
 			.usernameParameter("id")
 			.passwordParameter("password")
 			.permitAll()
 			.and()
 		.logout()
-//			.logoutUrl("/logout")
-//			.invalidateHttpSession(true)
-			.permitAll();
-		//.and()
-			//.authenticationProvider(authProvider);
+			.logoutUrl("/logout")
+			.invalidateHttpSession(true)
+			.permitAll()
+		.and()
+			.authenticationProvider(caProvider);
 	}
 	
 	//UserDetailsService를 이용한 로그인 처리
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(loginServiceImpl).passwordEncoder(bCryptPasswordEncoder());
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+		
 	}
 
 	
