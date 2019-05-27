@@ -85,6 +85,14 @@ public class UserModel implements UserDetails{
 		this.mail = mail;
 	}
 	
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
 	public String getHp() {
 		return hp;
 	}

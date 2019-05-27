@@ -6,11 +6,11 @@
 		<i class="material-icons md-light">search</i>
 	</div>
 	
-	<% System.out.println(request.getSession()); %>
+	
 	<div id="nav-member">
 	<c:choose>
 	
-		<c:when test="${empty session}">
+		<c:when test="${empty sessionScope.name}">
 					<ul>
 						<li><a href="/login">로그인</a></li>
 						<li><a href="/register">회원가입</a></li>
@@ -21,7 +21,6 @@
 					<ul>
 						<li><p>${name}님</p></li>
 						<li><a href="/logout">로그아웃</a></li>
-					
 					</ul>
 		</c:otherwise>
 	</c:choose>	

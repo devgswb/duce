@@ -2,6 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -48,16 +51,33 @@
 <link rel="stylesheet" href="/res/css/inwork.css">
 <!--  page logic -->
 
-
+<script type="text/javascript">
+  
+        function checkWrite()
+        {
+            if(!document.noticeWrite.noticeTitle.value){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            
+            if(!document.noticeWrite.noticeContent.value){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+                    
+        }
+</script>
 </head>
 
 <body>
 	<jsp:include page="../header-nav.jsp" />
 	<!-- Navigation Bar -->
+	
+	<sec:authorize access="hasAuthority('ROLE_admin')">
 	<article>
 		<div class="con">
 			<div class="notice-write-wrapper">
-				<form action="/notice/write.do" accept-charset="utf-8" method="post">
+				<form action="/notice/write.do" accept-charset="utf-8" method="post" name="noticeWrite" enctype="multipart/form-data" onsubmit="return checkWrite()">
 					<div class="notice-write-wrapper-header">공지사항 작성</div>
 					<div class="form-group">
 						<input type="text" class="form-control" id="subject"
@@ -66,10 +86,7 @@
 							name="noticeContent" placeholder="내용"></textarea>
 					</div>
 					<div class="notice-write-attach-addr">
-						<a href="#">
-							<input type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect" value ="첨부 파일 추가">
-						</a>
-						<p>첨부파일.gif</p>
+						첨부파일 <input multiple="multiple" type="file" id="inFileName" name="inFileName" value=""/>
 					</div>
 					<input type="text" class="form-control" id="referlink"
 						placeholder="참조 주소">
@@ -82,6 +99,8 @@
 		</div>
 		<!--  contents box -->
 	</article>
+	</sec:authorize>
+	
 	<jsp:include page="../footer.jsp" />
 	<!-- footer -->
 </body>
@@ -91,7 +110,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
                                         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판 글 쓰기</title>
@@ -109,6 +127,5 @@
 	
 	<button type="button"><a href="noticeList">목록으로</a></button>
 </body>
-
 </html>
  -->

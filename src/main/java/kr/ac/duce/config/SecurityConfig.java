@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,7 +22,8 @@ import kr.ac.duce.service.impl.CustomUserDetailsService;
 
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled=true,prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Bean
@@ -43,22 +45,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	public void configure(WebSecurity web) throws Exception{
-		web.ignoring().antMatchers("/css/**", "/img/**");
+		web.ignoring().antMatchers("/resources/**");
+		
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http
+		http.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/**").permitAll()
-			.antMatchers("/member/**").permitAll()
-			.antMatchers("/notice/write").hasRole("user")
+			.antMatchers("/**", "/notice/list", "/member/**").permitAll()
+			.antMatchers("/notice/**").hasAuthority("ROLE_admin")
+			.antMatchers("/notice/*.do").hasAuthority("ROLE_admin")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
 			.loginPage("/member/login")
 			.loginProcessingUrl("/login.do")
-			.defaultSuccessUrl("/")
 			.successHandler(successHandler())
 			.failureHandler(new CustomAuthenticationFailure())
 			.usernameParameter("id")
@@ -67,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 		.logout()
 			.logoutUrl("/logout")
+			.logoutSuccessUrl("/")
 			.invalidateHttpSession(true)
 			.permitAll()
 		.and()

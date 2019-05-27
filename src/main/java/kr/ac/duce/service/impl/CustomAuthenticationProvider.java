@@ -1,7 +1,6 @@
 package kr.ac.duce.service.impl;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +13,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import kr.ac.duce.dao.UserDao;
 import kr.ac.duce.model.UserModel;
-import kr.ac.duce.service.LoginService;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider  {
+
 	@Autowired
-	BCryptPasswordEncoder pe;
-	@Autowired
-	HttpServletRequest request;
+	HttpSession session;
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
 	UserDao userDao;
-	@Autowired
-	CustomUserDetailsService cs;
+
+	UserModel usermodel;
+	CustomUserDetailsService cs ;
 	@Autowired
 	BCryptPasswordEncoder pwEncoder;
 	
@@ -48,12 +45,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider  {
 		}else if(!pwEncoder.matches(password, user.getPassword())) {
 			throw new BadCredentialsException(password);
 		}else {
-			String name = userDao.readName(id);
-			request.setAttribute("name", name);
-			System.out.println(userDao.readAuthority(id));
-			
-			String au = cs.getAuthority(id).toString();
-			
+			//로그인을 위해 세션값에 이름을 넘긴다
+			session.setAttribute("name", user.getName());
+			session.setAttribute("author", user.getAuthorities());
 		}
 		
 		if(!user.isEnabled()) {
@@ -61,10 +55,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider  {
 		}
 		
 		
-		
 		return new UsernamePasswordAuthenticationToken(id, password, user.getAuthorities());
 	}
-
+	
+	
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);

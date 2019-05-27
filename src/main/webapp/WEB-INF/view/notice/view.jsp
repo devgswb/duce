@@ -39,6 +39,20 @@
 <link rel="stylesheet" href="/res/css/inwork.css">
 <!--  page logic -->
 
+<script type="text/javascript">
+     function checkNDelete()
+     {
+    	 var noticeDelete = confirm("삭제하시겠습니까?")
+ 	    if(noticeDelete == true){
+ 	        Delete.action = "/notice/delete.do";
+ 	    }    
+         else
+         {
+             return false; // 삭제취소
+         }
+     }
+</script>
+
  
 </head>
 
@@ -60,17 +74,51 @@
             <div class="notice-contents-footer">
                 <ul class="notice-contents-attach">
                     <li>첨부파일</li>
-                    <li>첨부파일.gif</li>
+                    <li>
+                    <c:forEach var="notice" items="${noticeFile}">
+			         <c:if test="${!empty notice.outFileName}">
+                    <a download="" href="${notice.outFileName}">${notice.inFileName}</a>(${notice.fileSize/1024}Byte)
+                   </c:if>
+			        </c:forEach>
+                    </li>               
                 </ul>
                 <ul class="notice-contents-former">
                     <li>이전글</li>
-                    <li><a href="/notice/list?number=${next.noticeNum}">${next.noticeTitle}</a></li>
+                    <li>
+                     <c:choose>
+		             <c:when test="${notice.noticeNum > 1}">
+		             <a href="/notice/list?number=${prev.noticeNum}">${prev.noticeTitle}</a>
+		             </c:when>
+		             <c:otherwise>
+				            이전 게시글이 없습니다.
+		             </c:otherwise>
+		             </c:choose>
+                    </li>
                 </ul>
                 <ul class="notice-contents-latter">
                     <li>다음글</li>
-                    <li><a href="/notice/list?number=${prev.noticeNum}">${prev.noticeTitle}</a></li>
+                    <li>
+                    <c:choose>
+		            <c:when test="${maxPage > notice.noticeNum}">
+		            <a href="/notice/list?number=${next.noticeNum}">${next.noticeTitle}</a>
+		            </c:when>
+		            <c:otherwise>
+			        	다음 게시글이 없습니다.
+		            </c:otherwise>
+		            </c:choose>
+                    </li>
                 </ul>
                 <a href="/notice/list"><button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록</button></a>
+                <form action="/notice/update" method="post">
+                     <button name="noticeNum" value="${notice.noticeNum}">수정하기</button>
+                </form> 
+                <form name = "Delete" method="post" onsubmit="return checkNDelete()">
+                     <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
+                     <button name="noticeDelete" id="noticeDelete">삭제하기</button>
+                </form> 
+                <!--<c:if test="${sessionScope.userId != null}">-->
+                <!--</c:if>--> 
+            
             </div> <!-- 첨부파일 / 이전글 / 다음글 / 목록 -->
         </div>
     </div>
@@ -85,7 +133,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
                                         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판 글 쓰기</title>
@@ -101,7 +148,6 @@
 				<td>${notice.noticeNum}</td>
 				<td>${notice.userID}</td>
 				<td><fmt:formatDate value="${notice.noticeDate}" pattern="yyyy년 MM월 dd일"/></td>
-
 			</tr>
 			<tr>
 				<th>제목</th>
@@ -126,6 +172,5 @@
    
        
 </body>
-
 </html>
  -->

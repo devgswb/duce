@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +11,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Duce</title>
-<!-- 
+<!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script>
@@ -48,14 +50,14 @@
            + '${pageMaker.makeQuery(1)}'
            + "&searchType="
            + $("select option:selected").val()
-           + "&keyword=" 
-           + $('#keywordInput').val());          
+           + "&keyword="
+           + $('#keywordInput').val());
            console.log(str);          
            location.href = str;
          });
-       });  
+       });
  </script>
-
+<!-- -->
 </head>
 
 <body>
@@ -73,10 +75,12 @@
 							<th class="mdl-data-table__cell--non-numeric">게시일자</th>
 						</tr>
 					</thead>
-					<tbody>
-						<c:forEach var="notice" items="${noticeList}">
+					<tbody>					
+						<c:forEach var="notice" items="${noticeList}" varStatus="status">			
 							<tr>
-								<td>${notice.noticeNum}</td>
+								<td>
+								${(noticeNumber-status.index)-((param.page-1)*param.perPageNum)}							
+								</td>
 								<td class="mdl-data-table__cell--non-numeric"
 									style="cursor: pointer;"
 									onClick="location.href='/notice/list${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}' "
@@ -85,14 +89,21 @@
 								<td class="mdl-data-table__cell--non-numeric"><fmt:formatDate
 										value="${notice.noticeDate}" pattern="yyyy-MM-dd" /></td>
 							</tr>
+							
 						</c:forEach>
 					</tbody>
 				</table>
+				
+				<sec:authorize access="hasAuthority('ROLE_admin')">
 				<div class="notice-btn-wrapper">
 					<a
 						class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined"
 						href="/notice/write">글쓰기</a>
 				</div>
+				</sec:authorize>
+				
+				<!--<c:if test="${sessionScope.userId != null}">-->
+                <!--</c:if>--> 
 				<!-- 페이징 -->
 				<div class="pagination">
 					<c:if test="${pageMaker.prevPageNum}">

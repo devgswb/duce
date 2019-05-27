@@ -12,7 +12,7 @@
 <title>게시판 글 쓰기</title>
 </head>
 <body> 
-	<form action="/noticeUpdate.do" accept-charset="utf-8" method="post">
+	<form action="/notice/update.do" accept-charset="utf-8" method="post">
 	 <input type="hidden" value="${noticeNum}" name="noticeNum" />
 		<div class="form-group">
 			제목<input type="text" name="noticeTitle">

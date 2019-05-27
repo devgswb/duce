@@ -20,7 +20,6 @@ public class CustomAuthenticationFailure implements AuthenticationFailureHandler
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		
-		
 		request.getRequestDispatcher("/loginError").forward(request, response);
 		
 	}
