@@ -72,7 +72,7 @@ public class FaqController {
 		return "/faq/view"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/faq/delete.do", params = {"faqNum"})
+	@PostMapping(value = "/faq/delete.do", params = "faqNum")
 	public String deleteFaq(Model model, @RequestParam String faqNum) {
 		Service.deleteFaq(Integer.parseInt(faqNum));
 		return "redirect:/faq/list";

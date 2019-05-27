@@ -9,9 +9,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FAQ 글 쓰기</title>
+<script type="text/javascript"> 
+        function checkUpdate()
+        {
+            if(!document.faqUpdate.faqTitle.value){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            
+            if(!document.faqUpdate.faqContent.value){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+                    
+        }
+</script>
 </head>
 <body> 
-	<form action="/faq/update.do" accept-charset="utf-8" method="post">
+	<form action="/faq/update.do" accept-charset="utf-8" method="post" name="faqUpdate" onsubmit="return checkUpdate()">
 		<input type="hidden" value="${faqNum}" name="faqNum" />
 		<div class="form-group">
 		   <select name="faqCategory">

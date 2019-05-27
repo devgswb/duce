@@ -55,14 +55,12 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void delete(int noticeNum) {
 		Dao.delete(noticeNum);
-		Dao.updateNoticeNum(noticeNum);
 		
 	}
 	
 	@Override
 	public void deleteFile(int noticeNum) {
 		Dao.deleteFile(noticeNum);
-		Dao.updateFileNum(noticeNum);
 		
 	}
 

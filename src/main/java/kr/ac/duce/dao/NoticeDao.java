@@ -21,21 +21,21 @@ public interface NoticeDao {
 	public List<NoticeModel> findNum(@Param("noticeNum") int noticeNum);
 	
 	// 입력 
-	@Insert("INSERT INTO noticeBoard(noticeTitle, userID, noticeDate, noticeContent, noticeHits) "
-			+ "VALUES(#{noticeTitle}, #{userID}, #{noticeDate}, #{noticeContent}, #{noticeHits})")
+	@Insert("INSERT INTO noticeBoard(noticeNum, noticeTitle, userID, noticeDate, noticeContent, noticeHits) "
+			+ "VALUES((SELECT IFNULL(MAX(a.noticeNum)+1, 1)FROM noticeBoard a), #{noticeTitle}, #{userID}, #{noticeDate}, #{noticeContent}, #{noticeHits})")
 	public void insert(NoticeModel noticeBoard);
 	
 	// 첨부 파일 입력
-	@Insert("INSERT INTO noticeFile( fileSize, inFileName, outFileName, noticeNum, fileUrl) "
-			+ "VALUES(#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum}, #{fileUrl})")
+	@Insert("INSERT INTO noticeFile(fileNum, fileSize, inFileName, outFileName, noticeNum, fileUrl) "
+			+ "VALUES((SELECT IFNULL(MAX(b.fileNum)+1, 1)FROM noticeFile b),#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum}, #{fileUrl})")
 	public void insertFile(NoticeFileModel noticeFile);
 	
 	// 글 수정 
-	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate} where noticeNum=#{noticeNum}")
+	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate}")
 	public void update(NoticeModel noticeBoard);
 	
 	// 파일 수정
-	@Update("UPDATE noticeFile SET fileSize=#{fileSize}, inFileName=#{inFileName}, outFileName=#{outFileName}, noticeNum=#{noticeNum} where noticeNum=#{noticeNum}")
+	@Update("UPDATE noticeFile SET fileSize=#{fileSize}, inFileName=#{inFileName}, outFileName=#{outFileName}, noticeNum=#{noticeNum}")
 	public void updateFile(NoticeFileModel noticeFile);
 	
 	// 글 삭제
@@ -81,12 +81,5 @@ public interface NoticeDao {
 	@Select("SELECT * FROM noticeFile WHERE noticeNum = #{noticeNum}") 
 	public List<NoticeFileModel> fileName (@Param("noticeNum") int noticeNum);
 	
-	// 글 번호 수정 
-	@Update("UPDATE noticeBoard SET noticeNum = noticeNum - 1 WHERE noticeNum >= #{noticeNum}")
-	public void updateNoticeNum(int noticeNum);
-	
-	// 첨부 파일 번호 수정 
-	@Update("UPDATE noticeFile SET fileNum = fileNum - 1, noticeNum = noticeNum - 1 WHERE noticeNum >= #{noticeNum} + 1")
-	public void updateFileNum(int noticeNum);
 
 }

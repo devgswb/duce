@@ -13,12 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.duce.model.NoticeFileModel;
 import kr.ac.duce.model.NoticeModel;
+import kr.ac.duce.page.PageCriteria;
 import kr.ac.duce.page.PageMaker;
 import kr.ac.duce.page.SearchCriteria;
 import kr.ac.duce.service.NoticeService;
@@ -42,6 +46,7 @@ public class NoticeController {
 	
 	@Autowired	
 	NoticeService Service;	
+
 	
 	@GetMapping(value = "/notice/list", params = { "number" }) // URL 주소
 	public String list(SearchCriteria cri, Model model, @RequestParam String number) {
@@ -74,7 +79,8 @@ public class NoticeController {
 		MultipartFile file = mtf.getFile("inFileName");
 		NoticeModel insertModel = new NoticeModel();
 		NoticeFileModel insertFile = new NoticeFileModel();
-		
+		int max = Service.countNoticeListTotal(cri);
+		Integer maxPage = Service.max(max);
 		Date createDate = Calendar.getInstance().getTime();
 		insertModel.setNoticeTitle(noticeTitle);
 		insertModel.setUserID("작성자");
@@ -87,19 +93,18 @@ public class NoticeController {
 				String inFileNames = FilenameUtils.getExtension(inFileName).toLowerCase();
 				File outFile;
 				String outFileName;
-				String fileUrl = NoticeController.class.getResource("").getPath();
-				fileUrl = URLDecoder.decode(fileUrl,"UTF-8");
-			    fileUrl = fileUrl.split("/target")[0]+"/src/main/webapp/WEB-INF/view/notice/file/";
-				
+				String path = "C:\\file\\";
+//				String savePath2=application.getRealPath("Fileupload/upload");
+
 				outFileName = uuid.toString() + "_" + inFileNames;
-				outFile = new File(fileUrl + outFileName);
+				outFile = new File(path,outFileName);
 				outFile.getParentFile().mkdirs();
 				file.transferTo(outFile);
 				
-				insertFile.setNoticeNum(Service.countNoticeListTotal(cri)+1);
+				insertFile.setNoticeNum(maxPage+1);
 				insertFile.setInFileName(inFileName);
 				insertFile.setOutFileName(outFileName);
-				insertFile.setFileUrl(fileUrl);
+				insertFile.setFileUrl(path);
 				
 				Service.insertFile(insertFile, request);					
 			}			
@@ -139,7 +144,7 @@ public class NoticeController {
             os.write(b, 0, leng);
         }
         in.close();
-        os.close();        
+        os.close();     
 	}
 	
 	
@@ -195,13 +200,13 @@ public class NoticeController {
 	public String deleteOK(Model model, @RequestParam String noticeNum) {
 		Service.delete(Integer.parseInt(noticeNum));
 		Service.deleteFile(Integer.parseInt(noticeNum));
-		return "redirect:notice/list";
+		return "redirect:/notice/list";
 	}
 	
 	@GetMapping(value="/notice/list")
 	public ModelAndView NoticeList(@ModelAttribute("cri")SearchCriteria cri,Model model){
 		ModelAndView mav = new ModelAndView("/notice/list");
-							
+		int noticeNumber = Service.countNoticeListTotal(cri);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(Service.countNoticeListTotal(cri));
@@ -209,6 +214,7 @@ public class NoticeController {
 		List<Map<String,Object>> noticeList = Service.searchNoticeList(cri);
 		mav.addObject("noticeList",noticeList);
 		mav.addObject("pageMaker",pageMaker);
+		mav.addObject("noticeNumber",noticeNumber);
 		return mav;		
 	}
 }

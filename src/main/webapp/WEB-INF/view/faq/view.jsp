@@ -11,6 +11,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FAQ 글 보기</title>
+<script type="text/javascript">
+function checkFDelete()
+{
+	 var faqDelete = confirm("삭제하시겠습니까?")
+    if(faqDelete == true){
+        faqDelete.action = "/faq/delete.do";
+    }    
+    else
+    {
+        return false; 
+
+}
+</script>
 </head>
 <body> 
 	<table class="table table-boardred" style="height: 70%">
@@ -37,9 +50,12 @@
 		<form action="/faq/update" method="post">
                 <button class="btn btn-warning" name="faqNum" value="${faq.faqNum}">수정하기</button>
         </form> 
-        <form action="/faq/delete.do" method="post">
-                <button class="btn btn-warning" name="faqNum" value="${faq.faqNum}">삭제하기</button>
+        <form name="faqDelete" method="post" action ="/faq/delete.do" onsubmit="return checkFDelete()">
+                <input type="hidden" name="faqNum" value="${faq.faqNum}">
+                <button class="btn btn-warning" name="faqDelete" id="faqDelete" >삭제하기</button>
         </form> 
+        <!--<c:if test="${sessionScope.userId != null}">-->
+        <!--</c:if>--> 
         
         <button type="button"><a href="/faq/list">목록으로</a></button>
            

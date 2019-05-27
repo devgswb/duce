@@ -41,9 +41,7 @@ public class FaqServiceImpl implements FaqService{
 
 	@Override
 	public void deleteFaq(int faqNum) {
-		Dao.deleteFaq(faqNum);
-		Dao.updateFaqNum(faqNum);
-		
+		Dao.deleteFaq(faqNum);	
 	}
 
 	@Override

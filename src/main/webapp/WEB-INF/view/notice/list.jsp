@@ -73,10 +73,12 @@
 							<th class="mdl-data-table__cell--non-numeric">게시일자</th>
 						</tr>
 					</thead>
-					<tbody>
-						<c:forEach var="notice" items="${noticeList}">
+					<tbody>					
+						<c:forEach var="notice" items="${noticeList}" varStatus="status">			
 							<tr>
-								<td>${notice.noticeNum}</td>
+								<td>
+								${(noticeNumber-status.index)-((param.page-1)*param.perPageNum)}							
+								</td>
 								<td class="mdl-data-table__cell--non-numeric"
 									style="cursor: pointer;"
 									onClick="location.href='/notice/list${pageMaker.makeSearch(pageMaker.cri.page)}&number=${notice.noticeNum}' "
@@ -94,6 +96,8 @@
 						class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined"
 						href="/notice/write">글쓰기</a>
 				</div>
+				<!--<c:if test="${sessionScope.userId != null}">-->
+                <!--</c:if>--> 
 				<!-- 페이징 -->
 				<div class="pagination">
 					<c:if test="${pageMaker.prevPageNum}">

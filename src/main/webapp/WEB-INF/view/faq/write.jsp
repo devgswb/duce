@@ -9,9 +9,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FAQ 글 쓰기</title>
+<script type="text/javascript">
+  
+        function checkWrite()
+        {
+            if(!document.faqWrite.faqTitle.value){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            
+            if(!document.faqWrite.faqContent.value){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+                    
+        }
+</script>
 </head>
 <body> 
-	<form action="/faq/write.do" accept-charset="utf-8" method="post">
+	<form action="/faq/write.do" accept-charset="utf-8" name="faqWrite" method="post" onsubmit="return checkWrite()">
 		<div class="form-group">
 		   <select name="faqCategory">
 		      <option value="결제"<c:out value="${faq.faqCategory == '결제' ? 'selected' : ''}"/>>결제</option>
