@@ -28,13 +28,7 @@
 </head>
 <body> 
 	<form action="/faq/write.do" accept-charset="utf-8" name="faqWrite" method="post" onsubmit="return checkWrite()">
-		<div class="form-group">
-		   <select name="faqCategory">
-		      <option value="결제"<c:out value="${faq.faqCategory == '결제' ? 'selected' : ''}"/>>결제</option>
-		      <option value="로그인"<c:out value="${faq.faqCategory == '로그인' ? 'selected' : ''}"/>>로그인</option>
-		      <option value="기타질문"<c:out value="${faq.faqCategory == '기타질문' ? 'selected' : ''}"/>>기타질문</option>
-	       </select>
-	    </div>
+
 	    
 		<div class="form-group">
 			제목<input type="text" name="faqTitle">

@@ -28,13 +28,6 @@
 <body> 
 	<form action="/faq/update.do" accept-charset="utf-8" method="post" name="faqUpdate" onsubmit="return checkUpdate()">
 		<input type="hidden" value="${faqNum}" name="faqNum" />
-		<div class="form-group">
-		   <select name="faqCategory">
-		      <option value="결제"<c:out value="${faq.faqCategory == '결제' ? 'selected' : ''}"/>>결제</option>
-		      <option value="로그인"<c:out value="${faq.faqCategory == '로그인' ? 'selected' : ''}"/>>로그인</option>
-		      <option value="기타"<c:out value="${faq.faqCategory == '기타' ? 'selected' : ''}"/>>기타</option>
-	       </select>
-	    </div>
 	    
 		<div class="form-group">
 			제목<input type="text" name="faqTitle">

@@ -14,20 +14,16 @@ import kr.ac.duce.page.SearchCriteria;
 
 public interface FaqDao {
 	// FAQ 목록 확인
-	@Select("SELECT * FROM faqBoard WHERE IF (#{searchBtn} = '결제' ,faqCategory Like CONCAT('%', #{searchBtn}, '%')"
-			+ ",IF(#{searchBtn} = '로그인',faqCategory Like CONCAT('%', #{searchBtn}, '%'),"
-			+ "IF(#{searchBtn} = '기타질문',faqCategory Like CONCAT('%', #{searchBtn}, '%'),faqNum > 0)))"
-			+ "ORDER BY faqNum DESC LIMIT #{pageStart}, #{perPageNum}")
+	@Select("SELECT * FROM faqBoard")
 	public List<Map<String, Object>> searchFaqList(SearchCriteria cri);
 	
 	// FQA 글 수 확인 
-	@Select("SELECT COUNT(faqNum) FROM faqBoard WHERE IF (#{searchBtn} = '결제' ,faqCategory Like CONCAT('%', #{searchBtn}, '%'),"
-			+ " IF(#{searchBtn} = '로그인',faqCategory Like CONCAT('%', #{searchBtn}, '%'),IF(#{searchBtn} = '기타질문',faqCategory Like CONCAT('%', #{searchBtn}, '%'),faqNum)))")
+	@Select("SELECT COUNT(faqNum) FROM faqBoard ")
 	public int countFaqListTotal(SearchCriteria cri);
 	
 	// FAQ 입력
-	@Insert("INSERT INTO faqBoard(faqNum, faqCategory, faqTitle, userID, faqDate, faqContent, faqHits) "
-			+ "VALUES((SELECT IFNULL(MAX(c.faqNum)+1, 1)FROM faqBoard c),#{faqCategory},#{faqTitle}, #{userID}, #{faqDate}, #{faqContent}, #{faqHits})")
+	@Insert("INSERT INTO faqBoard(faqNum, faqTitle, userID, faqDate, faqContent, faqHits) "
+			+ "VALUES((SELECT IFNULL(MAX(c.faqNum)+1, 1)FROM faqBoard c),#{faqTitle}, #{userID}, #{faqDate}, #{faqContent}, #{faqHits})")
 	public void insertFaq(FaqModel faqBoard);
 	
 	// FAQ 뷰

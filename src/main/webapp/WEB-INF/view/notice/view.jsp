@@ -44,7 +44,7 @@
      {
     	 var noticeDelete = confirm("삭제하시겠습니까?")
  	    if(noticeDelete == true){
- 	        noticeDelete.action = "/notice/delete.do";
+ 	        Delete.action = "/notice/delete.do";
  	    }    
          else
          {
@@ -78,7 +78,8 @@
                     <li>
                     <c:forEach var="notice" items="${noticeFile}">
 			         <c:if test="${!empty notice.outFileName}">
-                    <a download="" href="${notice.outFileName}">${notice.inFileName}</a>(${notice.fileSize/1024}Byte)
+			         <input type="hidden" name="outFileName" value="${notice.outFileName}">
+                    <a download="" href="/res/notice/file/${notice.outFileName}">${notice.inFileName}</a>(${notice.fileSize/1024}Byte)
                    </c:if>
 			        </c:forEach>
                     </li>               
@@ -111,12 +112,18 @@
                 </ul>
                 <a href="/notice/list"><button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록</button></a>
                 <form action="/notice/update" method="post">
-                     <button name="noticeUpdate" value="${notice.noticeNum}">수정하기</button>
+                     <button name="noticeNum" value="${notice.noticeNum}">수정하기</button>
                 </form> 
-                <form name = "noticeDelete" method="post" onsubmit="return checkNDelete()">
+                <form name = "Delete" method="post" onsubmit="return checkNDelete()">
                      <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
+                     <c:forEach var="notice" items="${noticeFile}">
+			         <c:if test="${!empty notice.outFileName}">
+                     <input type="hidden" name="outFileName" value="${notice.outFileName}">                 
                      <button name="noticeDelete" id="noticeDelete">삭제하기</button>
+                     </c:if>
+			         </c:forEach>
                 </form> 
+                
                 <!--<c:if test="${sessionScope.userId != null}">-->
                 <!--</c:if>--> 
             

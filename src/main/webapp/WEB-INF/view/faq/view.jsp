@@ -16,11 +16,12 @@ function checkFDelete()
 {
 	 var faqDelete = confirm("삭제하시겠습니까?")
     if(faqDelete == true){
-        faqDelete.action = "/faq/delete.do";
+       Delete.action = "/faq/delete.do";
     }    
     else
     {
         return false; 
+    }
 
 }
 </script>
@@ -33,7 +34,6 @@ function checkFDelete()
 				<th>작성일</th>
 			</tr>
 			<tr>
-				<td>${faq.faqCategory}</td>
 				<td>${faq.userID}</td>
 				<td><fmt:formatDate value="${faq.faqDate}" pattern="yyyy년 MM월 dd일"/></td>
 
@@ -50,7 +50,7 @@ function checkFDelete()
 		<form action="/faq/update" method="post">
                 <button class="btn btn-warning" name="faqNum" value="${faq.faqNum}">수정하기</button>
         </form> 
-        <form name="faqDelete" method="post" action ="/faq/delete.do" onsubmit="return checkFDelete()">
+        <form name="Delete" method="post" onsubmit="return checkFDelete()">
                 <input type="hidden" name="faqNum" value="${faq.faqNum}">
                 <button class="btn btn-warning" name="faqDelete" id="faqDelete" >삭제하기</button>
         </form> 

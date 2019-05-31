@@ -12,7 +12,7 @@ import kr.ac.duce.page.SearchCriteria;
 public interface NoticeService {
 	
 	public void insert(NoticeModel noticeBoard);
-	public void insertFile(NoticeFileModel noticeFile,HttpServletRequest request);
+	public void insertFile(NoticeFileModel noticeFile);
 	public List<NoticeModel> findNum(int noticeNum);
 	public void update(NoticeModel noticeBoard);
 	public void updateFile(NoticeFileModel noticeFile);

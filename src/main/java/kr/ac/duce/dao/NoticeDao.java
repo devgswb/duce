@@ -3,15 +3,13 @@ package kr.ac.duce.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 import org.apache.ibatis.annotations.*;
-import org.springframework.ui.Model;
+
 
 import kr.ac.duce.model.NoticeFileModel;
 import kr.ac.duce.model.NoticeModel;
-import kr.ac.duce.page.PageCriteria;
 import kr.ac.duce.page.SearchCriteria;
 
 public interface NoticeDao {
@@ -26,12 +24,12 @@ public interface NoticeDao {
 	public void insert(NoticeModel noticeBoard);
 	
 	// 첨부 파일 입력
-	@Insert("INSERT INTO noticeFile(fileNum, fileSize, inFileName, outFileName, noticeNum, fileUrl) "
-			+ "VALUES((SELECT IFNULL(MAX(b.fileNum)+1, 1)FROM noticeFile b),#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum}, #{fileUrl})")
+	@Insert("INSERT INTO noticeFile(fileNum, fileSize, inFileName, outFileName, noticeNum) "
+			+ "VALUES((SELECT IFNULL(MAX(b.fileNum)+1, 1)FROM noticeFile b),#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum})")
 	public void insertFile(NoticeFileModel noticeFile);
 	
 	// 글 수정 
-	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate}")
+	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate} where noticeNum = #{noticeNum}")
 	public void update(NoticeModel noticeBoard);
 	
 	// 파일 수정

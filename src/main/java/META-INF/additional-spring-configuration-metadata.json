@@ -8,5 +8,30 @@
     "name": "spring.multpart-config",
     "type": "java.lang.String",
     "description": "A description for 'spring.multpart-config'"
+  },
+  {
+    "name": "spring.upload_paths",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.upload_paths'"
+  },
+  {
+    "name": "spring.servlet.upload_paths",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.upload_paths'"
+  },
+  {
+    "name": "spring.servlet.multipart.upload_paths",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.multipart.upload_paths'"
+  },
+  {
+    "name": "spring.servlet.multipart.upload_paths",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.multipart.upload_paths'"
+  },
+  {
+    "name": "file",
+    "type": "java.lang.String",
+    "description": "A description for 'file'"
   }
 ]}

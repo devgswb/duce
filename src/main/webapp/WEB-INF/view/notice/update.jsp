@@ -25,10 +25,23 @@
                 return false;
             }
         }
+        
+        function checkFDelete()
+        {
+       	 var fileDelete = confirm("삭제하시겠습니까?")
+    	    if(fileDelete == true){
+    	        fDelete.action = "/file/delete.do";
+    	    }    
+            else
+            {
+                return false; // 삭제취소
+            }
+
+        }
 </script>
 </head>
 <body> 
-	<form action="/noticeUpdate.do" accept-charset="utf-8" name="noticeUpdate" method="post" enctype="multipart/form-data" onsubmit="return checkUpdate()">
+	<form action="/notice/update.do" accept-charset="utf-8" name="noticeUpdate" method="post" enctype="multipart/form-data" onsubmit="return checkUpdate()">
 	 <input type="hidden" value="${noticeNum}" name="noticeNum" />
 		<div class="form-group">
 			제목<input type="text" name="noticeTitle">
@@ -41,6 +54,18 @@
 		</div>
 		<button type="submit" class="btn btn-primary">글수정</button>
 	</form>
+	
+	<c:forEach var="notice" items="${noticeFile}">
+		<c:if test="${!empty notice.outFileName}">	
+		<div>	
+		<form name = "fDelete" method="post" onsubmit="return checkFDelete()">
+         ${notice.outFileName}(${notice.fileSize/1024}Byte)
+         <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
+         <button name="outFileName" id="outFileName" value= "${notice.outFileName}">파일삭제</button>
+         </form>
+         </div>
+         </c:if>
+	</c:forEach>
 </body>
 
 </html>

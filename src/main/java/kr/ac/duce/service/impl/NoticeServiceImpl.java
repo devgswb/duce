@@ -29,7 +29,7 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	@Override
-	public void insertFile(NoticeFileModel noticeFile,HttpServletRequest request) {
+	public void insertFile(NoticeFileModel noticeFile) {
 		Dao.insertFile(noticeFile);
 		
 	}
