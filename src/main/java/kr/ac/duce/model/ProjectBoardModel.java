@@ -15,6 +15,8 @@ public class ProjectBoardModel {
 	private int hit;
 	private String video;
 	private String photo;
+	private String addFile;
+	private String reference;
 	
 	public int getpNo() {
 		return pNo;
@@ -93,5 +95,17 @@ public class ProjectBoardModel {
 	}
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+	public String getAddFile() {
+		return addFile;
+	}
+	public void setAddFile(String addFile) {
+		this.addFile = addFile;
+	}
+	public String getReference() {
+		return reference;
+	}
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 }
