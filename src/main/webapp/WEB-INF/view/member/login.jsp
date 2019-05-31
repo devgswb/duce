@@ -64,7 +64,7 @@
 					로그인
 					<hr />
 				</div>
-				<form action="login.do" method="POST">
+				<form action="login.do" method="post">
 				<div class="login-area">
 					<p class="form-group">
 						<label for="usr" class="login-text">계정 ID</label><input

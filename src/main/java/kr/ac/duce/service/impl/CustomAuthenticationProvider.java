@@ -45,16 +45,24 @@ public class CustomAuthenticationProvider implements AuthenticationProvider  {
 		}else if(!pwEncoder.matches(password, user.getPassword())) {
 			throw new BadCredentialsException(password);
 		}else {
-			//로그인을 위해 세션값에 이름을 넘긴다
+			//세션에 정보 넘김
+			session.setAttribute("id", id);
+			session.setAttribute("pw", password);
 			session.setAttribute("name", user.getName());
+			session.setAttribute("mail", user.getMail());
+			session.setAttribute("hp", user.getHp());
+			//회원정보 수정을 위함
+			session.setAttribute("auth", user.getAuthority());
+			
+			//권한 설정을 위함
 			session.setAttribute("author", user.getAuthorities());
 		}
-		
+		//계정이 활성화되어있지 않다면 에러
 		if(!user.isEnabled()) {
 			throw new BadCredentialsException(id);
 		}
 		
-		
+		//아이디, 비밀번호, 권한 넘김
 		return new UsernamePasswordAuthenticationToken(id, password, user.getAuthorities());
 	}
 	

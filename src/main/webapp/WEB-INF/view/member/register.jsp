@@ -49,6 +49,7 @@
 <!-- local css -->
 <link rel="stylesheet" href="/res/css/inwork.css">
 <!--  page logic -->
+
 </head>
 <body>
 	<jsp:include page="../header-nav.jsp" />
@@ -62,16 +63,19 @@
 					<hr />
 				</div>
 				<c:url var="register.do" value="/register "/>
-				<form action="register.do" value="register" method="post">
+				<form action="register.do" value="register" method="post" name="register">
 				<div class="member-area">
 					<p class="form-group">
 						<label for="usr" class="login-text">계정 ID</label><input
-							type="text" class="form-control signin-textbox" placeholder="학번" name="id"
+							type="text" class="form-control signin-textbox" placeholder="학번" name="id" onkeydown="inputIdChk()"
 							id="usr">
 					</p>
+					<input type="button" value="중복확인" onclick="openIdChk()">
+					<input type="hidden" name = "idDuplication" value="idUncheck">
+					
 					<p class="form-group">
 						<label for="pwd" class="login-text">비밀번호</label><input
-							type="password" class="form-control signin-textbox" name="password" id="pwd">
+							type="password" class="form-control signin-textbox" name="password" id="pwd" required="required">
 					</p>
 					<p class="form-group">
 						<label for="name" class="login-text">이름</label><input type="text"

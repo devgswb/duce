@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,15 @@ public class UserModel implements UserDetails{
 	private static final long serialVersionUID = 1L;
 	
 	private String authority;
+
 	private String id;
+
 	private String name;
+
 	private String password;
+
 	private String mail;
+
 	private String hp;
 	
 	private boolean isAccountNonExpired; 

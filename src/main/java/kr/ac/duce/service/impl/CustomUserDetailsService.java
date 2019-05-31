@@ -2,7 +2,7 @@ package kr.ac.duce.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	// SimpleGrantedAuthority 객체 생성시 ROLE_ 을 붙여야 Spring이 이해 가능
 	private static final String ROLE_PREFIX = "ROLE_";
-
 	public Collection<GrantedAuthority> getAuthority(String id){
 		String s_auth = userDao.readAuthority(id);
 		Collection<GrantedAuthority> authoritis = new ArrayList<GrantedAuthority>();
@@ -49,7 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return userModel;
 	}
 	
-	// 회원가입
+	// 회원가입 
 	public void register(UserModel userModel) {
 		userModel.setAccountNonExpired(true);
 		userModel.setAccountNonLocked(true);

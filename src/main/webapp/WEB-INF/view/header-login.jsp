@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <div id="nav-upper">
 	<div id="nav-search">
 		<i class="material-icons md-light">search</i>
@@ -19,8 +21,11 @@
 			
 		<c:otherwise>
 					<ul>
+						
 						<li><p>${name}님</p></li>
+						<li><a href="/userUpdate">정보 수정</a></li>
 						<li><a href="/logout">로그아웃</a></li>
+					
 					</ul>
 		</c:otherwise>
 	</c:choose>	
