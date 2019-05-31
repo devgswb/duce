@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
+
 import kr.ac.duce.model.NoticeFileModel;
 import kr.ac.duce.model.NoticeModel;
 import kr.ac.duce.page.SearchCriteria;
@@ -24,6 +26,7 @@ public interface NoticeService {
 	public List<NoticeModel> next(int noticeNum);
 	public Integer max(int max);
 	public List<NoticeFileModel> fileName(int noticeNum);
+	public void chooseDelete(String outFileName);
 
 
 

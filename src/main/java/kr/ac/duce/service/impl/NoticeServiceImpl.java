@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,10 +89,18 @@ public class NoticeServiceImpl implements NoticeService{
 	public Integer max(int max) {
 		return Dao.max(max);
 	}
-	
-	public List<NoticeFileModel> fileName(int noticeNum){
+
+	@Override
+	public List<NoticeFileModel> fileName(int noticeNum) {
 		return Dao.fileName(noticeNum);
 	}
+
+	@Override
+	public void chooseDelete(String outFileName) {
+		Dao.chooseDelete(outFileName);
+	}
+	
+
 
 
 

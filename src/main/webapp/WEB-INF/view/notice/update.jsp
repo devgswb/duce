@@ -30,7 +30,7 @@
         {
        	 var fileDelete = confirm("삭제하시겠습니까?")
     	    if(fileDelete == true){
-    	        fDelete.action = "/file/delete.do";
+    	        fDelete.action = "/notice/update";
     	    }    
             else
             {
@@ -54,18 +54,15 @@
 		</div>
 		<button type="submit" class="btn btn-primary">글수정</button>
 	</form>
-	
-	<c:forEach var="notice" items="${noticeFile}">
-		<c:if test="${!empty notice.outFileName}">	
+	<c:forEach var="file" items="${noticeFile}" varStatus="status">
+	<form name = "fDelete" method="post" onsubmit="return checkFDelete()">
 		<div>	
-		<form name = "fDelete" method="post" onsubmit="return checkFDelete()">
-         ${notice.outFileName}(${notice.fileSize/1024}Byte)
+         ${file.outFileName}(${file.fileSize/1024}Byte)
          <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
-         <button name="outFileName" id="outFileName" value= "${notice.outFileName}">파일삭제</button>
-         </form>
+         <button name="outFileName" id="outFileName" value="${file.outFileName}">파일삭제</button>
          </div>
-         </c:if>
-	</c:forEach>
+    </form>
+    </c:forEach>
 </body>
 
 </html>

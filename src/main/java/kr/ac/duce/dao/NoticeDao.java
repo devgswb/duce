@@ -79,5 +79,8 @@ public interface NoticeDao {
 	@Select("SELECT * FROM noticeFile WHERE noticeNum = #{noticeNum}") 
 	public List<NoticeFileModel> fileName (@Param("noticeNum") int noticeNum);
 	
+	
+	@Delete("DELETE FROM noticeFile WHERE outFileName = #{outFileName}")
+	public void chooseDelete(@Param("outFileName") String outFileName);
 
 }

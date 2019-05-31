@@ -112,16 +112,17 @@
                 </ul>
                 <a href="/notice/list"><button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록</button></a>
                 <form action="/notice/update" method="post">
+                 <c:forEach var="file" items="${noticeFile}">
+                     <input type="hidden" name="outFileName" value="${file.outFileName}">
+                 </c:forEach>  
                      <button name="noticeNum" value="${notice.noticeNum}">수정하기</button>
                 </form> 
                 <form name = "Delete" method="post" onsubmit="return checkNDelete()">
-                     <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
-                     <c:forEach var="notice" items="${noticeFile}">
-			         <c:if test="${!empty notice.outFileName}">
-                     <input type="hidden" name="outFileName" value="${notice.outFileName}">                 
-                     <button name="noticeDelete" id="noticeDelete">삭제하기</button>
-                     </c:if>
-			         </c:forEach>
+                     <input type="hidden" name="noticeNum" value="${notice.noticeNum}"> 
+                     <c:forEach var="file" items="${noticeFile}">
+                     <input type="hidden" name="outFileName" value="${file.outFileName}">
+                     </c:forEach>              
+			         <button name="noticeDelete" id="noticeDelete">삭제하기</button>
                 </form> 
                 
                 <!--<c:if test="${sessionScope.userId != null}">-->

@@ -45,15 +45,14 @@ public class FaqController {
 		return "/faq/write"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/faq/write.do", params = {"faqTitle", "faqContent", "faqCategory"}) // URL 주소
-	public String writefaq(@ModelAttribute("cri")SearchCriteria cri, Model model,@RequestParam String faqCategory, 
+	@PostMapping(value = "/faq/write.do", params = {"faqTitle", "faqContent"}) // URL 주소
+	public String writefaq(@ModelAttribute("cri")SearchCriteria cri, Model model, 
 			@RequestParam String faqTitle, @RequestParam String faqContent)throws Exception {
 
 		FaqModel insertFaq = new FaqModel();
 		Date createDate = Calendar.getInstance().getTime();
 		insertFaq.setFaqTitle(faqTitle);
 		insertFaq.setUserID("작성자");
-		insertFaq.setFaqCategory(faqCategory);
 		insertFaq.setFaqDate(createDate);
 		insertFaq.setFaqContent(faqContent);
 		insertFaq.setFaqHits(1);
@@ -87,13 +86,12 @@ public class FaqController {
 		return "/faq/update"; // JSP 파일명
 	}
 	
-	@PostMapping(value = "/faq/update.do", params = { "faqNum", "faqTitle", "faqContent", "faqCategory"}) // URL 주소
+	@PostMapping(value = "/faq/update.do", params = { "faqNum", "faqTitle", "faqContent"}) // URL 주소
 	public String updateOK(Model model, @RequestParam String faqNum, @RequestParam String faqTitle, 
-			@RequestParam String faqCategory, @RequestParam String faqContent) throws Exception{
+			@RequestParam String faqContent) throws Exception{
 		Date createDate = Calendar.getInstance().getTime();
 		FaqModel updateFaq = new FaqModel();
 		updateFaq.setFaqDate(createDate);
-		updateFaq.setFaqCategory(faqCategory);
 		updateFaq.setFaqNum(Integer.parseInt(faqNum));
 		updateFaq.setFaqTitle(faqTitle);
 		updateFaq.setFaqContent(faqContent);
