@@ -224,31 +224,31 @@ public class ProjectBoardController {
 				String path = ProjectBoardController.class.getResource("").getPath();		
 				path = URLDecoder.decode(path, "UTF-8");
 				System.out.println(path);
-				path = path.split("/target")[0]+"/src/main/resources/static/project/img/";
+				path = path.split("/target")[0]+"/src/main/resources/images/project/";
 				String fileName =  uuid.toString() + "-"+ file.getOriginalFilename();
 				File f = new File(path, fileName);
 			    file.transferTo(f);
-			    imgPath = imgPath + "/res/project/img/" + fileName + ",";
+			    imgPath = imgPath + "/img/project/" + fileName + ",";
 			}
 		}
-		
+
 		for(MultipartFile addfile : addfiles) {
 			String originalName = addfile.getOriginalFilename();
-			
+
 			System.out.println(originalName);
-			
+
 			if(! addfile.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
 				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/static/project/file/";
+				path = path.split("/target")[0]+"/src/main/resources/files/project/";
 				String fileName =  uuid.toString() + "-"+ addfile.getOriginalFilename();
 				File f = new File(path, fileName);
 			    addfile.transferTo(f);
-			    addPath = addPath + "/res/project/file/" + fileName + ",";
+			    addPath = addPath + "/file/project/" + fileName + ",";
 			}
 		}
-		
+
 		if(! video.equals("")) {	video = video.substring(video.lastIndexOf("=") + 1);	}
 		
 		int No = Integer.parseInt(pNo);
@@ -287,32 +287,32 @@ public class ProjectBoardController {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
 				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/static/project/img/";
+				path = path.split("/target")[0]+"/src/main/resources/images/project/";
 				String fileName =  uuid.toString() + "-" + file.getOriginalFilename();
 				File f = new File(path, fileName);
 			    file.transferTo(f);
-			    imgPath = imgPath + "/res/project/img/" + fileName + ",";
+			    imgPath = imgPath + "/img/project/" + fileName + ",";
 			}
 		}
-		
-		
+
+
 		for(MultipartFile addfile : addfiles) {
 			String originalName = addfile.getOriginalFilename();
-			
+
 			System.out.println(originalName);
-			
+
 			if(! addfile.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
 				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/static/project/file/";
+				path = path.split("/target")[0]+"/src/main/resources/files/project/";
 				String fileName =  uuid.toString() + "-" + addfile.getOriginalFilename();
 				File f = new File(path, fileName);
 			    addfile.transferTo(f);
-			    addPath = addPath + "/res/project/file/" + fileName + ",";
+			    addPath = addPath + "/file/project/" + fileName + ",";
 			}
 		}
-		
+
 		if(video.contains("https://www.youtube.com/")) {
 			if(! video.equals("")) {	video = video.substring(video.lastIndexOf("=") + 1);	}
 		}
@@ -341,5 +341,5 @@ public class ProjectBoardController {
 		ProjectBoardService.insert(insertModel);
 		return "redirect:/project"; // JSP 파일명
 	}
-	
+
 }

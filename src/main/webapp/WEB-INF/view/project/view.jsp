@@ -66,7 +66,7 @@
 				<c:when test="${!empty board.addFile}">
 					<c:forTokens var="file" items="${board.addFile}" delims="," varStatus="i" end="${i.end}">
 						<c:forTokens var="fileNameList" items="${fileName}" delims="," varStatus="j">
-							<a download=""	href="${file}"><img src="/res/project/img/download.gif" />${fileNameList}</a><br>
+							<a download=""	href="${file}"><img src="/img/project/download.gif" />${fileNameList}</a><br>
 						</c:forTokens>
 					</c:forTokens>				
 				</c:when>
