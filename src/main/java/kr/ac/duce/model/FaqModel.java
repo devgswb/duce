@@ -5,7 +5,6 @@ import java.util.Date;
 public class FaqModel {
 
 	private int faqNum;
-	private String faqCategory;
 	private String faqTitle;
 	private String userID;
 	private String faqContent;
@@ -17,12 +16,6 @@ public class FaqModel {
 	}
 	public void setFaqNum(int faqNum) {
 		this.faqNum = faqNum;
-	}
-	public String getFaqCategory() {
-		return faqCategory;
-	}
-	public void setFaqCategory(String faqCategory) {
-		this.faqCategory = faqCategory;
 	}
 	public String getFaqTitle() {
 		return faqTitle;

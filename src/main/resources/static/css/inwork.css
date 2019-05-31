@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font-family: 'Noto Serif KR', serif;
 }
 a { color: inherit; text-decoration: none; }
@@ -22,6 +22,7 @@ body {
     padding-right: 15%;
     height: 90px;
     border-bottom: 1px solid #ededed;
+    background: white;
     /*background: coral;*/
 }
 
@@ -33,7 +34,7 @@ body {
 #nav-logo {
     float: left;
 }
-/* »ó´Ü ³»ºñ°ÔÀÌ¼Ç¹Ù È¸¿ø °ü·Ã ¸Ş´º */
+/* ìƒë‹¨ ë‚´ë¹„ê²Œì´ì…˜ë°” íšŒì› ê´€ë ¨ ë©”ë‰´ */
 #nav-member {
     float:right;
 }
@@ -47,13 +48,13 @@ body {
     color: white;
     float: left;
 }
-/* »ó´Ü ³»ºñ°ÔÀÌ¼Ç¹Ù °Ë»ö Ã¢ */
+/* ìƒë‹¨ ë‚´ë¹„ê²Œì´ì…˜ë°” ê²€ìƒ‰ ì°½ */
 #nav-search {
     float:right;
     margin-right: 18%;
 }
 
-/* ÇÏ´Ü ³»ºñ°ÔÀÌ¼Ç¹Ù ¸ŞÀÎ ¸Ş´º */
+/* í•˜ë‹¨ ë‚´ë¹„ê²Œì´ì…˜ë°” ë©”ì¸ ë©”ë‰´ */
 #nav-menu {
     width: 70%;
     height:100%;
@@ -74,13 +75,13 @@ body {
 }
 
 #nav-menu li {
-     font-size: 18px;
-     display:inline;
-     padding: 0 0 0 0;
-     margin-left: 15%;
-     border: 0;
-     float: left;
- }
+    font-size: 18px;
+    display:inline;
+    padding: 0 0 0 0;
+    margin-left: 15%;
+    border: 0;
+    float: left;
+}
 
 #nav-menu li:first-child {
     font-size: 18px;
@@ -133,7 +134,7 @@ footer p {
     font-family: 'Titillium Web', sans-serif;
     text-align: center;
 }
-/* °øÁö»çÇ× */
+/* ê³µì§€ì‚¬í•­ */
 .notice-contents-wrapper {
     padding: 15px 30px 15px 30px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -333,14 +334,14 @@ footer p {
     display: inline-block;
 }
 
-/*¹öÆ° ¾Æ¿ô¶óÀÎ*/
+/*ë²„íŠ¼ ì•„ì›ƒë¼ì¸*/
 .btn-outlined {
     border: 2px solid #6388c3;
 }
 /* */
 
 
-/* ·Î±×ÀÎ */
+/* ë¡œê·¸ì¸ */
 .login-con {
     margin-top: 5px;
     width: 70%;
@@ -401,7 +402,7 @@ footer p {
     clear:both;
     float:right;
 }
-/* È¸¿ø °¡ÀÔ */
+/* íšŒì› ê°€ì… */
 .member-con {
     margin-top: 5px;
     width: 70%;
@@ -432,7 +433,8 @@ footer p {
     text-align: right;
     margin-right: 14%;
 }
-/* duce Ä«µå */
+/* duce ì¹´ë“œ */
+
 .duce-card {
     display: inline-block;
     margin: 8px;
@@ -536,7 +538,7 @@ footer p {
     height: 100%;
 }
 
-/*ÆäÀÌÂ¡*/
+/*í˜ì´ì§•*/
 .pagination {
     margin-top: 20px;
     display: inline-block;
@@ -557,7 +559,7 @@ footer p {
     border: 1px solid #6388c3;
 }
 .pagination a:hover:not(.active) {background-color: #ddd;}
-/* box slider Ä¿½ºÅÒ */
+/* box slider ì»¤ìŠ¤í…€ */
 .bx-wrapper {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -568,4 +570,229 @@ footer p {
 .ap-basic-slider-wrapper .bx-pager-item .bx-pager-link.active:before,
 .ap-basic-slider-wrapper .bx-pager-item .bx-pager-link:hover:before {
     background: #fff;
+}
+/* ìº¡ìŠ¤í†¤ í”„ë¡œì íŠ¸ ë·° í˜ì´ì§€ ( ì¹´í…Œê³ ë¦¬ ) */
+
+.nav-project-view-category {
+    height: 72px;
+    clear: both;
+    border-bottom: 1px solid #ededed;
+}
+
+.project-view-category:first-child {
+    margin-left: 22%;
+    border-left: 1px solid #ededed;
+}
+
+.project-view-category {
+    margin: 0;
+    z-index: 5;
+    border-right: 1px solid #eded;
+    width: 150px;
+    text-align: center;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/* Style The Dropdown Button */
+.dropbtn {
+    margin: 0;
+    width: 100%;
+    background-color: white;
+    color: black;
+    padding: 22px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 5;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #ededed;
+}
+/* FAQ ì‹œì‘ */
+.faq-wrapper {
+    margin-top: 20px;
+    align-content: left;
+}
+
+.faq-question:first-child {
+    border-top: 1px solid #ededed;
+}
+.faq-question {
+    clear:both;
+    margin-left: 150px;
+    padding: 10px;
+    border-bottom: 1px solid #ededed;
+    cursor: pointer;
+}
+.faq-question:hover { background: #ededed }
+.faq-question label {
+    display: inline-block;
+    font-size: 22px;
+    padding: 10px;
+    background: #6388c3;
+    border-radius: 10px;
+    color: white;
+}
+.faq-question div{
+    display: inline-block;
+}
+.faq-question p {
+    font-size: 22px;
+    padding-left: 10px;
+}
+.faq-answer {
+    display: none;
+    clear: both;
+    margin-left: 150px;
+    padding: 10px;
+    border-bottom: 1px solid #ededed;
+}
+.faq-answer label {
+    display: inline-block;
+    font-size: 22px;
+    padding: 10px;
+    background: #6388c3;
+    border-radius: 10px;
+    color: white;
+}
+.faq-answer div {
+    display: inline-block;
+}
+.faq-answer p {
+    font-size: 16px;
+    padding-left: 10px;
+}
+.faq-con {
+    margin-top: 5px;
+    width: 70%;
+    margin-left: 150px;
+    font-size: 36px;
+    text-align: left;
+}
+.faq-con hr {
+    margin-top: 2px;
+}
+
+.faq-admin-mod {
+    float: right;
+}
+
+/*  btn wrapper */
+
+.btn-wrapper {
+    height: 32px;
+    color: #6388c3;
+}
+
+.btn-wrapper * {
+    display: inline-block;
+    float: right;
+}
+
+/* faq wirte */
+.faq-write-wrapper {
+    padding: 15px 30px 15px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin: 30px auto;
+    display: inline-block;
+    font-size: 18px;
+    /*background: blueviolet;*/
+    width: 100%;
+    text-align: right;
+}
+
+.faq-write-wrapper * {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.faq-write-wrapper-header {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.faq-write-attach-addr {
+    text-align: left;
+}
+.faq-write-attach-addr * {
+    display: inline-block;
+    margin-bottom: 0px;
+}
+.faq-write-attach-addr p {
+    text-align: right;
+}
+
+/* ìº¡ìŠ¤í†¤ í”„ë¡œì íŠ¸ ì‘ì„±ê¸€ */
+.project-title-wrapper {
+    height: 38px;
+    clear: both;
+}
+.project-title-wrapper input {
+    width: 69%;
+    display: inline-block;
+}
+
+.project-title-wrapper > .form-group {
+    width: 15%;
+    display: inline-block;
+} 
+/* ê²€ìƒ‰ì°½ */
+.search-dialog {
+    position: absolute;
+    width: 62rem;
+    top: 20%;
+    left: 35%;
+    font-family: 'Noto Serif KR', serif;
+}
+
+.mdl-dialog__title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+}
+
+.search-txtbox {
+    width:400px;
 }

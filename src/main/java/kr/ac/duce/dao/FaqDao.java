@@ -35,7 +35,7 @@ public interface FaqDao {
 	public void deleteFaq(@Param("faqNum") int faqNum);
 	
 	// FAQ 수정
-	@Update("UPDATE faqBoard SET faqTitle=#{faqTitle}, faqContent=#{faqContent}, faqCategory=#{faqCategory}, faqDate=#{faqDate} where faqNum=#{faqNum}")
+	@Update("UPDATE faqBoard SET faqTitle=#{faqTitle}, faqContent=#{faqContent}, faqDate=#{faqDate} where faqNum=#{faqNum}")
 	public void updateFaq(FaqModel FaqBoard);
 	
 	// FAQ 조회수 수정 

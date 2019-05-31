@@ -277,7 +277,7 @@ public class ProjectBoardController {
 		
 		String imgPath = "";
 		String addPath = "";
-		
+
 		for(MultipartFile file : files) {
 			String originalName = file.getOriginalFilename();
 			
