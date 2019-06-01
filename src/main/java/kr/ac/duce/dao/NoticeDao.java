@@ -43,14 +43,19 @@ public interface NoticeDao {
 	// 파일 삭제
 	@Delete("DELETE FROM noticeFile WHERE noticeNum = #{noticeNum}")
 	public void deleteFile(@Param("noticeNum") int noticeNum);
-	
+
+	// 게시글에 대한 파일 목록 받아오기
+
+	@Select("select outFileName from noticeFile where noticeNum = #{noticeNum}")
+	public List<String> getFilesByNo(@Param("noticeNum") int noticeNum);
+
 	//목록 창 및 검색,페이지 
 	@Select("SELECT * FROM noticeBoard WHERE IF(#{searchType} = 't',noticeTitle Like CONCAT('%', #{keyword}, '%'),"
 			+ "IF(#{searchType} = 'c',noticeContent Like CONCAT('%', #{keyword}, '%'),"
 			+ "noticeNum > 0))"
 			+ "ORDER BY noticeNum DESC LIMIT #{pageStart}, #{perPageNum}")
 	public List<Map<String, Object>> searchNoticeList(SearchCriteria cri);
-	
+
 	//전체 게시글 수 확인 
 	@Select("SELECT COUNT(noticeNum) FROM noticeBoard WHERE "
 			+ "IF(#{searchType} = 't',noticeTitle Like CONCAT('%', #{keyword}, '%'),"

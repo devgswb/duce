@@ -13,6 +13,7 @@ public interface NoticeService {
 	
 	public void insert(NoticeModel noticeBoard);
 	public void insertFile(NoticeFileModel noticeFile);
+	public List<String> getFilesByNo(int noticeNum);
 	public List<NoticeModel> findNum(int noticeNum);
 	public void update(NoticeModel noticeBoard);
 	public void updateFile(NoticeFileModel noticeFile);

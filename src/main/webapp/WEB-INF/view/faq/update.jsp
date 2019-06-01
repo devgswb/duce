@@ -45,11 +45,10 @@
     <div class="con">
         <div class="faq-write-wrapper">
             <div class="faq-write-wrapper-header">자주 묻는 질문 수정</div>
-            <form action="/faq/update.do" accept-charset="utf-8" method="post" name="faqUpdate"
-                  onsubmit="return checkUpdate()">
+            <form action="/faq/update.do" accept-charset="utf-8" method="post" name="faqUpdate">
                 <div class="form-group">
-                    <input type="hidden" value="${faqNum}" name="faqNum"/>
-                    <input name="faqTitle" value="<c:out value="${faq.faqTitle}"/>" type="text" class="form-control" id="subject" placeholder="질문">
+                    <input type="hidden" value="${faqNum}" name="faqNum" required/>
+                    <input name="faqTitle" value="<c:out value="${faq.faqTitle}"/>" type="text" class="form-control" id="subject" placeholder="질문" required>
                     <textarea name="faqContent" class="form-control" rows="16" id="contents" placeholder="답변"><c:out value="${faq.faqContent}"/></textarea>
                 </div>
                 <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">

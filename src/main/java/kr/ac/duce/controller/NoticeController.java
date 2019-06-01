@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.dialect.Ingres9Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -103,7 +104,7 @@ public class NoticeController {
 			UUID uuid = UUID.randomUUID();
 			String path = NoticeController.class.getResource("").getPath();
 			path = URLDecoder.decode(path,"UTF-8");
-			path = path.split("/target")[0]+"/src/main/resources/static/notice/file/";
+			path = path.split("/target")[0]+"/src/main/resources/files/notice/";
 			String outFileName = uuid.toString() +"_"+mf.getOriginalFilename();
 			File infile = new File(path,outFileName);
 			mf.transferTo(infile);
@@ -151,7 +152,7 @@ public class NoticeController {
 				UUID uuid = UUID.randomUUID();
 				String path = NoticeController.class.getResource("").getPath();
 				path = URLDecoder.decode(path,"UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/static/notice/file/";
+				path = path.split("/target")[0]+"/src/main/resources/files/notice/";
 				String outFileName = uuid.toString() +"_"+mf.getOriginalFilename();
 				File infile = new File(path,outFileName);
 				mf.transferTo(infile);
@@ -168,49 +169,27 @@ public class NoticeController {
 				
 		return "redirect:/notice/list"; // JSP 파일명
 	}
-	@PostMapping(value = "/file/delete.do", params = {"noticeNum","outFileName"})
-	public String deletefile(Model model, @RequestParam int noticeNum,
-			@RequestParam String outFileName) throws Exception{
-		NoticeModel notice = Service.findNum(noticeNum).get(0);
-		String fileName = outFileName;
-		String path = NoticeController.class.getResource("").getPath();
-		path = URLDecoder.decode(path,"UTF-8");
-		path = path.split("/target")[0]+"/src/main/resources/static/notice/file/";
-		File file = new File(path,fileName);
-		if(!file.equals("")) {
-			if (file.exists()) { 
-				 if (file.delete()) { 
-					 System.out.println("파일삭제 성공"); 
-					 } else { 
-						 System.out.println("파일삭제 실패"); 
-						 } 
-				 } else { 
-					 System.out.println("파일이 존재하지 않습니다."); 
-					 }		
-		}
-		Service.deleteFile(noticeNum);
-		model.addAttribute("notice", notice);
-		return "redirect:/notice/update";
-	}
-	
-	
-	@PostMapping(value = "/notice/delete.do", params = {"noticeNum","outFileName"})
-	public String deleteOK(Model model, @RequestParam String noticeNum,@RequestParam String outFileName) throws Exception{
-		String fileName = outFileName;
-		String path = NoticeController.class.getResource("").getPath();
-		path = URLDecoder.decode(path,"UTF-8");
-		path = path.split("/target")[0]+"/src/main/resources/static/notice/file/";
-		File file = new File(path,fileName);
-		if(!file.equals("")) {
-			if (file.exists()) { 
-				 if (file.delete()) { 
-					 System.out.println("파일삭제 성공"); 
-					 } else { 
-						 System.out.println("파일삭제 실패"); 
-						 } 
-				 } else { 
-					 System.out.println("파일이 존재하지 않습니다."); 
-					 }		
+
+	@PostMapping(value = "/notice/delete.do", params = {"noticeNum" })
+	public String deleteOK(Model model, @RequestParam String noticeNum ) throws Exception{
+		NoticeModel notice = Service.findNum(Integer.parseInt(noticeNum)).get(0);
+		List<String> FilesList = Service.getFilesByNo(Integer.parseInt(noticeNum));
+		for (String fileName : FilesList) {
+			String path = NoticeController.class.getResource("").getPath();
+			path = URLDecoder.decode(path,"UTF-8");
+			path = path.split("/target")[0]+"/src/main/resources/files/notice/";
+			File file = new File(path,fileName);
+			if(!file.equals("")) {
+				if (file.exists()) {
+					if (file.delete()) {
+						System.out.println("파일삭제 성공");
+					} else {
+						System.out.println("파일삭제 실패");
+					}
+				} else {
+					System.out.println("파일이 존재하지 않습니다.");
+				}
+			}
 		}
 		Service.delete(Integer.parseInt(noticeNum));
 		Service.deleteFile(Integer.parseInt(noticeNum));

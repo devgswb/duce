@@ -45,10 +45,10 @@
 	<div class="con">
 		<div class="faq-write-wrapper">
 			<div class="faq-write-wrapper-header">자주 묻는 질문 수정</div>
-			<form action="/faq/write.do" accept-charset="utf-8" name="faqWrite" method="post" onsubmit="return checkWrite()">
+			<form action="/faq/write.do" accept-charset="utf-8" name="faqWrite" method="post">
 				<div class="form-group">
-					<input name="faqTitle" type="text" class="form-control" id="subject" placeholder="질문">
-					<textarea name="faqContent" class="form-control" rows="16" id="contents" placeholder="답변"></textarea>
+					<input name="faqTitle" type="text" class="form-control" id="subject" placeholder="질문" required>
+					<textarea name="faqContent" class="form-control" rows="16" id="contents" placeholder="답변" required></textarea>
 				</div>
 				<button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">
 					글쓰기
@@ -63,18 +63,5 @@
 <jsp:include page="../footer.jsp"/>
 <!-- footer -->
 </body>
-<script type="text/javascript">
-	function checkWrite()
-	{
-		if(!document.faqWrite.faqTitle.value){
-			alert("제목을 입력하세요.");
-			return false;
-		}
-		if(!document.faqWrite.faqContent.value){
-			alert("내용을 입력하세요.");
-			return false;
-		}
-	}
-</script>
 </html>
 <%----%>

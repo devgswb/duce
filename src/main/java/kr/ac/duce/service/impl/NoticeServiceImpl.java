@@ -35,6 +35,11 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
+	public List<String> getFilesByNo(int noticeNum) {
+		return Dao.getFilesByNo(noticeNum);
+	}
+
+	@Override
 	public List<NoticeModel> findNum(int noticeNum) {
 		Dao.updateHits(noticeNum);
 		return Dao.findNum(noticeNum);	
