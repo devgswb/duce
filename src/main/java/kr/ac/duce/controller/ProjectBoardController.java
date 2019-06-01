@@ -1,5 +1,6 @@
 package kr.ac.duce.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URLDecoder;
 import java.text.DateFormat;
@@ -7,9 +8,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import kr.ac.duce.model.ProjectBoardViewModel;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +35,12 @@ public class ProjectBoardController {
 	@GetMapping(value = "/project", params = { "page", "content"}) // URL 주소
 	public String list(Model model, @RequestParam String page, @RequestParam String content) {
 		int contNo = Integer.parseInt(content);
-		ProjectBoardModel board = ProjectBoardService.findByNo(contNo).get(0);
+		List<ProjectBoardModel> rawBoard = ProjectBoardService.findByNo(contNo);
+		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
+		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
+		ProjectBoardViewModel board = makeBoardViewList(rawBoard, majorList, branchList).get(0);
 		model.addAttribute("board", board);
 		model.addAttribute("page", Integer.parseInt(page));
-		
 		String fileName = "";
 		
 		if (!board.getAddFile().equals("")) {
@@ -169,6 +174,14 @@ public class ProjectBoardController {
 				if (partStudents.length != 1) viewPartStudents += " 외 " + (partStudents.length-1) + "명";
 				appendEle.setViewPartStudents(viewPartStudents);
 				// 참가학생 텍스트 생성
+				try {
+					String thumbnail = appendEle.getPhoto().split(",")[0];
+					thumbnail = thumbnail.replace("project/", "project/thumb/");
+					appendEle.setViewThumbnail(thumbnail);
+				} catch (Exception e) {
+					appendEle.setViewThumbnail(null);
+				}
+				// 썸네일 정보 생성
 				boardList.add(appendEle);
 			} catch (NullPointerException e) {
 			}
@@ -272,21 +285,26 @@ public class ProjectBoardController {
 			
 		String imgPath = "";
 		String addPath = "";
-		
+		boolean isThumbNotMade = true;
 		for(MultipartFile file : files) {
 			String originalName = file.getOriginalFilename();
 			
-			System.out.println(originalName);
+//			System.out.println(originalName);
 			
 			if(! file.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();		
 				path = URLDecoder.decode(path, "UTF-8");
-				System.out.println(path);
 				path = path.split("/target")[0]+"/src/main/resources/images/project/";
 				String fileName =  uuid.toString() + "-"+ file.getOriginalFilename();
 				File f = new File(path, fileName);
 			    file.transferTo(f);
+				if (isThumbNotMade) {
+					String[] extensionArray = fileName.split("\\.");
+					String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
+					makeThumbnail(path+fileName, fileName, FILE_EXTENSION);
+					isThumbNotMade = false;
+				}
 			    imgPath = imgPath + "/img/project/" + fileName + ",";
 			}
 		}
@@ -294,7 +312,7 @@ public class ProjectBoardController {
 		for(MultipartFile addfile : addfiles) {
 			String originalName = addfile.getOriginalFilename();
 
-			System.out.println(originalName);
+//			System.out.println(originalName);
 
 			if(! addfile.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
@@ -341,15 +359,14 @@ public class ProjectBoardController {
 						  @RequestParam String startDate
 			,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
 	        ,HttpServletRequest addfilerequest) throws Exception {
-		
 		String imgPath = "";
 		String addPath = "";
-
+		Boolean isThumbNotMade = true;
 		for(MultipartFile file : files) {
 			String originalName = file.getOriginalFilename();
-			
-			System.out.println(originalName);
-			
+
+//			System.out.println(originalName);
+
 			if(! file.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
@@ -358,6 +375,12 @@ public class ProjectBoardController {
 				String fileName =  uuid.toString() + "-" + file.getOriginalFilename();
 				File f = new File(path, fileName);
 			    file.transferTo(f);
+				if (isThumbNotMade) {
+					String[] extensionArray = fileName.split("\\.");
+					String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
+					makeThumbnail(path+fileName, fileName, FILE_EXTENSION);
+					isThumbNotMade = false;
+				}
 			    imgPath = imgPath + "/img/project/" + fileName + ",";
 			}
 		}
@@ -366,7 +389,7 @@ public class ProjectBoardController {
 		for(MultipartFile addfile : addfiles) {
 			String originalName = addfile.getOriginalFilename();
 
-			System.out.println(originalName);
+//			System.out.println(originalName);
 
 			if(! addfile.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
@@ -424,5 +447,43 @@ public class ProjectBoardController {
 			return null;
 		}
 		return resultDate;
+	}
+
+	private void makeThumbnail(String filePath, String fileName, String fileExt) throws Exception {
+
+		String path = ProjectBoardController.class.getResource("").getPath();
+		path = URLDecoder.decode(path, "UTF-8");
+		path = path.split("/target")[0]+"/src/main/resources/images/project/thumb/";
+		// 저장된 원본파일로부터 BufferedImage 객체를 생성합니다.
+		BufferedImage srcImg = ImageIO.read(new File(filePath));
+
+		// 썸네일의 너비와 높이 입니다.
+		int dw = 330, dh = 200;
+
+		// 원본 이미지의 너비와 높이 입니다.
+		int ow = srcImg.getWidth();
+		int oh = srcImg.getHeight();
+
+		// 원본 너비를 기준으로 하여 썸네일의 비율로 높이를 계산합니다.
+		int nw = ow;
+		int nh = (ow * dh) / dw;
+
+		// 계산된 높이가 원본보다 높다면 crop이 안되므로
+		// 원본 높이를 기준으로 썸네일의 비율로 너비를 계산합니다.
+		if(nh > oh) {
+			nw = (oh * dw) / dh;
+			nh = oh;
+		}
+
+		// 계산된 크기로 원본이미지를 가운데에서 crop 합니다.
+		BufferedImage cropImg = Scalr.crop(srcImg, (ow-nw)/2, (oh-nh)/2, nw, nh);
+
+		// crop된 이미지로 썸네일을 생성합니다.
+		BufferedImage destImg = Scalr.resize(cropImg, dw, dh);
+
+		// 썸네일을 저장합니다. 이미지 이름 앞에 "THUMB_" 를 붙여 표시했습니다.
+		String thumbName = path + fileName;
+		File thumbFile = new File(thumbName);
+		ImageIO.write(destImg, fileExt.toLowerCase(), thumbFile);
 	}
 }

@@ -57,7 +57,7 @@
                             <select class="form-control" name="major" id="major">
                                 <option>---전공---</option>
                                 <c:forEach var="major" items="${majorList}">
-                                    <option value="${major.majorNo}">${major.major}</option>
+                                    <option value="${major.majorNo}" ${major.majorNo == board.majorNo ? "selected" : "" }>${major.major}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -65,7 +65,7 @@
                             <select class="form-control" name="branch" id="branch">
                                 <option>---분류---</option>
                                 <c:forEach var="branch" items="${branchList}">
-                                    <option value="${branch.branchNo}">${branch.branch}</option>
+                                    <option value="${branch.branchNo}" ${branch.branchNo == board.branchNo ? "selected" : "" }>${branch.branch}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -90,17 +90,17 @@
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-                            <i class="material-icons">attach_file</i><input type="file" id="img-upload-btn" multiple>
+                            <i class="material-icons">attach_file</i><input type="file" name="uploadFile" id="img-upload-btn" multiple>
                         </div>
-                        <input multiple class="mdl-textfield__input" name="uploadFile" placeholder="이미지 파일 추가"
+                        <input multiple class="mdl-textfield__input" placeholder="이미지 파일 추가"
                                type="text" id="img-upload-text" readonly/>
                     </div>
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-                            <i class="material-icons">attach_file</i><input type="file" id="file-upload-btn" multiple>
+                            <i class="material-icons">attach_file</i><input type="file" name="uploadAddFile" id="file-upload-btn" multiple>
                         </div>
-                        <input multiple class="mdl-textfield__input" name="uploadAddFile" placeholder="참조 파일 추가"
+                        <input multiple class="mdl-textfield__input" placeholder="참조 파일 추가"
                                type="text" id="file-upload-text" readonly/>
                     </div>
                 </div>
@@ -112,9 +112,9 @@
                         class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">
                     수정하기
                 </button>
+                <a href="/project"
+                   class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">취소</a>
             </form>
-            <a href="/project"
-               class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">취소</a>
         </div>
 
     </div>

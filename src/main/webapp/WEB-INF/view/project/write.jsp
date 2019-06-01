@@ -82,16 +82,16 @@
 				<!--     파일 추가 -->
 				<div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
 					<div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-						<i class="material-icons">attach_file</i><input type="file" id="img-upload-btn" multiple>
+						<i class="material-icons">attach_file</i><input type="file" id="img-upload-btn" name="uploadFile" multiple>
 					</div>
-					<input multiple class="mdl-textfield__input" name="uploadFile" placeholder="이미지 파일 추가" type="text" id="img-upload-text" readonly/>
+					<input multiple class="mdl-textfield__input" placeholder="이미지 파일 추가" type="text" id="img-upload-text" readonly/>
 				</div>
 				<!--     파일 추가 -->
 				<div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
 					<div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-						<i class="material-icons">attach_file</i><input type="file" id="file-upload-btn" multiple>
+						<i class="material-icons">attach_file</i><input type="file" name="uploadAddFile" id="file-upload-btn" multiple>
 					</div>
-					<input multiple class="mdl-textfield__input" name="uploadAddFile" placeholder="참조 파일 추가" type="text" id="file-upload-text" readonly/>
+					<input multiple class="mdl-textfield__input" placeholder="참조 파일 추가" type="text" id="file-upload-text" readonly/>
 				</div>
 			</div>
 			<input type="text" class="form-control" name="video" id="movielink" placeholder="업로드한 Youtube 영상 주소를 적어주세요.">

@@ -5,8 +5,15 @@ public class ProjectBoardViewModel extends ProjectBoardModel {
     private String branch;
     private String year;
     private String viewContent;
+    private String viewThumbnail;
     private String viewPartStudents;
+    public String getViewThumbnail() {
+        return viewThumbnail;
+    }
 
+    public void setViewThumbnail(String viewThumbnail) {
+        this.viewThumbnail = viewThumbnail;
+    }
     public String getViewPartStudents() {
         return viewPartStudents;
     }

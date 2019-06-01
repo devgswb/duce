@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -73,7 +72,7 @@
             <a href="project?page=${page}&content=${card.pNo}">
                 <div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
                     <div class="mdl-card__title mdl-card--expand duce-card-img"
-                         style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
+                         style="background-image: url(${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}); background-size: 100%;">
                         <h2 class="mdl-card__title-text"></h2>
                     </div>
                     <div class="mdl-card__supporting-text duce-card-con">
