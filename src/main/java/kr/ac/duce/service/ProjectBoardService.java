@@ -9,6 +9,7 @@ public interface ProjectBoardService {
 	public List<ProjectBoardModel> findByNo(int pNo);
 	public List<ProjectBoardModel> findAll();
 	public List<ProjectBoardModel> findPage(int page);
+	public List<String> findAllYear();
 	public int getTopbNo();
 	public void insert(ProjectBoardModel projectboard);
 	public void update(ProjectBoardModel projectboard);

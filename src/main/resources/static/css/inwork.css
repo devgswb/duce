@@ -509,7 +509,7 @@ footer p {
 
 .duce-card-con > .contents {
     width: 94%;
-    height: 70px;
+    height: 90px;
     padding: 10px 3% 15px;
     border-bottom: 1px solid #ededed;
 }
@@ -778,7 +778,25 @@ footer p {
 .project-title-wrapper > .form-group {
     width: 15%;
     display: inline-block;
-} 
+}
+/* 캡스톤 교수/학생 */
+.project-coop-wrapper input {
+    float:left;
+    width: 75%;
+    display: inline-block;
+}
+.project-coop-wrapper input:first-child {
+    float:left;
+    width: 25%;
+    display: inline-block;
+}
+
+/* 캡스톤 기간 date */
+.project-date-wrapper input {
+    float:left;
+    width: 50%;
+    display: inline-block;
+}
 /* 검색창 */
 .search-dialog {
     position: absolute;
@@ -795,4 +813,23 @@ footer p {
 
 .search-txtbox {
     width:400px;
+}
+/* 파일 업로드 */
+.mdl-button--file input {
+    cursor: pointer;
+    height: 100%;
+    right: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 300px;
+    z-index: 4;
+}
+
+.mdl-textfield--file .mdl-textfield__input {
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+}
+.mdl-textfield--file .mdl-button--file {
+    right: 0;
 }

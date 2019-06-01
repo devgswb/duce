@@ -1,29 +1,22 @@
 package kr.ac.duce.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import kr.ac.duce.model.ProjectBoardViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import kr.ac.duce.model.BranchCodeModel;
 import kr.ac.duce.model.MajorCodeModel;
@@ -59,51 +52,66 @@ public class ProjectBoardController {
 	
 	@GetMapping(value = "/project", params = "page") // URL 주소
 	public String list(Model model, @RequestParam String page) {
-		List<ProjectBoardModel> boardList = ProjectBoardService.findPage(Integer.parseInt(page));
+		List<ProjectBoardModel> rawBoardList = ProjectBoardService.findPage(Integer.parseInt(page));
+		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
+		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
+		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
+		List<String> yearList = ProjectBoardService.findAllYear();
+		model.addAttribute("yearList", yearList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("page", Integer.parseInt(page));
 		return "project/list"; // JSP 파일명
 	}
 	
 	@GetMapping(value = "/filter") // URL 주소
-	public String filter(Model model, @RequestParam String major, @RequestParam String branch, @RequestParam String mYear) {
-		List<ProjectBoardModel> boardList = null;
+	public String filter(Model model, @RequestParam(value="major", defaultValue="all") String major,
+						 @RequestParam(value="branch", defaultValue="all") String branch,
+						 @RequestParam(value="mYear", defaultValue="all") String mYear) {
+		List<ProjectBoardModel> rawBoardList = null;
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
-		
+		List<String> paramList = new ArrayList<>(Arrays.asList(
+				(major.equals("all") ? "" : major),
+				(branch.equals("all") ? "" : branch),
+				(mYear.equals("all") ? "" : mYear)
+		));
+
 		// All
 		if(major.equals("all") && branch.equals("all") && mYear.equals("all")) {
-			boardList = ProjectBoardService.findAll();
+			rawBoardList = ProjectBoardService.findAll();
 		}
 		//M
 		else if(!major.equals("all") && branch.equals("all") && mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilterM(major);
+			rawBoardList = ProjectBoardService.findbyfilterM(major);
 		}
 		//B
 		else if(major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilterB(branch);
+			rawBoardList = ProjectBoardService.findbyfilterB(branch);
 		}
 		//Y
 		else if(major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilterY(mYear);
+			rawBoardList = ProjectBoardService.findbyfilterY(mYear);
 		}
 		//MB
 		else if(!major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilter(major, branch);
+			rawBoardList = ProjectBoardService.findbyfilter(major, branch);
 		}
 		//YB
 		else if(major.equals("all") && !branch.equals("all") && !mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilterYB(mYear, branch);
+			rawBoardList = ProjectBoardService.findbyfilterYB(mYear, branch);
 		}
 		//YM
 		else if(!major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
-			boardList = ProjectBoardService.findbyfilterYM(mYear, major);
+			rawBoardList = ProjectBoardService.findbyfilterYM(mYear, major);
 		}
 		//YMB
 		else {
-			boardList = ProjectBoardService.findbyfilterYMB(mYear, major, branch);
+			rawBoardList = ProjectBoardService.findbyfilterYMB(mYear, major, branch);
 		}
-
+		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
+		List<String> yearList = ProjectBoardService.findAllYear();
+		model.addAttribute("paramList", paramList);
+		model.addAttribute("yearList", yearList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("branchList", branchList);
@@ -113,16 +121,61 @@ public class ProjectBoardController {
 
 	@GetMapping(value = "/project") // URL 주소
 	public String index(Model model) {
-		List<ProjectBoardModel> boardList = ProjectBoardService.findAll();
+		List<ProjectBoardModel> rawBoardList = ProjectBoardService.findAll();
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
+		List<String> yearList = ProjectBoardService.findAllYear();
+		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
+		model.addAttribute("yearList", yearList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("branchList", branchList);
 		model.addAttribute("page", 1);
 		return "project/list"; // JSP 파일명
 	}
-	
+
+	// 뷰에 알맞게 boardList 생성
+	private List<ProjectBoardViewModel> makeBoardViewList(List<ProjectBoardModel> rawBoardList,
+														  List<MajorCodeModel> majorList,
+														  List<BranchCodeModel> branchList) {
+		List<ProjectBoardViewModel> boardList = new ArrayList<>();
+		for (ProjectBoardModel ele : rawBoardList) {
+			try {
+				ProjectBoardViewModel appendEle = new ProjectBoardViewModel(ele);
+				for (MajorCodeModel major : majorList) {
+					if (major.getMajorNo().equals(appendEle.getMajorNo())) {
+						appendEle.setMajor(major.getMajor());
+						break;
+					}
+				} // 전공 코드가 아닌 이름으로
+				for (BranchCodeModel branch : branchList) {
+					if (branch.getBranchNo().equals(appendEle.getBranchNo())) {
+						appendEle.setBranch(branch.getBranch());
+						break;
+					}
+				} // 분야 코드가 아닌 이름으로
+				Date finishDate = appendEle.getFinishDate();
+				DateFormat df = new SimpleDateFormat("yyyy");
+				appendEle.setYear(df.format(finishDate));
+				// 간단히 부를 수 있게 년도값 추가
+				int viewContentLength = 140;
+				String strContent = appendEle.getContent();
+				String strViewContent = strContent.substring(0, (strContent.length() > viewContentLength ? viewContentLength : strContent.length()) );
+				strViewContent += (strContent.length() > viewContentLength ? "..." : "");
+				appendEle.setViewContent(strViewContent);
+				// 메인 페이지용 간이 텍스트 만들기
+				String[] partStudents = appendEle.getPart().split(",");
+				String viewPartStudents = partStudents[0];
+				if (partStudents.length != 1) viewPartStudents += " 외 " + (partStudents.length-1) + "명";
+				appendEle.setViewPartStudents(viewPartStudents);
+				// 참가학생 텍스트 생성
+				boardList.add(appendEle);
+			} catch (NullPointerException e) {
+			}
+		}
+		return boardList;
+	}
+
 	@GetMapping("/project/write") // URL 주소
 	public String write(Model model) {
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
@@ -135,13 +188,17 @@ public class ProjectBoardController {
 	@PostMapping(value = "/project/update", params = "pNo") // URL 주소
 	public String modify(Model model, @RequestParam int pNo) {
 		ProjectBoardModel board = ProjectBoardService.findByNo(pNo).get(0);
+		DateFormat df = new SimpleDateFormat("yyyy-MM");
+		String startDate = df.format(board.getStartDate());
+		String finishDate = df.format(board.getFinishDate());
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("branchList", branchList);
 		model.addAttribute("board", board);
 		model.addAttribute("pno", pNo);
-		System.out.println("test");
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("finishDate", finishDate);
 		return "/project/update"; // JSP 파일명
 	}
 
@@ -207,7 +264,9 @@ public class ProjectBoardController {
 
 	@PostMapping(value = "/project/update.do") // URL 주소
 	public String modifyOK(Model model, @RequestParam String pNo, @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
-			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam String reference, @RequestParam("uploadFile") List<MultipartFile> files
+			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video,
+						   @RequestParam String startDate, @RequestParam String finishDate,
+						   @RequestParam String reference, @RequestParam("uploadFile") List<MultipartFile> files
 	        ,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
 	        ,HttpServletRequest addfilerequest) throws Exception {
 			
@@ -249,6 +308,9 @@ public class ProjectBoardController {
 			}
 		}
 
+		Date dStartDate = YYYYMMtoDate(startDate);
+		Date dFinishDate = YYYYMMtoDate(finishDate);
+
 		if(! video.equals("")) {	video = video.substring(video.lastIndexOf("=") + 1);	}
 		
 		int No = Integer.parseInt(pNo);
@@ -261,6 +323,8 @@ public class ProjectBoardController {
 		modModel.setBranchNo(branch);
 		modModel.setMajorNo(major);
 		modModel.setVideo(video);
+		modModel.setStartDate(dStartDate);
+		modModel.setFinishDate(dFinishDate);
 		modModel.setPhoto(imgPath);
 		modModel.setAddFile(addPath);
 		modModel.setReference(reference);
@@ -270,9 +334,12 @@ public class ProjectBoardController {
 	
 	
 	@PostMapping(value = "/project/write.do", params = {"id", "title", "content"}) // URL 주소
-	public String writeOK(Model model, @RequestParam String id,  @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
-			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video, @RequestParam String reference, @RequestParam("uploadFile") List<MultipartFile> files
-	        ,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
+	public String writeOK(Model model, @RequestParam String id,  @RequestParam String title, @RequestParam String content,
+						  @RequestParam String part,  @RequestParam String guide, @RequestParam String branch,
+						  @RequestParam String major,  @RequestParam String video, @RequestParam String reference,
+						  @RequestParam("uploadFile") List<MultipartFile> files, @RequestParam String finishDate,
+						  @RequestParam String startDate
+			,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
 	        ,HttpServletRequest addfilerequest) throws Exception {
 		
 		String imgPath = "";
@@ -322,6 +389,9 @@ public class ProjectBoardController {
 		}
 		
 		Date writedate = Calendar.getInstance().getTime();
+		Date dStartDate = YYYYMMtoDate(startDate);
+		Date dFinishDate = YYYYMMtoDate(finishDate);
+
 //		int No = ContentsBoardService.getTopbNo() + 1;
 		int Hit = 0;
 		ProjectBoardModel insertModel = new ProjectBoardModel();
@@ -338,8 +408,21 @@ public class ProjectBoardController {
 		insertModel.setPhoto(imgPath);
 		insertModel.setAddFile(addPath);
 		insertModel.setReference(reference);
+		insertModel.setStartDate(dStartDate);
+		insertModel.setFinishDate(dFinishDate);
 		ProjectBoardService.insert(insertModel);
 		return "redirect:/project"; // JSP 파일명
 	}
 
+	private Date YYYYMMtoDate(String inputYYYYMM) {
+		inputYYYYMM += "-02";
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date resultDate = null;
+		try {
+			resultDate = transFormat.parse(inputYYYYMM);
+		} catch (ParseException e) {
+			return null;
+		}
+		return resultDate;
+	}
 }

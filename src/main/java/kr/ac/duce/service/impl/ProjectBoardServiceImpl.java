@@ -52,6 +52,11 @@ public class ProjectBoardServiceImpl implements ProjectBoardService {
 	}
 
 	@Override
+	public List<String> findAllYear() {
+		return ProjectBoardDao.findAllYear();
+	}
+
+	@Override
 	public int getTopbNo() {
 		ProjectBoardModel res = ProjectBoardDao.findPage(0, 1).get(0);
 		return res.getpNo();
