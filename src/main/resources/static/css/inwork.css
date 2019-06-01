@@ -924,3 +924,22 @@ footer p {
 .project-contents-body {
     clear: both;
 }
+
+/* 파일 삭제 div */
+.delete-file-wrapper {
+    display: inline-block;
+    width: 70%;
+}
+.delete-file {
+    display: inline-block;
+    padding: 5px;
+}
+.delete-selected {
+    border-radius: 10px;
+    border: 1px dotted #888888;
+    background: #ededed;
+}
+.delete-file > p {
+    font-size: 12px;
+    display: inline-block;
+}

@@ -44,6 +44,8 @@ public interface NoticeDao {
 	@Delete("DELETE FROM noticeFile WHERE noticeNum = #{noticeNum}")
 	public void deleteFile(@Param("noticeNum") int noticeNum);
 
+	@Delete("delete from noticeFile where outFileName = #{fileName}")
+	public void deleteFileByOutFileName(@Param("fileName") String fileName);
 	// 게시글에 대한 파일 목록 받아오기
 
 	@Select("select outFileName from noticeFile where noticeNum = #{noticeNum}")
@@ -83,6 +85,5 @@ public interface NoticeDao {
 	// 첨부 파일 조회
 	@Select("SELECT * FROM noticeFile WHERE noticeNum = #{noticeNum}") 
 	public List<NoticeFileModel> fileName (@Param("noticeNum") int noticeNum);
-	
 
 }

@@ -7,17 +7,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.dialect.Ingres9Dialect;
@@ -130,14 +131,40 @@ public class NoticeController {
 		model.addAttribute("notice", notice);
 		model.addAttribute("noticeNum", noticeNum);
 		model.addAttribute("noticeFile", noticeFile);
-		System.out.println("test");
+//		System.out.println("test");
 		return "/notice/update"; // JSP 파일명
 	}
-	
-	@PostMapping(value = "/notice/update.do", params = { "noticeNum", "noticeTitle", "noticeContent"}) // URL 주소
+
+	@PostMapping(value = "/notice/update.do", params = { "noticeNum", "noticeTitle", "noticeContent", "deleteFile"}) // URL 주소
 	public String updateOK(MultipartHttpServletRequest mtf, Model model, @ModelAttribute("cri")SearchCriteria cri,
 			@RequestParam String noticeNum, @RequestParam String noticeTitle, 
-			@RequestParam String noticeContent) throws Exception{
+			@RequestParam String noticeContent, @RequestParam String deleteFile) throws Exception{
+		if (!deleteFile.equals("")) {
+			JsonParser parser = new JsonParser();
+			Gson gson = new Gson();
+			JsonArray deleteFiles = (JsonArray) ((JsonObject)parser.parse(deleteFile)).get("list");
+			Collection<String> fileList = gson.fromJson(deleteFiles, new TypeToken<Collection<String>>(){}.getType());
+			for (String fileName : fileList ) {
+				String path = NoticeController.class.getResource("").getPath();
+				path = URLDecoder.decode(path,"UTF-8");
+				path = path.split("/target")[0]+"/src/main/resources/files/notice/";
+				File file = new File(path,fileName);
+				if(!file.equals("")) {
+					if (file.exists()) {
+						if (file.delete()) {
+//							System.out.println("파일삭제 성공");
+							Service.deleteFileByOutFileName(fileName);
+						} else {
+//							System.out.println("파일삭제 실패");
+						}
+					} else {
+//						System.out.println("파일이 존재하지 않습니다.");
+						Service.deleteFileByOutFileName(fileName);
+					}
+				}
+			}
+		}
+		//파일 삭제 기능
 		NoticeFileModel updateFile = new NoticeFileModel();
 		List<MultipartFile> file = mtf.getFiles("inFileName");
 		Date createDate = Calendar.getInstance().getTime();
@@ -165,8 +192,6 @@ public class NoticeController {
 				Service.insertFile(updateFile);
 			   }
 		   }
-		
-				
 		return "redirect:/notice/list"; // JSP 파일명
 	}
 
@@ -182,12 +207,12 @@ public class NoticeController {
 			if(!file.equals("")) {
 				if (file.exists()) {
 					if (file.delete()) {
-						System.out.println("파일삭제 성공");
+//						System.out.println("파일삭제 성공");
 					} else {
-						System.out.println("파일삭제 실패");
+//						System.out.println("파일삭제 실패");
 					}
 				} else {
-					System.out.println("파일이 존재하지 않습니다.");
+//					System.out.println("파일이 존재하지 않습니다.");
 				}
 			}
 		}

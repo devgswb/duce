@@ -98,14 +98,10 @@ public class NoticeServiceImpl implements NoticeService{
 		return Dao.fileName(noticeNum);
 	}
 
+	@Override
+	public void deleteFileByOutFileName(String fileName) {
+		Dao.deleteFileByOutFileName(fileName);
+	}
 
-
-	
-	
-
-
-
-	
-	
 
 }

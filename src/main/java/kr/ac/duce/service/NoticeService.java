@@ -25,8 +25,5 @@ public interface NoticeService {
 	public List<NoticeModel> next(int noticeNum);
 	public Integer max(int max);
 	public List<NoticeFileModel> fileName(int noticeNum);
-
-
-
-
+    public void deleteFileByOutFileName(String fileName);
 }

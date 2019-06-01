@@ -65,7 +65,7 @@
                     <input type="text" class="form-control" id="subject"
                            name="noticeTitle" value="${notice.noticeTitle}" placeholder="제목" required>
                     <textarea class="form-control" rows="16" id="contents"
-                              name="noticeContent" placeholder="내용" required>value="${notice.noticeContent}"</textarea>
+                              name="noticeContent" placeholder="내용" required><c:out value="${notice.noticeContent}" /></textarea>
                 </div>
                 <div class="notice-write-attach-addr">
                     <!--     파일 추가 -->
@@ -78,7 +78,7 @@
                                readonly/>
                     </div>
                 </div>
-                <c:if test="${!empty noticFile}">
+                <c:if test="${!empty noticeFile}">
                     <div class="delete-file-wrapper">
                         <c:forEach var="file" items="${noticeFile}" varStatus="status">
                             <div class="delete-file">
@@ -144,7 +144,6 @@
     $('input[type=checkbox]').change(function () {
         let deleteFile = {
             list: [
-                {"OutFileName": ""}
             ]
         };
         $('.delete-file').each(function () {
