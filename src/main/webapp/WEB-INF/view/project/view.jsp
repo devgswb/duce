@@ -3,6 +3,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -104,7 +105,8 @@
                                     <div>
                                         <c:forTokens var="reference" items="${board.reference}" delims=","
                                                      varStatus="i">
-                                            <a href="${reference}" class="mdl-button mdl-js-button mdl-button--icon" target="_sub"><i class="material-icons">link</i></a><br />
+                                            <a href="${reference}" class="mdl-button mdl-js-button mdl-button--icon"
+                                               target="_sub"><i class="material-icons">link</i></a><br/>
                                         </c:forTokens>
                                     </div>
                                 </div>
@@ -128,18 +130,25 @@
             <p><c:out value="${board.content}"/>
             </p>
             <div class="btn-wrapper">
-                <a href="/project" class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">목록
+                <a href="/project"
+                   class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">목록
                 </a>
-                <form action="project/delete.do" method="post">
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
-                            name="pNo" value="${board.pNo}">삭제
-                    </button>
-                </form>
-                <form action="project/update" method="post">
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
-                            name="pNo" value="${board.pNo}">수정
-                    </button>
-                </form>
+                <sec:authorize access="hasAnyAuthority('admin', 'user')">
+                    <sec:authentication var="user" property="principal"/>
+                    <sec:authorize access="hasAuthority('admin')" var="isAdmin"/>
+                    <c:if test="${user.id == board.id || isAdmin}">
+                        <form action="project/delete.do" method="post">
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                                    name="pNo" value="${board.pNo}">삭제
+                            </button>
+                        </form>
+                        <form action="project/update" method="post">
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                                    name="pNo" value="${board.pNo}">수정
+                            </button>
+                        </form>
+                    </c:if>
+                </sec:authorize>
             </div>
         </div>
 

@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -60,7 +60,8 @@
             <div class="dropdown-content">
                 <a href="/filter?major=${paramList[0]}&branch=${paramList[1]}&mYear=all">모두</a>
                 <c:forEach var="year" items="${yearList}">
-                    <a href="/filter?major=${paramList[0]}&branch=${paramList[1]}&mYear=${year}"><c:out value="${year}"/>년</a>
+                    <a href="/filter?major=${paramList[0]}&branch=${paramList[1]}&mYear=${year}"><c:out
+                            value="${year}"/>년</a>
                 </c:forEach>
             </div>
         </div>
@@ -81,14 +82,14 @@
                             <div class="branch">${card.branch}</div>
                             <div class="year">${card.year}년</div>
                         </div>
-                        <div class="title"><c:out value="${card.title}" /></div>
-                        <div class="contents"><c:out value="${card.viewContent}" />
+                        <div class="title"><c:out value="${card.title}"/></div>
+                        <div class="contents"><c:out value="${card.viewContent}"/>
                         </div>
                         <div class="participant">
                             <div class="title">참여학생</div>
-                            <div class="name"><c:out value="${card.viewPartStudents}" /></div>
+                            <div class="name"><c:out value="${card.viewPartStudents}"/></div>
                             <div class="title">지도교수</div>
-                            <div class="name"><c:out value="${card.guide} 교수" /></div>
+                            <div class="name"><c:out value="${card.guide} 교수"/></div>
                         </div>
                     </div>
                 </div>
@@ -97,18 +98,21 @@
         </c:forEach>
         <!-- cards end -->
         <!-- 페이징 -->
-<%--        <div class="pagination">--%>
-<%--            <a href="#">&laquo;</a>--%>
-<%--            <a href="#">1</a>--%>
-<%--            <a href="#" class="active">2</a>--%>
-<%--            <a href="#">3</a>--%>
-<%--            <a href="#">4</a>--%>
-<%--            <a href="#">5</a>--%>
-<%--            <a href="#">6</a>--%>
-<%--            <a href="#">&raquo;</a>--%>
-<%--        </div>--%>
-        <div align="right" style="height: 30%;">
-            <a class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined " href="project/write" role="button">글쓰기</a>
+        <%--        <div class="pagination">--%>
+        <%--            <a href="#">&laquo;</a>--%>
+        <%--            <a href="#">1</a>--%>
+        <%--            <a href="#" class="active">2</a>--%>
+        <%--            <a href="#">3</a>--%>
+        <%--            <a href="#">4</a>--%>
+        <%--            <a href="#">5</a>--%>
+        <%--            <a href="#">6</a>--%>
+        <%--            <a href="#">&raquo;</a>--%>
+        <%--        </div>--%>
+        <div class="btn-wrapper">
+            <sec:authorize access="hasAnyAuthority('admin', 'user')">
+                <a class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                   href="project/write" role="button">글쓰기</a>
+            </sec:authorize>
         </div>
     </div>
     <!-- contents box -->

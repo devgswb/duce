@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,11 +77,11 @@
 							<th class="mdl-data-table__cell--non-numeric">게시일자</th>
 						</tr>
 					</thead>
-					<tbody>					
-						<c:forEach var="notice" items="${noticeList}" varStatus="status">			
+					<tbody>
+						<c:forEach var="notice" items="${noticeList}" varStatus="status">
 							<tr>
 								<td>
-								${(noticeNumber-status.index)-((param.page-1)*param.perPageNum)}							
+								${(noticeNumber-status.index)-((param.page-1)*param.perPageNum)}
 								</td>
 								<td class="mdl-data-table__cell--non-numeric"
 									style="cursor: pointer;"
@@ -90,17 +91,17 @@
 								<td class="mdl-data-table__cell--non-numeric"><fmt:formatDate
 										value="${notice.noticeDate}" pattern="yyyy-MM-dd" /></td>
 							</tr>
-							
+
 						</c:forEach>
 					</tbody>
 				</table>
 				<div class="notice-btn-wrapper">
+                    <sec:authorize access="hasAuthority('admin')">
 					<a
 						class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined"
 						href="/notice/write">글쓰기</a>
+					</sec:authorize>
 				</div>
-				<!--<c:if test="${sessionScope.userId != null}">-->
-                <!--</c:if>--> 
 				<!-- 페이징 -->
 				<div class="pagination">
 					<c:if test="${pageMaker.prevPageNum}">

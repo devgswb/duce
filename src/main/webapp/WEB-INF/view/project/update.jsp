@@ -2,10 +2,19 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<%-- 해당 글을 작성한 유저가 맞는지 체크 --%>
+<sec:authentication var="user" property="principal"/>
+<sec:authorize access="hasAuthority('admin')" var="isAdmin"/>
+<c:if test="${!(user.id == board.id || isAdmin)}">
+    <script>
+        alert("올바르지 못한 접근입니다.");
+        window.history.foward();
+    </script>
+</c:if>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,10 +58,10 @@
                 <div class="notice-write-wrapper-header">프로젝트 소개글 수정</div>
                 <div class="form-group">
                     <div class="project-title-wrapper">
-                        <input name="id" type="hidden" value="테스터" required/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
+                        <input name="id" type="hidden" value="${user.id}" required/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
                         <input type="hidden" name="pNo" value="${board.pNo}" required/>
                         <input type="text" class="form-control" name="title" id="subject" placeholder="제목"
-                               value="${board.title} required">
+                               value="${board.title}" required>
                         <div class="form-group">
                             <select class="form-control" name="major" id="major" required>
                                 <option value="">---전공---</option>

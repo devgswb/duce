@@ -361,7 +361,7 @@ footer p {
     margin-top: 40px;
     width:70%;
 }
-.login-area > .form-group > input {
+.login-area > form > .form-group > input {
     width: 40%;
     display: inline-block;
 }
@@ -422,7 +422,7 @@ footer p {
     margin-top: 40px;
     width:100%;
 }
-.member-area > .form-group > input {
+.member-area > form > .form-group > input {
     width: 60%;
     display: inline;
 }

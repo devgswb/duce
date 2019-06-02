@@ -2,6 +2,7 @@
          pageEncoding="EUC-KR" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 
@@ -59,6 +60,7 @@
                     <div>
                         <p><c:out value="${faq.faqContent}"/></p>
                     </div>
+                    <sec:authorize access="hasAuthority('admin')">
                     <div class="faq-admin-mod">
                         <form action="/faq/update" method="post">
                             <button class="mdl-button mdl-js-button mdl-button--icon" name="faqNum" value="${faq.faqNum}">
@@ -72,12 +74,15 @@
                             </button>
                         </form>
                     </div>
+                    </sec:authorize>
                 </div>
             </c:forEach>
         </div>
         <%-- 글 쓰기 --%>
         <div class="btn-wrapper">
+            <sec:authorize access="hasAuthority('admin')">
             <a href="/faq/write" class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">글쓰기</a>
+            </sec:authorize>
         </div>
         <div class="pagination">
             <c:if test="${pageMaker.prevPageNum}">

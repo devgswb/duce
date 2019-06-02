@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<sec:authentication var="user" property="principal"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -48,7 +51,7 @@
 			<div class="notice-write-wrapper-header">프로젝트 소개글 작성</div>
 			<div class="form-group">
 				<div class="project-title-wrapper">
-					<input name="id" type="hidden" value="테스터" required/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
+					<input name="id" type="hidden" value="${user.id}" required/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
 					<input type="text" class="form-control" name="title" id="subject" placeholder="제목" required>
 					<div class="form-group">
 						<select class="form-control" name="major" id="major" required>
