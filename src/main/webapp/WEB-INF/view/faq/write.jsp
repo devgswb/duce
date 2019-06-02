@@ -44,7 +44,7 @@
 <article>
 	<div class="con">
 		<div class="faq-write-wrapper">
-			<div class="faq-write-wrapper-header">자주 묻는 질문 수정</div>
+			<div class="faq-write-wrapper-header">자주 묻는 질문 작성</div>
 			<form action="/faq/write.do" accept-charset="utf-8" name="faqWrite" method="post">
 				<div class="form-group">
 					<input name="faqTitle" type="text" class="form-control" id="subject" placeholder="질문" required>

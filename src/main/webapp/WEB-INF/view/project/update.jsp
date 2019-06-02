@@ -45,25 +45,25 @@
                   accept-charset="utf-8"
                   name="write"
                   method="post"
-                  enctype="multipart/form-data" onsubmit="return checkWrite()">
-                <div class="notice-write-wrapper-header">프로젝트 소개글 작성</div>
+                  enctype="multipart/form-data">
+                <div class="notice-write-wrapper-header">프로젝트 소개글 수정</div>
                 <div class="form-group">
                     <div class="project-title-wrapper">
-                        <input name="id" type="hidden" value="테스터"/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
-                        <input type="hidden" name="pNo" value="${board.pNo}"/>
+                        <input name="id" type="hidden" value="테스터" required/> <%-- 나중에 시큐리티를 통해 작성자 id를 받을 히든 필드 --%>
+                        <input type="hidden" name="pNo" value="${board.pNo}" required/>
                         <input type="text" class="form-control" name="title" id="subject" placeholder="제목"
-                               value="${board.title}">
+                               value="${board.title} required">
                         <div class="form-group">
-                            <select class="form-control" name="major" id="major">
-                                <option>---전공---</option>
+                            <select class="form-control" name="major" id="major" required>
+                                <option value="">---전공---</option>
                                 <c:forEach var="major" items="${majorList}">
                                     <option value="${major.majorNo}" ${major.majorNo == board.majorNo ? "selected" : "" }>${major.major}</option>
                                 </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" name="branch" id="branch">
-                                <option>---분류---</option>
+                            <select class="form-control" name="branch" id="branch" required>
+                                <option value="">---분류---</option>
                                 <c:forEach var="branch" items="${branchList}">
                                     <option value="${branch.branchNo}" ${branch.branchNo == board.branchNo ? "selected" : "" }>${branch.branch}</option>
                                 </c:forEach>
@@ -71,22 +71,22 @@
                         </div>
                     </div>
                     <textarea class="form-control" rows="16" name="content" id="contents"
-                              placeholder="내용">${board.content}</textarea>
+                              placeholder="내용" required>${board.content}</textarea>
                 </div>
                 <div class="project-date-wrapper">
                     <input type="text" class="form-control" name="startDate" id="startDate"
-                           value="${startDate}" placeholder="시작시기 (2019-01)">
+                           value="${startDate}" placeholder="시작시기 (2019-01)" required>
                     <input type="text" class="form-control" name="finishDate" id="finishDate"
-                           value="${finishDate}" placeholder="완료시기 (2019-11)">
+                           value="${finishDate}" placeholder="완료시기 (2019-11)" required>
                 </div>
                 <div class="project-coop-wrapper">
                     <input type="text" value="${board.guide}" class="form-control" name="guide" id="professor"
-                           placeholder="지도 교수">
+                           placeholder="지도 교수" required>
                     <input type="text" value="${board.part}" class="form-control" name="part" id="students"
-                           placeholder="참여 학생. 참여 학생은 ',' 단위로 구분해주세요.">
+                           placeholder="참여 학생. 참여 학생은 ',' 단위로 구분해주세요." required>
                 </div>
                 <div class="notice-write-attach-addr">
-                    <p>처음 올린 이미지는 대표 이미지가 됩니다. </p>
+                    <p>처음 올린 이미지는 대표 이미지가 됩니다. </p><br>
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">

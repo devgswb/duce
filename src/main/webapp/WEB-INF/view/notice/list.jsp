@@ -62,6 +62,10 @@
 	<!-- Navigation Bar -->
 	<article>
 		<div class="con">
+			<div class="faq-con">
+				공지사항
+				<hr/>
+			</div>
 			<div class="notice-wrapper">
 				<table class="notice-fullwidth mdl-data-table mdl-js-data-table">
 					<thead>
