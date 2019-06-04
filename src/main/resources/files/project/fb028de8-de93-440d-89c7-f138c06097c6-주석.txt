@@ -1,0 +1,18 @@
+(SELECT IFNULL(MAX(a.noticeNum)+1, 1)FROM noticeBoard a)
+
+${(noticeNumber-status.index)-((param.page-1)*page.perPageNum)}
+
+<script type="text/javascript">
+function checkFDelete()
+{
+	 var faqDelete = confirm("삭제하시겠습니까?")
+    if(faqDelete == true){
+        faqDelete.action = "/faq/delete.do";
+    }    
+    else
+    {
+        return false; // 삭제취소
+    }
+
+}
+</script>

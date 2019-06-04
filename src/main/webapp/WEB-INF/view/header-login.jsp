@@ -37,7 +37,7 @@
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li><a href="/logout">로그아웃</a></li>
-                <li><a href="#"><sec:authentication property="principal.name" /></a></li>
+                <li><a href="/user/update"><sec:authentication property="principal.name" /></a></li>
             </sec:authorize>
         </ul>
     </div>

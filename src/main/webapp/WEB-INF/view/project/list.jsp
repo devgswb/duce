@@ -108,6 +108,33 @@
         <%--            <a href="#">6</a>--%>
         <%--            <a href="#">&raquo;</a>--%>
         <%--        </div>--%>
+        <div class="pagination">
+					<c:if test="${pageMaker.prevPageNum}">
+						<a
+							href='<c:url value="/project${pageMaker.makeSearch(pageMaker.startPageNum - 1) }"/>'>이전</a>
+					</c:if>
+					<c:forEach begin="${pageMaker.startPageNum}"
+						end="${pageMaker.endPageNum}" var="number">
+						<c:out value="${pageMaker.cri.page == number?'':''}" />
+						<c:set var="currentPage" value="${param.page}" />
+						<c:choose>
+							<c:when test="${empty currentPage && number == 1}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:when test="${number == currentPage}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:otherwise>
+								<a
+									href='<c:url value="/project${pageMaker.makeSearch(number)}"/>'>${number}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:if test="${pageMaker.nextPageNum && pageMaker.endPageNum > 0}">
+						<a
+							href='<c:url value="/project${pageMaker.makeSearch(pageMaker.endPageNum +1) }"/>'>다음</a>
+					</c:if>
+				</div>
         <div class="btn-wrapper">
             <sec:authorize access="hasAnyAuthority('admin', 'user')">
                 <a class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
