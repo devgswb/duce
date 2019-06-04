@@ -17,5 +17,5 @@ public class SearchCriteria extends PageCriteria{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	
+
 }

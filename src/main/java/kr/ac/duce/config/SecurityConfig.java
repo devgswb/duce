@@ -1,84 +1,86 @@
 package kr.ac.duce.config;
 
+import kr.ac.duce.handler.LoginSuccesHandler;
+import kr.ac.duce.handler.LogoutSuccesHandler;
+import kr.ac.duce.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import kr.ac.duce.service.impl.CustomAuthenticationFailure;
-import kr.ac.duce.service.impl.CustomAuthenticationProvider;
-import kr.ac.duce.service.impl.CustomAuthenticationSuccess;
-import kr.ac.duce.service.impl.CustomUserDetailsService;
-
-
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(securedEnabled=true,prePostEnabled=true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean 
-	AuthenticationSuccessHandler successHandler() {
-		return new CustomAuthenticationSuccess("/");
-	}
-	
-	@Autowired
-	CustomUserDetailsService customUserDetailsService;
-	
-	@Autowired
-	private CustomAuthenticationProvider caProvider;
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new LoginSuccesHandler("/");
+    }
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new LogoutSuccesHandler("/");
+    }
+//    핸들러
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception{
-		http.csrf().disable()
-			.authorizeRequests()
-			//공지사항 작성은 admin 권한이 있어야 접근 가능
-			//여기서 페이지 권한설정을 하지 않고 jsp 파일 내부에서 sec:authorize 구문으로 제한을 걸어주면 
-			//write 사이트는 들어가 지지만 sec:authorize를 걸어준 해당 폼은 보이지 않는 형식
-			//accessdeniedhandler를 사용하지 않으려면 이를 사용하는게 편할지f도
-			.antMatchers("/notice/write").hasAuthority("ROLE_admin")
-			.antMatchers("/notice/*.do").hasAuthority("ROLE_admin")
-			.antMatchers("/project/write", "/project/write.do").hasAnyAuthority("ROLE_user", "ROLE_admin")
-			.anyRequest().permitAll() //권한을 설정한 페이지 이외에는 전부 허가
-			.and()
-		.formLogin()
-			.loginPage("/member/login") //로그인 페이지
-			.loginProcessingUrl("/login.do") //로그인 실행 url
-			.successHandler(successHandler())
-			.failureHandler(new CustomAuthenticationFailure())
-			.usernameParameter("id") //파라미터 넘김
-			.passwordParameter("password")
-			.permitAll()
-			.and()
-		.logout()
-			.logoutUrl("/logout")
-			.logoutSuccessUrl("/")
-			.invalidateHttpSession(true)
-			.permitAll()
-		.and()
-			.authenticationProvider(caProvider); //인증 관리자 
-	}
-	
-	//UserDetailsService를 이용한 로그인 처리
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-		
-	}
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-	
+    @Autowired
+    LoginService LoginService;
+/*
+    admin: 관리자 권한
+    user: 프로젝트글 작성을 허용받은 유저 권한
+    none_auth: 글 쓰는 권한 미획득 유저(관리자 페이지에서 권한 설정을 해줌)
+    anonymous: 비로그인 상태의 권한
+ */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http
+            .authorizeRequests()
+                .antMatchers("/notice/write", "/notice/update").access("hasAuthority('admin')")
+                .antMatchers("/notice/*.do").access("hasAuthority('admin')")
+                // 공지사항 게시판 권한: 관리자만
+                .antMatchers("/faq/write", "/faq/update").access("hasAuthority('admin')")
+                .antMatchers("/faq/*.do").access("hasAuthority('admin')")
+                // FAQ 게시판 권한: 관리자만
+                .antMatchers("/project/write", "/project/update").access("hasAnyAuthority('admin', 'user')")
+                .antMatchers("/project/*.do").access("hasAnyAuthority('admin', 'user')")
+                // 프로젝트 게시판 권한: 관리자와 유저만
+            .anyRequest().permitAll()
+                // 나머지 페이지 접근 권한은 자유
+            .and()
+        .formLogin()
+            .loginPage("/login")
+            .usernameParameter("id")
+            .passwordParameter("password")
+            .successHandler(loginSuccessHandler())
+            .permitAll()
+            .and() /* 3 */
+        .logout()
+            .logoutUrl("/logout")
+            .logoutSuccessHandler(logoutSuccessHandler())
+            .invalidateHttpSession(true)
+            .permitAll()
+            .and()
+        .csrf().disable()
+
+        ;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(LoginService).passwordEncoder(passwordEncoder);
+    }
 }

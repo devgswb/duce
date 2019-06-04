@@ -12,7 +12,8 @@ import kr.ac.duce.page.SearchCriteria;
 public interface NoticeService {
 	
 	public void insert(NoticeModel noticeBoard);
-	public void insertFile(NoticeFileModel noticeFile,HttpServletRequest request);
+	public void insertFile(NoticeFileModel noticeFile);
+	public List<String> getFilesByNo(int noticeNum);
 	public List<NoticeModel> findNum(int noticeNum);
 	public void update(NoticeModel noticeBoard);
 	public void updateFile(NoticeFileModel noticeFile);
@@ -24,8 +25,5 @@ public interface NoticeService {
 	public List<NoticeModel> next(int noticeNum);
 	public Integer max(int max);
 	public List<NoticeFileModel> fileName(int noticeNum);
-
-
-
-
+    public void deleteFileByOutFileName(String fileName);
 }

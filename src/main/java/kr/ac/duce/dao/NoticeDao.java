@@ -3,15 +3,13 @@ package kr.ac.duce.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 import org.apache.ibatis.annotations.*;
-import org.springframework.ui.Model;
+
 
 import kr.ac.duce.model.NoticeFileModel;
 import kr.ac.duce.model.NoticeModel;
-import kr.ac.duce.page.PageCriteria;
 import kr.ac.duce.page.SearchCriteria;
 
 public interface NoticeDao {
@@ -26,8 +24,8 @@ public interface NoticeDao {
 	public void insert(NoticeModel noticeBoard);
 	
 	// 첨부 파일 입력
-	@Insert("INSERT INTO noticeFile(fileNum, fileSize, inFileName, outFileName, noticeNum, fileUrl) "
-			+ "VALUES((SELECT IFNULL(MAX(b.fileNum)+1, 1)FROM noticeFile b),#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum}, #{fileUrl})")
+	@Insert("INSERT INTO noticeFile(fileNum, fileSize, inFileName, outFileName, noticeNum) "
+			+ "VALUES((SELECT IFNULL(MAX(b.fileNum)+1, 1)FROM noticeFile b),#{fileSize}, #{inFileName}, #{outFileName}, #{noticeNum})")
 	public void insertFile(NoticeFileModel noticeFile);
 	
 	// 글 수정 
@@ -45,14 +43,21 @@ public interface NoticeDao {
 	// 파일 삭제
 	@Delete("DELETE FROM noticeFile WHERE noticeNum = #{noticeNum}")
 	public void deleteFile(@Param("noticeNum") int noticeNum);
-	
+
+	@Delete("delete from noticeFile where outFileName = #{fileName}")
+	public void deleteFileByOutFileName(@Param("fileName") String fileName);
+	// 게시글에 대한 파일 목록 받아오기
+
+	@Select("select outFileName from noticeFile where noticeNum = #{noticeNum}")
+	public List<String> getFilesByNo(@Param("noticeNum") int noticeNum);
+
 	//목록 창 및 검색,페이지 
 	@Select("SELECT * FROM noticeBoard WHERE IF(#{searchType} = 't',noticeTitle Like CONCAT('%', #{keyword}, '%'),"
 			+ "IF(#{searchType} = 'c',noticeContent Like CONCAT('%', #{keyword}, '%'),"
 			+ "noticeNum > 0))"
 			+ "ORDER BY noticeNum DESC LIMIT #{pageStart}, #{perPageNum}")
 	public List<Map<String, Object>> searchNoticeList(SearchCriteria cri);
-	
+
 	//전체 게시글 수 확인 
 	@Select("SELECT COUNT(noticeNum) FROM noticeBoard WHERE "
 			+ "IF(#{searchType} = 't',noticeTitle Like CONCAT('%', #{keyword}, '%'),"
@@ -80,6 +85,5 @@ public interface NoticeDao {
 	// 첨부 파일 조회
 	@Select("SELECT * FROM noticeFile WHERE noticeNum = #{noticeNum}") 
 	public List<NoticeFileModel> fileName (@Param("noticeNum") int noticeNum);
-	
 
 }

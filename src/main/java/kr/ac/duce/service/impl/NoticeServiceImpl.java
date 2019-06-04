@@ -29,9 +29,14 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	@Override
-	public void insertFile(NoticeFileModel noticeFile,HttpServletRequest request) {
+	public void insertFile(NoticeFileModel noticeFile) {
 		Dao.insertFile(noticeFile);
 		
+	}
+
+	@Override
+	public List<String> getFilesByNo(int noticeNum) {
+		return Dao.getFilesByNo(noticeNum);
 	}
 
 	@Override
@@ -93,14 +98,10 @@ public class NoticeServiceImpl implements NoticeService{
 		return Dao.fileName(noticeNum);
 	}
 
+	@Override
+	public void deleteFileByOutFileName(String fileName) {
+		Dao.deleteFileByOutFileName(fileName);
+	}
 
-
-	
-	
-
-
-
-	
-	
 
 }

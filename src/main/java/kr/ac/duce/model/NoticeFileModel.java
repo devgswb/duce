@@ -7,7 +7,6 @@ public class NoticeFileModel {
 	private int fileSize;
 	private String inFileName;
 	private String outFileName;
-	private String fileUrl;
 	
 	public int getFileNum() {
 		return fileNum;
@@ -39,12 +38,5 @@ public class NoticeFileModel {
 	public void setOutFileName(String outFileName) {
 		this.outFileName = outFileName;
 	}
-	public String getFileUrl() {
-		return fileUrl;
-	}
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
-	}
-	
 	
 }

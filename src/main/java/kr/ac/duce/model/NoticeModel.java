@@ -1,4 +1,3 @@
-
 package kr.ac.duce.model;
 
 import java.util.Date;
