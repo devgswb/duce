@@ -14,11 +14,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
-
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/‌​spring-boot-starter-‌​web -->
 		<dependency>
@@ -50,27 +48,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-           <groupId>commons-io</groupId>
-           <artifactId>commons-io</artifactId>
-           <version>2.5</version>
-        </dependency>
-		
-		<!-- MultipartHttpServletRequset -->
-
-		 <dependency> 
-		 <groupId>commons-fileupload</groupId>
-		 <artifactId>commons-fileupload</artifactId>
-		 <version>1.2.2</version> 
-		 </dependency>
-		
 		<!-- JSP -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -80,13 +62,33 @@
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<!-- image Resize -->
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+		<!-- JSON PARSER -->
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
+		</dependency>
 		<!-- JDBC -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-
 		<!-- MyBatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -98,7 +100,6 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-
 		<!-- MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -109,53 +110,42 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-		<!-- Security -->
+		<!-- spring security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
-		
+		<!-- -->
 		<dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.3.6.Final</version>
-        </dependency>
-		
-		
- 		<!-- Secured -->
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-	
-
-
-
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		<!--<version>4.1.6.RELEASE</version>-->
+		</dependency>
+
+
 
 
 
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -164,5 +154,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
