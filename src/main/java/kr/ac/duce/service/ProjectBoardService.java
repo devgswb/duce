@@ -25,4 +25,13 @@ public interface ProjectBoardService {
 	public List<ProjectBoardModel> findbyfilterYB(String mYear, String branch);
 	public List<ProjectBoardModel> findbyfilterYM(String mYear, String major);
 	public List<ProjectBoardModel> findbyfilterYMB(String mYear, String major, String branch);
+	public List<ProjectBoardModel> findbyfilterMP(String major, int page);
+	public List<ProjectBoardModel> findbyfilterBP(String branch, int page);
+	public List<ProjectBoardModel> findbyfilterYP(String mYear, int page);
+	public List<ProjectBoardModel> findbyfilterP(String major, String branch, int page);
+	public List<ProjectBoardModel> findbyfilterYBP(String major, String branch, int page);
+	public List<ProjectBoardModel> findbyfilterYMP(String mYear, String major, int page);
+	public List<ProjectBoardModel> findbyfilterYMBP(String major, String branch, String mYear, int page);
+	public List<ProjectBoardModel> searchProjectList(String query);
+	public List<ProjectBoardModel> searchProjectList(String query, int page);
 }

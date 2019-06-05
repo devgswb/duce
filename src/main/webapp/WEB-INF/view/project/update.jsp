@@ -102,16 +102,18 @@
                             <i class="material-icons">attach_file</i><input type="file" name="uploadFile" id="img-upload-btn" multiple>
                         </div>
                         <input multiple class="mdl-textfield__input" placeholder="이미지 파일 추가"
-                               type="text" id="img-upload-text" readonly/>
+                               type="text" id="img-upload-text" readonly/> 					
                     </div>
+                    <input type="checkbox" name="imgsDelete" value="true">기존이미지 삭제 </input>
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
                             <i class="material-icons">attach_file</i><input type="file" name="uploadAddFile" id="file-upload-btn" multiple>
                         </div>
                         <input multiple class="mdl-textfield__input" placeholder="참조 파일 추가"
-                               type="text" id="file-upload-text" readonly/>
+                               type="text" id="file-upload-text" readonly/>             
                     </div>
+                    <input type="checkbox" name="filesDelete" value="true">기존파일 삭제</input>
                 </div>
                 <input type="text" class="form-control" name="video" id="movielink"
                        value="${board.video}" placeholder="업로드한 Youtube 영상 주소를 적어주세요.">
@@ -123,6 +125,8 @@
                 </button>
                 <a href="/project"
                    class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">취소</a>
+                <input type="hidden" name="saveImgs" value="${board.photo}">
+                <input type="hidden" name="saveFiles" value="${board.addFile}">
             </form>
         </div>
 

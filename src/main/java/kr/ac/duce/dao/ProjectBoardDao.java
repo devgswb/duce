@@ -1,11 +1,14 @@
 package kr.ac.duce.dao;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.ac.duce.model.BranchCodeModel;
 import kr.ac.duce.model.MajorCodeModel;
 import kr.ac.duce.model.ProjectBoardModel;
+import kr.ac.duce.page.SearchCriteria;
 
 public interface ProjectBoardDao {
 	@Select("SELECT * FROM projectboard WHERE pNo = #{pNo}")
@@ -39,26 +42,40 @@ public interface ProjectBoardDao {
 	@Delete("DELETE FROM projectboard where pNo=#{pNo}")
 	public void delete(@Param("pNo") int pNo);
 	// B
-	@Select("SELECT * FROM projectboard WHERE BranchNo=#{branch} ORDER BY pNo desc")
+	@Select("SELECT * FROM projectboard WHERE BranchNo=#{branch} ORDER BY pNo desc ")
 	public List<ProjectBoardModel> findbyfilterB(@Param("branch") String branch);
+	@Select("SELECT * FROM projectboard WHERE BranchNo=#{branch} ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterBP(@Param("branch") String branch, int min, int max);
 	// M
 	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} ORDER BY pNo desc")
 	public List<ProjectBoardModel> findbyfilterM(@Param("major") String major);
+	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterMP(@Param("major") String major, int min, int max);
 	// Y
 	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') ORDER BY pNo desc")
 	public List<ProjectBoardModel>  findbyfilterY(@Param("mYear") String mYear);
+	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel>  findbyfilterYP(@Param("mYear") String mYear, int min, int max);
 	// M & B
 	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} and BranchNo=#{branch} ORDER BY pNo desc")
 	public List<ProjectBoardModel> findbyfilter(@Param("major") String major, @Param("branch") String branch);
+	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} and BranchNo=#{branch} ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterP(@Param("major") String major, @Param("branch") String branch, int min, int max);
 	// Y & B
 	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') and BranchNo=#{branch} ORDER BY pNo desc")
 	public List<ProjectBoardModel> findbyfilterYB(@Param("mYear") String mYear, @Param("branch") String branch);
+	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') and BranchNo=#{branch} ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterYBP(@Param("mYear") String mYear, @Param("branch") String branch, int min, int max);
 	// Y & M
 	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') and MajorNo=#{major} ORDER BY pNo desc")
 	public List<ProjectBoardModel> findbyfilterYM(@Param("mYear") String mYear, @Param("major") String major);
+	@Select("SELECT * FROM projectboard WHERE YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') and MajorNo=#{major} ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterYMP(@Param("mYear") String mYear, @Param("major") String major, int min, int max);
 	// M & B & Y
 	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} and BranchNo=#{branch} and YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') ORDER BY pNo desc")
 	public List<ProjectBoardModel> findbyfilterYMB(@Param("mYear") String mYear, @Param("major") String major, @Param("branch") String branch);
+	@Select("SELECT * FROM projectboard WHERE MajorNo=#{major} and BranchNo=#{branch} and YEAR(finishDate) Like CONCAT('%', #{mYear}, '%') ORDER BY pNo desc limit #{min}, #{max}")
+	public List<ProjectBoardModel> findbyfilterYMBP(@Param("mYear") String mYear, @Param("major") String major, @Param("branch") String branch, int min, int max);
 	
 	@Select("SELECT * FROM BranchCode")
 	public List<BranchCodeModel> branchCode();
@@ -66,6 +83,10 @@ public interface ProjectBoardDao {
 	@Select("SELECT * FROM MajorCode")
 	public List<MajorCodeModel> majorCode();
 	
+	@Select("SELECT * FROM projectboard WHERE title Like CONCAT('%', #{query}, '%') ORDER BY pNo DESC")
+	public List<ProjectBoardModel> searchProjectList(@Param("query") String query);
+	@Select("SELECT * FROM projectboard WHERE title Like CONCAT('%', #{query}, '%') ORDER BY pNo DESC LIMIT #{min}, #{max}")
+	public List<ProjectBoardModel> searchProjectListP(@Param("query") String query, int min, int max);
 	
 	
 	

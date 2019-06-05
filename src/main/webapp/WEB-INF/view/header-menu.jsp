@@ -8,7 +8,7 @@
 	<div id="nav-menu">
 		<ul id="nav-list">
 			<li><a href="/intro">소개</a></li>
-			<li><a href="/project">프로젝트 보기</a></li>
+			<li><a href="/project?page=1">프로젝트 보기</a></li>
 			<li><a href="/notice/list">공지사항</a></li>
 			<li><a href="/faq/list">FAQ</a></li>
 		</ul>

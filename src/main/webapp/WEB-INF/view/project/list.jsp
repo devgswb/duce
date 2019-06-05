@@ -40,27 +40,27 @@
         <div class="project-view-category dropdown">
             <button class="dropbtn">학과</button>
             <div class="dropdown-content">
-                <a href="/filter?major=all&branch=${paramList[1]}&mYear=${paramList[2]}">모두</a>
+                <a href="/filter?page=1&major=all&branch=${paramList[1]}&mYear=${paramList[2]}">모두</a>
                 <c:forEach var="major" items="${majorList}">
-                    <a href="/filter?major=${major.majorNo}&branch=${paramList[1]}&mYear=${paramList[2]}">${major.major}</a>
+                    <a href="/filter?page=1&major=${major.majorNo}&branch=${paramList[1]}&mYear=${paramList[2]}">${major.major}</a>
                 </c:forEach>
             </div>
         </div>
         <div class="project-view-category dropdown">
             <button class="dropbtn">분야</button>
             <div class="dropdown-content">
-                <a href="/filter?major=${paramList[0]}&branch=all&mYear=${paramList[2]}">모두</a>
+                <a href="/filter?page=1&major=${paramList[0]}&branch=all&mYear=${paramList[2]}">모두</a>
                 <c:forEach var="branch" items="${branchList}">
-                    <a href="/filter?major=${paramList[0]}&branch=${branch.branchNo}&mYear=${paramList[2]}">${branch.branch}</a>
+                    <a href="/filter?page=1&major=${paramList[0]}&branch=${branch.branchNo}&mYear=${paramList[2]}">${branch.branch}</a>
                 </c:forEach>
             </div>
         </div>
         <div class="project-view-category dropdown">
             <button class="dropbtn">년도</button>
             <div class="dropdown-content">
-                <a href="/filter?major=${paramList[0]}&branch=${paramList[1]}&mYear=all">모두</a>
+                <a href="/filter?page=1&major=${paramList[0]}&branch=${paramList[1]}&mYear=all">모두</a>
                 <c:forEach var="year" items="${yearList}">
-                    <a href="/filter?major=${paramList[0]}&branch=${paramList[1]}&mYear=${year}"><c:out
+                    <a href="/filter?page=1&major=${paramList[0]}&branch=${paramList[1]}&mYear=${year}"><c:out
                             value="${year}"/>년</a>
                 </c:forEach>
             </div>
@@ -70,7 +70,7 @@
     </div>
     <div class="con">
         <c:forEach var="card" items="${boardList}">
-            <a href="project?page=${page}&content=${card.pNo}">
+            <a href="project?page=${page}&content=${card.pNo}&major=${major}&branch=${branch}&mYear=${mYear}">
                 <div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
                     <div class="mdl-card__title mdl-card--expand duce-card-img"
                          style="background-image: url(${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}); background-size: 100%;">
@@ -97,24 +97,60 @@
             <!-- 카드 단위 -->
         </c:forEach>
         <!-- cards end -->
-        <!-- 페이징 -->
-        <%--        <div class="pagination">--%>
-        <%--            <a href="#">&laquo;</a>--%>
-        <%--            <a href="#">1</a>--%>
-        <%--            <a href="#" class="active">2</a>--%>
-        <%--            <a href="#">3</a>--%>
-        <%--            <a href="#">4</a>--%>
-        <%--            <a href="#">5</a>--%>
-        <%--            <a href="#">6</a>--%>
-        <%--            <a href="#">&raquo;</a>--%>
-        <%--        </div>--%>
         <div class="btn-wrapper">
             <sec:authorize access="hasAnyAuthority('admin', 'user')">
                 <a class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
                    href="project/write" role="button">글쓰기</a>
             </sec:authorize>
         </div>
-    </div>
+       	<!-- 페이징 -->
+        <div class="pagination">
+        <c:if test="${empty query}">
+			<c:if test="${isPrev }">
+				<a
+					href='<c:url value="/filter?page=${pageStart - 1 }&major=${major}&branch=${branch}&mYear=${mYear}"/>'>&laquo;</a>
+			</c:if>
+			<c:forEach begin="${pageStart }"
+				end="${pageEnd }" var="number">
+				<c:choose>
+							<c:when test="${page == number}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:otherwise>
+								<a href='<c:url value="/filter?page=${number }&major=${major}&branch=${branch}&mYear=${mYear}"/>'>${number}</a>
+							</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${isNext }"> 
+				<a
+					href='<c:url value="/filter?page=${pageEnd + 1 }&major=${major}&branch=${branch}&mYear=${mYear}"/>'>&raquo;</a>
+			</c:if>
+		</c:if>
+		
+		
+		<c:if test="${!empty query}">
+			<c:if test="${isPrev }">
+				<a
+					href='<c:url value="/search?page=${pageStart - 1 }&query=${query}"/>'>&laquo;</a>
+			</c:if>
+			<c:forEach begin="${pageStart }"
+				end="${pageEnd }" var="number">
+				<c:choose>
+							<c:when test="${page == number}">
+								<a href='#' class="active">${number}</a>
+							</c:when>
+							<c:otherwise>
+								<a href='<c:url value="/search?page=${number}&query=${query}"/>'>${number}</a>
+							</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${isNext }"> 
+				<a
+					href='<c:url value="/search?page=${pageEnd + 1}&query=${query}"/>'>&raquo;</a>
+			</c:if>
+		</c:if>
+		</div><br><br><br><br>
+		<!-- 페이징 끝 -->
     <!-- contents box -->
 </article>
 <jsp:include page="../footer.jsp"/>

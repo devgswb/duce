@@ -12,8 +12,12 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import kr.ac.duce.model.ProjectBoardViewModel;
+import kr.ac.duce.page.Paging;
+
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.duce.model.BranchCodeModel;
 import kr.ac.duce.model.MajorCodeModel;
+import kr.ac.duce.model.MemberModel;
 import kr.ac.duce.model.ProjectBoardModel;
 import kr.ac.duce.service.ProjectBoardService;
 
@@ -32,9 +37,16 @@ public class ProjectBoardController {
 	@Autowired
 	ProjectBoardService ProjectBoardService;
 
-	@GetMapping(value = "/project", params = { "page", "content"}) // URL 주소
-	public String list(Model model, @RequestParam String page, @RequestParam String content) {
+	int displayPageNum = 5; // 페이징 개수 수정 시 ProjectBoardServiceImpl 에서
+	int perPageNum = 15; // 페이징 당 글 개수 public List<ProjectBoardModel> findPage 도 수정할 것
+
+	@GetMapping(value = "/project", params = { "page", "content", "major", "branch", "mYear" }) // URL 주소
+	public String list(Model model, @RequestParam String page, @RequestParam String content,
+			@RequestParam(value = "major", defaultValue = "all") String major,
+			@RequestParam(value = "branch", defaultValue = "all") String branch,
+			@RequestParam(value = "mYear", defaultValue = "all") String year) {
 		int contNo = Integer.parseInt(content);
+		String mYear = year;
 		List<ProjectBoardModel> rawBoard = ProjectBoardService.findByNo(contNo);
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
@@ -42,7 +54,7 @@ public class ProjectBoardController {
 		model.addAttribute("board", board);
 		model.addAttribute("page", Integer.parseInt(page));
 		String fileName = "";
-		
+
 		if (!board.getAddFile().equals("")) {
 			String[] file = board.getAddFile().split(",");
 
@@ -51,67 +63,145 @@ public class ProjectBoardController {
 			}
 		}
 		model.addAttribute("fileName", fileName);
-		
+		model.addAttribute("major", major);
+		model.addAttribute("branch", branch);
+		model.addAttribute("mYear", mYear);
+
 		return "project/view"; // JSP 파일명
 	}
-	
+
 	@GetMapping(value = "/project", params = "page") // URL 주소
 	public String list(Model model, @RequestParam String page) {
+		int pageCount = ((ProjectBoardService.findAll().size() - 1) / perPageNum) + 1;
+		int pageStart = ((Integer.parseInt(page) - 1) / displayPageNum) * displayPageNum + 1;
+		int pageEnd = Math.min(pageStart + 5 - 1, pageCount);
+		boolean isPrev = Integer.parseInt(page) >= displayPageNum + 1;
+		boolean isNext = pageEnd < pageCount;
+
 		List<ProjectBoardModel> rawBoardList = ProjectBoardService.findPage(Integer.parseInt(page));
+
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
 		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
 		List<String> yearList = ProjectBoardService.findAllYear();
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("branchList", branchList);
+		model.addAttribute("pageStart", pageStart);
+		model.addAttribute("pageEnd", pageEnd);
+		model.addAttribute("isPrev", isPrev);
+		model.addAttribute("isNext", isNext);
 		model.addAttribute("page", Integer.parseInt(page));
+//		model.addAttribute("pageCount", pageCount);
 		return "project/list"; // JSP 파일명
 	}
-	
-	@GetMapping(value = "/filter") // URL 주소
-	public String filter(Model model, @RequestParam(value="major", defaultValue="all") String major,
-						 @RequestParam(value="branch", defaultValue="all") String branch,
-						 @RequestParam(value="mYear", defaultValue="all") String mYear) {
+
+	@GetMapping(value = "/filter", params = { "page", "major", "branch", "mYear" }) // URL 주소
+	public String filter(Model model, @RequestParam String page,
+			@RequestParam(value = "major", defaultValue = "all") String major,
+			@RequestParam(value = "branch", defaultValue = "all") String branch,
+			@RequestParam(value = "mYear", defaultValue = "all") String year) {
 		List<ProjectBoardModel> rawBoardList = null;
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
-		List<String> paramList = new ArrayList<>(Arrays.asList(
-				(major.equals("all") ? "" : major),
-				(branch.equals("all") ? "" : branch),
-				(mYear.equals("all") ? "" : mYear)
-		));
-
+		List<String> paramList = new ArrayList<>(Arrays.asList((major.equals("all") ? "" : major),
+				(branch.equals("all") ? "" : branch), (year.equals("all") ? "" : year)));
+		String mYear = year;
 		// All
-		if(major.equals("all") && branch.equals("all") && mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findAll();
+		if (major.equals("all") && branch.equals("all") && mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findPage(Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findAll().size(), perPageNum, displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//M
-		else if(!major.equals("all") && branch.equals("all") && mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilterM(major);
+		// M
+		else if (!major.equals("all") && branch.equals("all") && mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterMP(major, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterM(major).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//B
-		else if(major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilterB(branch);
+		// B
+		else if (major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterBP(branch, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterB(branch).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//Y
-		else if(major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilterY(mYear);
+		// Y
+		else if (major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterYP(mYear, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterY(mYear).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//MB
-		else if(!major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilter(major, branch);
+		// MB
+		else if (!major.equals("all") && !branch.equals("all") && mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterP(major, branch, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilter(major, branch).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//YB
-		else if(major.equals("all") && !branch.equals("all") && !mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilterYB(mYear, branch);
+		// YB
+		else if (major.equals("all") && !branch.equals("all") && !mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterYBP(mYear, branch, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterYB(mYear, branch).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//YM
-		else if(!major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
-			rawBoardList = ProjectBoardService.findbyfilterYM(mYear, major);
+		// YM
+		else if (!major.equals("all") && branch.equals("all") && !mYear.equals("all")) {
+			rawBoardList = ProjectBoardService.findbyfilterYMP(mYear, major, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterYM(mYear, major).size(), perPageNum,
+					displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
-		//YMB
+		// YMB
 		else {
-			rawBoardList = ProjectBoardService.findbyfilterYMB(mYear, major, branch);
+			rawBoardList = ProjectBoardService.findbyfilterYMBP(mYear, major, branch, Integer.parseInt(page));
+			Paging pg = new Paging();
+			pg.setPaging(Integer.parseInt(page), ProjectBoardService.findbyfilterYMB(mYear, major, branch).size(),
+					perPageNum, displayPageNum);
+			model.addAttribute("pageStart", pg.getPageStart());
+			model.addAttribute("pageEnd", pg.getPageEnd());
+			model.addAttribute("isPrev", pg.isPrev());
+			model.addAttribute("isNext", pg.isNext());
+			model.addAttribute("page", Integer.parseInt(page));
 		}
 		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
 		List<String> yearList = ProjectBoardService.findAllYear();
@@ -120,29 +210,44 @@ public class ProjectBoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("branchList", branchList);
-		model.addAttribute("page", 1);
+		model.addAttribute("major", major);
+		model.addAttribute("branch", branch);
+		model.addAttribute("mYear", mYear);
 		return "project/list"; // JSP 파일명
 	}
 
-	@GetMapping(value = "/project") // URL 주소
-	public String index(Model model) {
-		List<ProjectBoardModel> rawBoardList = ProjectBoardService.findAll();
+	@GetMapping(value = "/search", params = { "page", "query" }) // URL 주소
+	public String search(Model model, @RequestParam(value = "page", defaultValue = "1") String page,
+			@RequestParam String query) {
+		int pageCount = ((ProjectBoardService.searchProjectList(query).size() - 1) / perPageNum) + 1;
+		int pageStart = ((Integer.parseInt(page) - 1) / displayPageNum) * displayPageNum + 1;
+		int pageEnd = Math.min(pageStart + 5 - 1, pageCount);
+		boolean isPrev = Integer.parseInt(page) >= displayPageNum + 1;
+		boolean isNext = pageEnd < pageCount;
+
+		List<ProjectBoardModel> rawBoardList = ProjectBoardService.searchProjectList(query, Integer.parseInt(page));
+
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
-		List<String> yearList = ProjectBoardService.findAllYear();
 		List<ProjectBoardViewModel> boardList = makeBoardViewList(rawBoardList, majorList, branchList);
+		List<String> yearList = ProjectBoardService.findAllYear();
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("branchList", branchList);
-		model.addAttribute("page", 1);
+		model.addAttribute("pageStart", pageStart);
+		model.addAttribute("pageEnd", pageEnd);
+		model.addAttribute("isPrev", isPrev);
+		model.addAttribute("isNext", isNext);
+		model.addAttribute("query", query);
+		model.addAttribute("page", Integer.parseInt(page));
+//		model.addAttribute("pageCount", pageCount);
 		return "project/list"; // JSP 파일명
 	}
 
 	// 뷰에 알맞게 boardList 생성
 	private List<ProjectBoardViewModel> makeBoardViewList(List<ProjectBoardModel> rawBoardList,
-														  List<MajorCodeModel> majorList,
-														  List<BranchCodeModel> branchList) {
+			List<MajorCodeModel> majorList, List<BranchCodeModel> branchList) {
 		List<ProjectBoardViewModel> boardList = new ArrayList<>();
 		for (ProjectBoardModel ele : rawBoardList) {
 			try {
@@ -165,13 +270,15 @@ public class ProjectBoardController {
 				// 간단히 부를 수 있게 년도값 추가
 				int viewContentLength = 140;
 				String strContent = appendEle.getContent();
-				String strViewContent = strContent.substring(0, (strContent.length() > viewContentLength ? viewContentLength : strContent.length()) );
+				String strViewContent = strContent.substring(0,
+						(strContent.length() > viewContentLength ? viewContentLength : strContent.length()));
 				strViewContent += (strContent.length() > viewContentLength ? "..." : "");
 				appendEle.setViewContent(strViewContent);
 				// 메인 페이지용 간이 텍스트 만들기
 				String[] partStudents = appendEle.getPart().split(",");
 				String viewPartStudents = partStudents[0];
-				if (partStudents.length != 1) viewPartStudents += " 외 " + (partStudents.length-1) + "명";
+				if (partStudents.length != 1)
+					viewPartStudents += " 외 " + (partStudents.length - 1) + "명";
 				appendEle.setViewPartStudents(viewPartStudents);
 				// 참가학생 텍스트 생성
 				try {
@@ -201,136 +308,322 @@ public class ProjectBoardController {
 	@PostMapping(value = "/project/update", params = "pNo") // URL 주소
 	public String modify(Model model, @RequestParam int pNo) {
 		ProjectBoardModel board = ProjectBoardService.findByNo(pNo).get(0);
-		DateFormat df = new SimpleDateFormat("yyyy-MM");
-		String startDate = df.format(board.getStartDate());
-		String finishDate = df.format(board.getFinishDate());
-		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
-		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
-		model.addAttribute("majorList", majorList);
-		model.addAttribute("branchList", branchList);
-		model.addAttribute("board", board);
-		model.addAttribute("pno", pNo);
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("finishDate", finishDate);
-		return "/project/update"; // JSP 파일명
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = auth.getPrincipal();
+		if (principal instanceof MemberModel) {
+			System.out.println(((MemberModel) principal).toString());
+		} else {
+			System.out.println(principal.toString());
+		}
+		String loginID = ((MemberModel) principal).getId();
+
+		if (loginID.equals(board.getId())) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM");
+			String startDate = df.format(board.getStartDate());
+			String finishDate = df.format(board.getFinishDate());
+			List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
+			List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
+			model.addAttribute("majorList", majorList);
+			model.addAttribute("branchList", branchList);
+			model.addAttribute("board", board);
+			model.addAttribute("pno", pNo);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("finishDate", finishDate);
+			
+			return "/project/update";
+		}
+		else
+		{
+			System.out.println("수정 접근 - ID 불일치.");
+			
+			return "redirect:/project?page=1";
+		}
+//		String saveImgs = board.getPhoto();
+//		String saveFiles = board.getAddFile();
+//		model.addAttribute("saveImgs", saveImgs);
+//		model.addAttribute("saveFiles", saveFiles);
+		 // JSP 파일명
 	}
 
-	
 	@PostMapping(value = "/project/delete.do", params = "pNo")
 	public String delete(Model model, @RequestParam String pNo) throws Exception {
 		int deleteNo = Integer.parseInt(pNo);
 		ProjectBoardModel filedelete = ProjectBoardService.findByNo(deleteNo).get(0);
-		ProjectBoardService.delete(Integer.parseInt(pNo));	
 		String img = filedelete.getPhoto();
 		String add = filedelete.getAddFile();
 		String[] imgs = img.split(",");
 		String[] adds = add.split(",");
-//		System.out.println(img);
-//		System.out.println(imgs[0].split("/project/")[1]);
-//		System.out.println(add);
-//		System.out.println(adds[0].split("/project/")[1]);
-		
-		String path = ProjectBoardController.class.getResource("").getPath();		
+
+		String path = ProjectBoardController.class.getResource("").getPath();
 		path = URLDecoder.decode(path, "UTF-8");
-		path = path.split("/target")[0]+"/src/main/resources/static/project";
-//		System.out.println(path);
-		
-		if (!imgs[0].equals("")) {
-			for(String i : imgs) {
-				File file = new File(path + i.split("/project")[1]);
-				
-				if(file.exists()) {
-					if(file.delete()) {
-						System.out.println("파일삭제 성공");
+		String imgPath = path.split("/target")[0] + "/src/main/resources/images/project";
+		String filePath = path.split("/target")[0] + "/src/main/resources/files/project";
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = auth.getPrincipal();
+		if (principal instanceof MemberModel) {
+			System.out.println(((MemberModel) principal).toString());
+		} else {
+			System.out.println(principal.toString());
+		}
+		String loginID = ((MemberModel) principal).getId();
+
+		if (loginID.equals(filedelete.getId())) {
+			System.out.println("삭제 신청 - ID 일치.");
+			ProjectBoardService.delete(Integer.parseInt(pNo));
+			if (!imgs[0].equals("")) {
+				for (String i : imgs) {
+					File file = new File(imgPath + i.split("/project")[1]);
+					File delfile = new File(imgPath + i.split("/project")[1] + ".del");
+
+					if (file.exists()) {
+						if (file.renameTo(delfile)) {
+							System.out.println("파일삭제 성공");
+						} else {
+							System.out.println("파일삭제 실패");
+						}
+					} else {
+						System.out.println("파일이 존재하지 않습니다.");
 					}
-					else {
-						System.out.println("파일삭제 실패");
-					}
-				}
-				else {
-					System.out.println("파일이 존재하지 않습니다.");
 				}
 			}
-		}
-		
-		if (!adds[0].equals("")) {
-			for(String a : adds) {
-				File file = new File(path + a.split("/project")[1]);
-				
-				if(file.exists()) {
-					if(file.delete()) {
-						System.out.println("파일삭제 성공");
+
+			if (!adds[0].equals("")) {
+				for (String a : adds) {
+					File file = new File(filePath + a.split("/project")[1]);
+					File delfile = new File(filePath + a.split("/project")[1] + ".del");
+
+					if (file.exists()) {
+						if (file.renameTo(delfile)) {
+							System.out.println("파일삭제 성공");
+						} else {
+							System.out.println("파일삭제 실패");
+						}
+					} else {
+						System.out.println("파일이 존재하지 않습니다.");
 					}
-					else {
-						System.out.println("파일삭제 실패");
-					}
-				}
-				else {
-					System.out.println("파일이 존재하지 않습니다.");
 				}
 			}
+			System.out.println("Projcet 삭제 성공");
+		} else {
+			System.out.println("삭제 신청 - ID 불일치.");
+			System.out.println("Projcet 삭제 실패");
 		}
-		
-		return "redirect:/project"; // JSP 파일명
+
+		return "redirect:/project?page=1"; // JSP 파일명
 	}
 
-
 	@PostMapping(value = "/project/update.do") // URL 주소
-	public String modifyOK(Model model, @RequestParam String pNo, @RequestParam String title, @RequestParam String content,  @RequestParam String part,  @RequestParam String guide,
-			@RequestParam String branch,  @RequestParam String major,  @RequestParam String video,
-						   @RequestParam String startDate, @RequestParam String finishDate,
-						   @RequestParam String reference, @RequestParam("uploadFile") List<MultipartFile> files
-	        ,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
-	        ,HttpServletRequest addfilerequest) throws Exception {
+	public String modifyOK(Model model, @RequestParam String pNo, @RequestParam String title,
+			@RequestParam String content, @RequestParam String part, @RequestParam String guide,
+			@RequestParam String branch, @RequestParam String major, @RequestParam String video,
+			@RequestParam String startDate, @RequestParam String finishDate,
+			@RequestParam(value = "imgsDelete", defaultValue = "false") String imgsDelete,
+			@RequestParam(value = "filesDelete", defaultValue = "false") String filesDelete,
+			@RequestParam String reference, @RequestParam String saveImgs, @RequestParam String saveFiles,
+			@RequestParam("uploadFile") List<MultipartFile> files, HttpServletRequest filerequest,
+			@RequestParam("uploadAddFile") List<MultipartFile> addfiles, HttpServletRequest addfilerequest)
+			throws Exception {
+		
+		ProjectBoardModel updateboard = ProjectBoardService.findByNo(Integer.parseInt(pNo)).get(0);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = auth.getPrincipal();
+		if (principal instanceof MemberModel) {
+			System.out.println(((MemberModel) principal).toString());
+		} else {
+			System.out.println(principal.toString());
+		}
+		String loginID = ((MemberModel) principal).getId();
+
+		if (loginID.equals(updateboard.getId())) {
+		System.out.println("수정 접근 - ID 일치.");
 			
 		String imgPath = "";
 		String addPath = "";
+		String simgPath = saveImgs;
+		String sfilePath = saveFiles;
+		String fileDel = filesDelete;
+		String imgsDel = imgsDelete;
 		boolean isThumbNotMade = true;
-		for(MultipartFile file : files) {
-			String originalName = file.getOriginalFilename();
-			
-//			System.out.println(originalName);
-			
-			if(! file.getOriginalFilename().equals("")) {
-				UUID uuid = UUID.randomUUID();
-				String path = ProjectBoardController.class.getResource("").getPath();		
-				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/images/project/";
-				String fileName =  uuid.toString() + "-"+ file.getOriginalFilename();
-				File f = new File(path, fileName);
-			    file.transferTo(f);
-				if (isThumbNotMade) {
-					String[] extensionArray = fileName.split("\\.");
-					String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
-					makeThumbnail(path+fileName, fileName, FILE_EXTENSION);
-					isThumbNotMade = false;
+
+		// img 기존파일 삭제 Not Checked
+		if (!imgsDel.equals("true")) {
+			imgPath = simgPath;
+			for (MultipartFile file : files) {
+				String originalName = file.getOriginalFilename();
+				// 이미지 추가 - 기존이미지 유지
+				if (!file.getOriginalFilename().equals("")) {
+					UUID uuid = UUID.randomUUID();
+					String path = ProjectBoardController.class.getResource("").getPath();
+					path = URLDecoder.decode(path, "UTF-8");
+					path = path.split("/target")[0] + "/src/main/resources/images/project/";
+					String fileName = uuid.toString() + "-" + file.getOriginalFilename();
+					File f = new File(path, fileName);
+					file.transferTo(f);
+					if (isThumbNotMade) {
+						String[] extensionArray = fileName.split("\\.");
+						String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
+						makeThumbnail(path + fileName, fileName, FILE_EXTENSION);
+						isThumbNotMade = false;
+					}
+					imgPath = imgPath + "/img/project/" + fileName + ",";
 				}
-			    imgPath = imgPath + "/img/project/" + fileName + ",";
+				// 이미지 유지
+				else if (file.getOriginalFilename().equals("")) {
+					break;
+				}
+			}
+		}
+		// img 기존파일 삭제 Checked
+		else if (imgsDel.equals("true")) {
+			String path = ProjectBoardController.class.getResource("").getPath();
+			path = URLDecoder.decode(path, "UTF-8");
+			String deleteimgPath = path.split("/target")[0] + "/src/main/resources/images/project";
+			String[] imgs = simgPath.split(",");
+			if (!imgs[0].equals("")) {
+				for (String i : imgs) {
+					File imgfile = new File(deleteimgPath + i.split("/project")[1]);
+					File delimgfile = new File(deleteimgPath + i.split("/project")[1] + ".del");
+					if (imgfile.exists()) {
+						if (imgfile.renameTo(delimgfile)) {
+							System.out.println("파일삭제 성공");
+						} else {
+							System.out.println("파일삭제 실패");
+						}
+					} else {
+						System.out.println("파일이 존재하지 않습니다.");
+					}
+				}
+			}
+
+			for (MultipartFile file : files) {
+				String originalName = file.getOriginalFilename();
+				// 이미지 신규추가
+				if (!file.getOriginalFilename().equals("")) {
+					UUID uuid = UUID.randomUUID();
+					path = ProjectBoardController.class.getResource("").getPath();
+					path = URLDecoder.decode(path, "UTF-8");
+					path = path.split("/target")[0] + "/src/main/resources/images/project/";
+					String fileName = uuid.toString() + "-" + file.getOriginalFilename();
+					File f = new File(path, fileName);
+					file.transferTo(f);
+					if (isThumbNotMade) {
+						String[] extensionArray = fileName.split("\\.");
+						String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
+						makeThumbnail(path + fileName, fileName, FILE_EXTENSION);
+						isThumbNotMade = false;
+					}
+					imgPath = imgPath + "/img/project/" + fileName + ",";
+				}
 			}
 		}
 
-		for(MultipartFile addfile : addfiles) {
-			String originalName = addfile.getOriginalFilename();
-
-//			System.out.println(originalName);
-
-			if(! addfile.getOriginalFilename().equals("")) {
-				UUID uuid = UUID.randomUUID();
-				String path = ProjectBoardController.class.getResource("").getPath();
-				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/files/project/";
-				String fileName =  uuid.toString() + "-"+ addfile.getOriginalFilename();
-				File f = new File(path, fileName);
-			    addfile.transferTo(f);
-			    addPath = addPath + "/file/project/" + fileName + ",";
+		// AddFile 기존파일 삭제 Not Checked
+		if (!fileDel.equals("true")) {
+			addPath = sfilePath;
+			for (MultipartFile addfile : addfiles) {
+				String originalName = addfile.getOriginalFilename();
+				// 파일 추가 - 기존파일 유지
+				if (!addfile.getOriginalFilename().equals("")) {
+					UUID uuid = UUID.randomUUID();
+					String path = ProjectBoardController.class.getResource("").getPath();
+					path = URLDecoder.decode(path, "UTF-8");
+					path = path.split("/target")[0] + "/src/main/resources/files/project/";
+					String fileName = uuid.toString() + "-" + addfile.getOriginalFilename();
+					File f = new File(path, fileName);
+					addfile.transferTo(f);
+					addPath = addPath + "/file/project/" + fileName + ",";
+				}
+				// 파일 유지
+				else if (addfile.getOriginalFilename().equals("")) {
+					break;
+				}
 			}
 		}
+		// AddFile 기존파일 삭제 Checked
+		else if (fileDel.equals("true")) {
+			// 파일 삭제
+			String path = ProjectBoardController.class.getResource("").getPath();
+			path = URLDecoder.decode(path, "UTF-8");
+			String deletefilePath = path.split("/target")[0] + "/src/main/resources/files/project";
+			String[] adds = sfilePath.split(",");
+			if (!adds[0].equals("")) {
+				for (String a : adds) {
+					File addfile = new File(deletefilePath + a.split("/project")[1]);
+					File deladdfile = new File(deletefilePath + a.split("/project")[1] + ".del");
+
+					if (addfile.exists()) {
+						if (addfile.renameTo(deladdfile)) {
+							System.out.println("파일삭제 성공");
+						} else {
+							System.out.println("파일삭제 실패");
+						}
+					} else {
+						System.out.println("파일이 존재하지 않습니다.");
+					}
+				}
+			}
+
+			for (MultipartFile addfile : addfiles) {
+				String originalName = addfile.getOriginalFilename();
+				// 파일 신규추가
+				if (!addfile.getOriginalFilename().equals("")) {
+					UUID uuid = UUID.randomUUID();
+					path = ProjectBoardController.class.getResource("").getPath();
+					path = URLDecoder.decode(path, "UTF-8");
+					path = path.split("/target")[0] + "/src/main/resources/files/project/";
+					String fileName = uuid.toString() + "-" + addfile.getOriginalFilename();
+					File f = new File(path, fileName);
+					addfile.transferTo(f);
+					addPath = addPath + "/file/project/" + fileName + ",";
+				}
+			}
+		}
+
+//		for(MultipartFile file : files) {
+//			String originalName = file.getOriginalFilename();
+//			
+//			if(! file.getOriginalFilename().equals("")) {
+//				UUID uuid = UUID.randomUUID();
+//				String path = ProjectBoardController.class.getResource("").getPath();		
+//				path = URLDecoder.decode(path, "UTF-8");
+//				path = path.split("/target")[0]+"/src/main/resources/images/project/";
+//				String fileName =  uuid.toString() + "-"+ file.getOriginalFilename();
+//				File f = new File(path, fileName);
+//			    file.transferTo(f);
+//				if (isThumbNotMade) {
+//					String[] extensionArray = fileName.split("\\.");
+//					String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
+//					makeThumbnail(path+fileName, fileName, FILE_EXTENSION);
+//					isThumbNotMade = false;
+//				}
+//			    imgPath = imgPath + "/img/project/" + fileName + ",";
+//			}
+//		}
+//
+//		for(MultipartFile addfile : addfiles) {
+//			String originalName = addfile.getOriginalFilename();
+//
+//			if(! addfile.getOriginalFilename().equals("")) {
+//				UUID uuid = UUID.randomUUID();
+//				String path = ProjectBoardController.class.getResource("").getPath();
+//				path = URLDecoder.decode(path, "UTF-8");
+//				path = path.split("/target")[0]+"/src/main/resources/files/project/";
+//				String fileName =  uuid.toString() + "-"+ addfile.getOriginalFilename();
+//				File f = new File(path, fileName);
+//			    addfile.transferTo(f);
+//			    addPath = addPath + "/file/project/" + fileName + ",";
+//			}
+//		}
 
 		Date dStartDate = YYYYMMtoDate(startDate);
 		Date dFinishDate = YYYYMMtoDate(finishDate);
 
-		if(! video.equals("")) {	video = video.substring(video.lastIndexOf("=") + 1);	}
-		
+		if (!video.equals("")) {
+			video = video.substring(video.lastIndexOf("=") + 1);
+		}
+
 		int No = Integer.parseInt(pNo);
 		ProjectBoardModel modModel = new ProjectBoardModel();
 		modModel.setpNo(No);
@@ -346,71 +639,74 @@ public class ProjectBoardController {
 		modModel.setPhoto(imgPath);
 		modModel.setAddFile(addPath);
 		modModel.setReference(reference);
-		ProjectBoardService.update(modModel);	
-		return "redirect:/project"; // JSP 파일명
+		ProjectBoardService.update(modModel);	 
+		}	
+		else {
+			System.out.println("수정 접근 - ID 불일치.");
+		}
+		
+		return "redirect:/project?page=1"; // JSP 파일명
 	}
-	
-	
-	@PostMapping(value = "/project/write.do", params = {"id", "title", "content"}) // URL 주소
-	public String writeOK(Model model, @RequestParam String id,  @RequestParam String title, @RequestParam String content,
-						  @RequestParam String part,  @RequestParam String guide, @RequestParam String branch,
-						  @RequestParam String major,  @RequestParam String video, @RequestParam String reference,
-						  @RequestParam("uploadFile") List<MultipartFile> files, @RequestParam String finishDate,
-						  @RequestParam String startDate
-			,HttpServletRequest filerequest, @RequestParam("uploadAddFile") List<MultipartFile> addfiles
-	        ,HttpServletRequest addfilerequest) throws Exception {
+
+	@PostMapping(value = "/project/write.do", params = { "id", "title", "content" }) // URL 주소
+	public String writeOK(Model model, @RequestParam String id, @RequestParam String title,
+			@RequestParam String content, @RequestParam String part, @RequestParam String guide,
+			@RequestParam String branch, @RequestParam String major, @RequestParam String video,
+			@RequestParam String reference, @RequestParam("uploadFile") List<MultipartFile> files,
+			@RequestParam String finishDate, @RequestParam String startDate, HttpServletRequest filerequest,
+			@RequestParam("uploadAddFile") List<MultipartFile> addfiles, HttpServletRequest addfilerequest)
+			throws Exception {
 		String imgPath = "";
 		String addPath = "";
 		Boolean isThumbNotMade = true;
-		for(MultipartFile file : files) {
+		for (MultipartFile file : files) {
 			String originalName = file.getOriginalFilename();
 
 //			System.out.println(originalName);
 
-			if(! file.getOriginalFilename().equals("")) {
+			if (!file.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
 				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/images/project/";
-				String fileName =  uuid.toString() + "-" + file.getOriginalFilename();
+				path = path.split("/target")[0] + "/src/main/resources/images/project/";
+				String fileName = uuid.toString() + "-" + file.getOriginalFilename();
 				File f = new File(path, fileName);
-			    file.transferTo(f);
+				file.transferTo(f);
 				if (isThumbNotMade) {
 					String[] extensionArray = fileName.split("\\.");
 					String FILE_EXTENSION = extensionArray[(extensionArray.length) - 1];
-					makeThumbnail(path+fileName, fileName, FILE_EXTENSION);
+					makeThumbnail(path + fileName, fileName, FILE_EXTENSION);
 					isThumbNotMade = false;
 				}
-			    imgPath = imgPath + "/img/project/" + fileName + ",";
+				imgPath = imgPath + "/img/project/" + fileName + ",";
 			}
 		}
 
-
-		for(MultipartFile addfile : addfiles) {
+		for (MultipartFile addfile : addfiles) {
 			String originalName = addfile.getOriginalFilename();
 
 //			System.out.println(originalName);
 
-			if(! addfile.getOriginalFilename().equals("")) {
+			if (!addfile.getOriginalFilename().equals("")) {
 				UUID uuid = UUID.randomUUID();
 				String path = ProjectBoardController.class.getResource("").getPath();
 				path = URLDecoder.decode(path, "UTF-8");
-				path = path.split("/target")[0]+"/src/main/resources/files/project/";
-				String fileName =  uuid.toString() + "-" + addfile.getOriginalFilename();
+				path = path.split("/target")[0] + "/src/main/resources/files/project/";
+				String fileName = uuid.toString() + "-" + addfile.getOriginalFilename();
 				File f = new File(path, fileName);
-			    addfile.transferTo(f);
-			    addPath = addPath + "/file/project/" + fileName + ",";
+				addfile.transferTo(f);
+				addPath = addPath + "/file/project/" + fileName + ",";
 			}
 		}
 
-		if(video.contains("https://www.youtube.com/")) {
-			if(! video.equals("")) {	video = video.substring(video.lastIndexOf("=") + 1);	}
-		}
-		else
-		{
+		if (video.contains("https://www.youtube.com/")) {
+			if (!video.equals("")) {
+				video = video.substring(video.lastIndexOf("=") + 1);
+			}
+		} else {
 			video = "";
 		}
-		
+
 		Date writedate = Calendar.getInstance().getTime();
 		Date dStartDate = YYYYMMtoDate(startDate);
 		Date dFinishDate = YYYYMMtoDate(finishDate);
@@ -434,7 +730,7 @@ public class ProjectBoardController {
 		insertModel.setStartDate(dStartDate);
 		insertModel.setFinishDate(dFinishDate);
 		ProjectBoardService.insert(insertModel);
-		return "redirect:/project"; // JSP 파일명
+		return "redirect:/project?page=1"; // JSP 파일명
 	}
 
 	private Date YYYYMMtoDate(String inputYYYYMM) {
@@ -453,7 +749,7 @@ public class ProjectBoardController {
 
 		String path = ProjectBoardController.class.getResource("").getPath();
 		path = URLDecoder.decode(path, "UTF-8");
-		path = path.split("/target")[0]+"/src/main/resources/images/project/thumb/";
+		path = path.split("/target")[0] + "/src/main/resources/images/project/thumb/";
 		// 저장된 원본파일로부터 BufferedImage 객체를 생성합니다.
 		BufferedImage srcImg = ImageIO.read(new File(filePath));
 
@@ -470,13 +766,13 @@ public class ProjectBoardController {
 
 		// 계산된 높이가 원본보다 높다면 crop이 안되므로
 		// 원본 높이를 기준으로 썸네일의 비율로 너비를 계산합니다.
-		if(nh > oh) {
+		if (nh > oh) {
 			nw = (oh * dw) / dh;
 			nh = oh;
 		}
 
 		// 계산된 크기로 원본이미지를 가운데에서 crop 합니다.
-		BufferedImage cropImg = Scalr.crop(srcImg, (ow-nw)/2, (oh-nh)/2, nw, nh);
+		BufferedImage cropImg = Scalr.crop(srcImg, (ow - nw) / 2, (oh - nh) / 2, nw, nh);
 
 		// crop된 이미지로 썸네일을 생성합니다.
 		BufferedImage destImg = Scalr.resize(cropImg, dw, dh);
@@ -486,4 +782,5 @@ public class ProjectBoardController {
 		File thumbFile = new File(thumbName);
 		ImageIO.write(destImg, fileExt.toLowerCase(), thumbFile);
 	}
+
 }
