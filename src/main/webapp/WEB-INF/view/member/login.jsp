@@ -5,12 +5,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
-<sec:authorize access="isAuthenticated()">
-    <script>
-        alert('이미 로그인 되어있습니다!');
-        window.history.back();
-    </script>
-</sec:authorize>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -5,6 +5,8 @@ public class BranchCodeModel {
 	private String branchNo;
 	private String branch;
 	private String branchDet;
+	//UPDATE에 쓰이는 파라미터
+	private String former;
 	
 	public String getBranchNo() {
 		return branchNo;
@@ -24,6 +26,12 @@ public class BranchCodeModel {
 	public void setBranchDet(String branchDet) {
 		this.branchDet = branchDet;
 	}
+	public String getFormer() {
+		return former;
+	}
 
+	public void setFormer(String former) {
+		this.former = former;
+	}
 	
 }

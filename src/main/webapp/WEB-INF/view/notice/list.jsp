@@ -63,7 +63,7 @@
 	<!-- Navigation Bar -->
 	<article>
 		<div class="con">
-			<div class="faq-con">
+			<div class="notice-con">
 				공지사항
 				<hr/>
 			</div>

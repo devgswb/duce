@@ -49,6 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
             .authorizeRequests()
+                .antMatchers("/admin").access("hasAuthority('admin')")
+                .antMatchers("/admin/*.do").access("hasAuthority('admin')")
+                .antMatchers("/admin/*/*.do").access("hasAuthority('admin')")
+                // 관리자 페이지 권한: 관리자만
                 .antMatchers("/notice/write", "/notice/update").access("hasAuthority('admin')")
                 .antMatchers("/notice/*.do").access("hasAuthority('admin')")
                 // 공지사항 게시판 권한: 관리자만
@@ -82,5 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(LoginService).passwordEncoder(passwordEncoder);
+//        LoginService에서 정의된 내용대로 로그인 데이터를 MemberModel에 넣고
+//        패스워드 인코딩은 BCryptoEncoder로 구현된 passwordEncoder를 사용한다.
     }
 }
