@@ -24,6 +24,4 @@ public interface MajorBranchSettingService {
     void updateMajor(Collection<MajorCodeModel> parsedMajorList);
 
     void updateBranch(Collection<BranchCodeModel> parsedBranchList);
-
-    List<MemberModel> getMembers();
 }

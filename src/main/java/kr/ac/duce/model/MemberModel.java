@@ -122,7 +122,9 @@ public class MemberModel implements UserDetails {
         UserInfo += "PW: " + password + "\n";
         UserInfo += "name: " + name + "\n";
         UserInfo += "mail: " + mail + "\n";
-        UserInfo += "hp: " + hp;
+        UserInfo += "hp: " + hp + "\n";
+        UserInfo += "------";
+        UserInfo += "isEnabled: " + isEnabled;
         return UserInfo;
     }
 }
