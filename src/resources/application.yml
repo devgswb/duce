@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: live
+---
+spring:
+  #  devtools:
+  #    livereload:
+  #       enabled: true
+  #  freemarker:
+  #    cache: false
+  profiles: live
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://61.84.24.251:53306/duce?serverTimezone=UTC&useSSL=false
+    username: devgswb
+    password: 1q@W3e4r
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+    static-path-pattern: /res/**
+server:
+  port: 8080
+
+    
