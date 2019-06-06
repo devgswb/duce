@@ -5,6 +5,10 @@ import kr.ac.duce.model.MemberModel;
 import java.util.Collection;
 
 public interface MemberManagementService {
+    Collection<MemberModel> getMembers(int page, int count);
+    int getAllMemberCount();
 
-    Collection<MemberModel> getMembers();
+    void updateMemberByAdmin(Collection<MemberModel> MemberList);
+
+    Collection<MemberModel> getMemberBySearch(String param, String searchWord);
 }

@@ -123,7 +123,7 @@ public class MemberModel implements UserDetails {
         UserInfo += "name: " + name + "\n";
         UserInfo += "mail: " + mail + "\n";
         UserInfo += "hp: " + hp + "\n";
-        UserInfo += "------";
+        UserInfo += "authority:" + authority + "\n";
         UserInfo += "isEnabled: " + isEnabled;
         return UserInfo;
     }

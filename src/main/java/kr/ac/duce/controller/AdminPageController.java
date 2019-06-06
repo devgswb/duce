@@ -10,6 +10,7 @@ import kr.ac.duce.model.BranchCodeModel;
 import kr.ac.duce.model.MajorCodeModel;
 import kr.ac.duce.model.MemberModel;
 import kr.ac.duce.module.JSArrayParser;
+import kr.ac.duce.service.AdminPasswordService;
 import kr.ac.duce.service.MajorBranchSettingService;
 import kr.ac.duce.service.MemberManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class AdminPageController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
+    AdminPasswordService AdminPasswordService;
+
+    @Autowired
     MajorBranchSettingService MajorBranchService;
 
     @Autowired
@@ -58,7 +62,8 @@ public class AdminPageController {
             MemberModel user = (MemberModel) principal;
             String currentDBPwd = user.getPassword();
             if (passwordEncoder.matches(currentInputPwd, currentDBPwd)) {
-                return "/"; // 비번 맞는다면 패스워드 변경
+                AdminPasswordService.changePassword(user.getId(), changedpwd);
+                return "/admin"; // 비번 맞는다면 패스워드 변경
             } else {
                 return ErrorPageHandler.throwError(model, "adminPassword", "/admin"); // 아니면 에러&이전 페이지
             }
@@ -154,12 +159,47 @@ public class AdminPageController {
         }
     }
 
-/*
-    회원 관리 기능
- */
+    /*
+        회원 관리 기능
+     */
+    @GetMapping("/admin/member") // 회원관리 테스트
+    public String memberTest(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        if (page < 1) page = 1;
+        int memberShowingCount = 6;
+        int prevNextSplitter = 5;
+        int allMemberCount = MemberService.getAllMemberCount();
+        int allPage = (int) (Math.ceil(((double) allMemberCount) / memberShowingCount));
+        int beginPage = (page - 2 > 1 ? page - 2 : 1);
+        int endPage = (page + 2 > allPage ? allPage : page + 2);
+        Collection<MemberModel> memberList = MemberService.getMembers(page, memberShowingCount);
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("beginPage", beginPage);
+        model.addAttribute("endPage", endPage);
+        return "/admin/member"; // JSP 파일명
+    }
 
+    @PatchMapping("/admin/member/mod.do") // URL 주소
+    public String memberUpdate(Model model, @RequestParam("memberList") String memberList) {
+        try {
+            JSArrayParser<MemberModel> arrayParser = new JSArrayParser<MemberModel>();
+            Collection<MemberModel> parsedMemberList = arrayParser.parse(memberList, MemberModel.class);
+            MemberService.updateMemberByAdmin(parsedMemberList);
+            return "redirect:/admin/";
+        } catch (Exception e) {
+            throw e;
+//            return "/error";
+        }
+    }
 
-//  테스트용 페이지
+    @PostMapping("/admin/member") // URL 주소
+    public String memberSearch(Model model, @RequestParam String param, @RequestParam String searchWord) {
+        Collection<MemberModel> memberList = MemberService.getMemberBySearch(param, searchWord);
+        model.addAttribute("memberList", memberList);
+        return "/admin/member"; // JSP 파일명
+    }
+
+    //  테스트용 페이지
     @GetMapping("/admin/test") // 비밀번호 변경 테스트
     public String adminTest(Model model) {
         return "/admin/password-search"; // JSP 파일명
@@ -172,15 +212,5 @@ public class AdminPageController {
         model.addAttribute("majorList", majorList);
         model.addAttribute("branchList", branchList);
         return "/admin/major-branch-setting"; // JSP 파일명
-    }
-
-    @GetMapping("/admin/test3") // 회원관리 테스트
-    public String memberTest(Model model) {
-        Collection<MemberModel> memberList = MemberService.getMembers();
-        for (MemberModel user: memberList) {
-            System.out.println(user.toString());
-        }
-        model.addAttribute("memberList", memberList);
-        return "/admin/member"; // JSP 파일명
     }
 }

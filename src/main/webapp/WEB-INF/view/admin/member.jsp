@@ -34,6 +34,8 @@
         <tbody>
         <c:forEach items="${memberList}" var="member">
             <tr class="memberRow">
+                <input type="hidden" class="member-id" value="${member.id}">
+                <input type="hidden" class="member-auth" value="${member.authority}">
                 <td>${member.id}</td>
                 <td>${member.name}</td>
                 <td>${member.mail}</td>
@@ -71,154 +73,41 @@
         </c:forEach>
         </tbody>
     </table>
-    <input type="hidden" name="majorlist" value="" id="update-majorlist">
-    <button id="btnModMajor">수정</button>
-</form>
-<form action="/admin/m/mod.do" method="post">
-    <input type="hidden" name="_method" value="delete"/>
-    <input type="hidden" name="majorlist" value="" id="delete-major-list">
-    <button id="btnDeleteMajor" class="btnDelete">삭제</button>
-</form>
-
-<form action="/admin/m/mod.do" method="post">
-    <div id="addMajorBox">
-        <h3>전공 추가</h3>
-        전공코드<input type="text" name="majorNo" required> <br>
-        전공명<input type="text" name="major" required>
-    </div>
-    <button id="btnAddMajor">추가</button>
-</form>
-<%-- 분야 --%>
-<form action="/admin/b/mod.do" method="post">
-    <input type="hidden" name="_method" value="patch"/>
-    <table id="branchwrapper">
-        <thead>
-        <tr>
-            <th>선택</th>
-            <th>분야코드</th>
-            <th>분야명</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${branchList}" var="branch">
-            <tr class="branchRow">
-                <td><input type="checkbox"/></td>
-                <input type="hidden" value="${branch.branchNo}" class="formerbranchno" required>
-                <td><input type="text" value="${branch.branchNo}" class="txtbranchno" required></td>
-                <td><input type="text" value="${branch.branch}" class="txtbranch" required></td>
-            </tr>
+    <c:if test="${!empty beginPage}">
+        <c:forEach begin="${beginPage}" end="${endPage}" var="i">
+            <span><a href="/admin/member?page=${i}">${i}</a></span>
         </c:forEach>
-        </tbody>
-    </table>
-    <input type="hidden" name="branchlist" value="" id="update-branchlist">
-    <button id="btnModBranch">수정</button>
+    </c:if>
+    <input type="hidden" name="memberList" value="" id="update-memberList">
+    <button id="btnModMember">정보 수정</button>
 </form>
-<form action="/admin/b/mod.do" method="post">
-    <input type="hidden" name="_method" value="delete"/>
-    <input type="hidden" name="branchlist" value="" id="delete-branch-list">
-    <button id="btnDeleteBranch" class="btnDelete">삭제</button>
-</form>
-<form action="/admin/b/mod.do" method="post">
-    <div id="addBranchBox">
-        <h3>분야 추가</h3>
-        분야코드<input type="text" name="branchNo" required> <br>
-        분야명<input type="text" name="branch" required>
-    </div>
-    <button id="btnAddBranch">추가</button>
+<form action="/admin/member" method="post">
+    <select name="param">
+        <option value="id">ID</option>
+        <option value="name">이름</option>
+        <option value="mail">e메일</option>
+        <option value="hp">연락처</option>
+    </select>
+    <input type="text" name="searchWord" required/>
+    <button type="submit">검색</button>
 </form>
 </body>
 <script>
-    $('#btnDeleteMajor').on('click', function () {
-        let majorCodes = $('input:checkbox:checked').map(function () {
-            let $majorRow = $(this).closest('.majorRow');
-            if ($majorRow.length) {
-                return $majorRow.find('.txtmajorno').val();
-            }
-            return null;
-        });
-        if (majorCodes.length) {
-            majorCodes = {list : [...majorCodes]};
-            $('#delete-major-list').val(JSON.stringify(majorCodes));
-            return deleteCheck();
-        } else {
-            alert('선택된 데이터가 없습니다!');
-            return false;
+$('#btnModMember').on('click', function () {
+    let inputMember = $('.memberRow').map(function () {
+        if ($(this).find('.member-auth').val() !== 'admin') {
+            let member = {
+                "id": $(this).find('.member-id').val(),
+                "authority": $(this).find('.authority').val(),
+                "isEnabled": ($(this).find('.enabled').val() === 'enable')
+            };
+            return member;
         }
-
+        return null
     });
-
-    $('#btnModMajor').on('click', function () {
-        let majorCodes = $('input:checkbox:checked').map(function () {
-            let $majorRow = $(this).closest('.majorRow');
-            if ($majorRow.length) {
-                let major = {
-                    "majorNo" : $majorRow.find('.txtmajorno').val(),
-                    "major" : $majorRow.find('.txtmajor').val(),
-                    "former" : $majorRow.find('.formermajorno').val()
-                };
-                return major
-            }
-            return null;
-        });
-        if (majorCodes.length) {
-            majorCodes = {list : [...majorCodes]};
-            $('#update-majorlist').val(JSON.stringify(majorCodes));
-            return true;
-        } else {
-            alert('선택된 데이터가 없습니다!');
-            return false;
-        }
-    });
-
-    $('#btnDeleteBranch').on('click', function () {
-        let branchCodes = $('input:checkbox:checked').map(function () {
-            let $branchRow = $(this).closest('.branchRow');
-            if ($branchRow.length) {
-                return $branchRow.find('.txtbranchno').val();
-            }
-            return null;
-        });
-        if (branchCodes.length) {
-            branchCodes = {list : [...branchCodes]};
-            $('#delete-branch-list').val(JSON.stringify(branchCodes));
-            return deleteCheck();
-        } else {
-            alert('선택된 데이터가 없습니다!');
-            return false;
-        }
-
-    });
-
-    $('#btnModBranch').on('click', function () {
-        let branchCodes = $('input:checkbox:checked').map(function () {
-            let $branchRow = $(this).closest('.branchRow');
-            if ($branchRow.length) {
-                let branch = {
-                    "branchNo" : $branchRow.find('.txtbranchno').val(),
-                    "branch" : $branchRow.find('.txtbranch').val(),
-                    "former" : $branchRow.find('.formerbranchno').val()
-                };
-                return branch
-            }
-            return null;
-        });
-        if (branchCodes.length) {
-            branchCodes = {list : [...branchCodes]};
-            $('#update-branchlist').val(JSON.stringify(branchCodes));
-            return true;
-        } else {
-            alert('선택된 데이터가 없습니다!');
-            return false;
-        }
-    });
-
-    function deleteCheck() {
-        let isOk = confirm("정말로 삭제하시겠습니까?");
-        if (isOk) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    inputMember = { list : [...inputMember]};
+    $('#update-memberList').val(JSON.stringify(inputMember));
+    return true;
+})
 </script>
 </html>

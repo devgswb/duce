@@ -15,7 +15,25 @@ public class MemberManagementServiceImpl implements MemberManagementService {
     private MemberDao dao;
 
     @Override
-    public Collection<MemberModel> getMembers() {
-        return dao.getUserForAdmin();
+    public Collection<MemberModel> getMembers(int page, int count) {
+        page = (page - 1) * count;
+        return dao.getUserForAdmin(page, count);
+    }
+
+    @Override
+    public int getAllMemberCount() {
+        return dao.getAllMemberCount();
+    }
+
+    @Override
+    public void updateMemberByAdmin(Collection<MemberModel> MemberList) {
+        for (MemberModel member: MemberList) {
+            dao.updateMemberByAdmin(member);
+        }
+    }
+
+    @Override
+    public Collection<MemberModel> getMemberBySearch(String param, String searchWord) {
+        return dao.getMemberBySearch(param, searchWord);
     }
 }
