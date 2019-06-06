@@ -1,8 +1,10 @@
 package kr.ac.duce.dao;
 
 import kr.ac.duce.model.MemberModel;
-
 import java.lang.reflect.Member;
+import kr.ac.duce.model.ProjectBoardModel;
+
+import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -49,4 +51,16 @@ public interface MemberDao {
     //아이디 찾기.
     @Select("Select * from userinfo where name = #{name} and hp = #{hp}")
     public MemberModel findId(@Param("name") String name, @Param("hp") String hp);
+
+    @Update("Update userinfo set mail=#{mail}, hp=#{hp} where id=#{id}")
+    public void updateUser(MemberModel user);
+
+    @Update("Update userinfo set password=#{password} where id=#{id}")
+    public void updatePw(MemberModel user);
+
+    @Update("Update userinfo set isEnabled = false where id=#{id}")
+    public void deleteUser(MemberModel user);
+
+    @Select("Select * from projectboard where id = #{id}")
+    public List<ProjectBoardModel> findproject(@Param("id") String id);
 }

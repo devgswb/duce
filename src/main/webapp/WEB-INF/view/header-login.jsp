@@ -45,10 +45,9 @@
                         <li><a href="/admin">관리자</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/"><sec:authentication property="principal.name"/></a></li>
+                        <li><a href="/user/update"><sec:authentication property="principal.name" /></a></li>
                     </c:otherwise>
                 </c:choose>
-
             </sec:authorize>
         </ul>
     </div>
