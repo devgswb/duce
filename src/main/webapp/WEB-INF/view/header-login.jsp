@@ -9,11 +9,12 @@
             <i class="material-icons md-light">search</i>
         </a>
         <dialog class="mdl-dialog search-dialog">
-            <form action="#">
+            <form action="/search?page=${page}&query=${query}" accept-charset="utf-8" name="search" method="get">
                 <h4 class="mdl-dialog__title">검색할 프로젝트 제목을 입력해주세요</h4>
                 <div class="mdl-dialog__content">
                     <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type="text" id="search-textbox">
+                    	<input type="hidden" name="page" value = "1">
+                        <input class="mdl-textfield__input" type="text" id="search-textbox" name="query">
                         <label class="mdl-textfield__label" for="search-textbox"></label>
                     </div>
 
@@ -23,7 +24,7 @@
                             class="close mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
                      취소
                     </button>
-                    <button type="button"
+                    <button type="submit"
                             class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
                         검색
                     </button>

@@ -15,6 +15,8 @@ import kr.ac.duce.service.ProjectBoardService;
 @Service
 public class ProjectBoardServiceImpl implements ProjectBoardService {
 
+	int perPageNum = 15;		// 페이징 당 글 개수
+	
 	@Autowired
 	private ProjectBoardDao ProjectBoardDao;
 
@@ -45,8 +47,9 @@ public class ProjectBoardServiceImpl implements ProjectBoardService {
 
 	@Override
 	public List<ProjectBoardModel> findPage(int page) {
-		int min = (page - 1) * 10;
-		int max = page * 10;
+		int min = pagingMin(page);	
+		int max = perPageNum ; 								
+//		System.out.println("page : " + page + "\nrealPagePin : " + min );
 		List<ProjectBoardModel> resList = ProjectBoardDao.findPage(min, max);
 		return resList;
 	}
@@ -120,5 +123,84 @@ public class ProjectBoardServiceImpl implements ProjectBoardService {
 		return ProjectBoardDao.findbyfilterYMB(mYear, major, branch);
 	}
 
+	@Override
+	public List<ProjectBoardModel> findbyfilterMP(String major, int page) {
+		int min = pagingMin(page);	
+		int max = perPageNum ;
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterMP(major, min, max);
+		return resList;
+	}
 
+	@Override
+	public List<ProjectBoardModel> findbyfilterBP(String branch, int page) {	
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterBP(branch, min, max);
+		return resList;
+	}
+
+	@Override
+	public List<ProjectBoardModel> findbyfilterYP(String mYear, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterYP(mYear, min, max);
+		return resList;
+	}
+
+	@Override
+	public List<ProjectBoardModel> findbyfilterP(String major, String branch, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterP(major, branch, min, max);
+		return resList;
+	}
+
+	@Override
+	public List<ProjectBoardModel> findbyfilterYBP(String major, String branch, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterYBP(major, branch, min, max);
+		return resList;
+	}
+
+	@Override
+	public List<ProjectBoardModel> findbyfilterYMP(String mYear, String major, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterYMP(mYear, major, min, max);
+		return resList;
+	}
+
+	@Override
+	public List<ProjectBoardModel> findbyfilterYMBP(String mYear, String major, String branch, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.findbyfilterYMBP(mYear, major, branch, min, max);
+		return resList;
+	}
+	
+	public List<ProjectBoardModel> searchProjectList(String query) {
+		return ProjectBoardDao.searchProjectList(query);
+	}
+	
+	@Override
+	public List<ProjectBoardModel> searchProjectList(String query, int page) {
+		int min = pagingMin(page);		
+		int max = perPageNum ; 								
+		List<ProjectBoardModel> resList = ProjectBoardDao.searchProjectListP(query, min, max);
+		return resList;
+	}
+	
+	public int pagingMin(int page) {
+		if(page <= 0) {
+			page = 1;
+		}				
+		int min = (page - 1) * perPageNum;		
+		return min;
+	}
+
+	
+
+	
+	
 }

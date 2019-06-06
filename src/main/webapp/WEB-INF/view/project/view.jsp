@@ -130,13 +130,13 @@
             <p><c:out value="${board.content}"/>
             </p>
             <div class="btn-wrapper">
-                <a href="/project"
+                <a href="/filter?page=${page}&major=${major}&branch=${branch}&mYear=${mYear}"
                    class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">목록
                 </a>
                 <sec:authorize access="hasAnyAuthority('admin', 'user')">
                     <sec:authentication var="user" property="principal"/>
                     <sec:authorize access="hasAuthority('admin')" var="isAdmin"/>
-                    <c:if test="${user.id == board.id || isAdmin}">
+                    <c:if test="${user.id = board.id || isAdmin}">
                         <form action="project/delete.do" method="post">
                             <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
                                     name="pNo" value="${board.pNo}">삭제
