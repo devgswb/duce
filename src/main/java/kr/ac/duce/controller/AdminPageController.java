@@ -219,7 +219,7 @@ public class AdminPageController {
     public String memberSearch(Model model, @RequestParam String param, @RequestParam String searchWord) {
         Collection<MemberModel> memberList = MemberService.getMemberBySearch(param, searchWord);
         model.addAttribute("memberList", memberList);
-        return "redirect:/admin/member"; // JSP 파일명
+        return "/admin/member"; // JSP 파일명
     }
     /*
         슬라이더 변경
