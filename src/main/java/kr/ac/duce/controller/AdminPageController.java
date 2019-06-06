@@ -6,13 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import kr.ac.duce.handler.ErrorPageHandler;
-import kr.ac.duce.model.BranchCodeModel;
-import kr.ac.duce.model.MajorCodeModel;
-import kr.ac.duce.model.MemberModel;
+import kr.ac.duce.model.*;
 import kr.ac.duce.module.JSArrayParser;
-import kr.ac.duce.service.AdminPasswordService;
-import kr.ac.duce.service.MajorBranchSettingService;
-import kr.ac.duce.service.MemberManagementService;
+import kr.ac.duce.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -22,9 +18,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,12 @@ public class AdminPageController {
 
     @Autowired
     MemberManagementService MemberService;
+
+    @Autowired
+    SliderSettingService sliderSettingService;
+
+    @Autowired
+    IntroSettingService introSettingService;
 
     @GetMapping("/admin") // URL 주소
     public String adminPage(Model model) {
@@ -202,10 +210,39 @@ public class AdminPageController {
         슬라이더 변경
      */
     @GetMapping("/admin/slider") // 비밀번호 변경 테스트
-    public String sliderModify(Model model) {
+    public String sliderModifyView(Model model) {
         return "/admin/slider-modify"; // JSP 파일명
     }
 
+    @PostMapping("/admin/slider/mod.do") // URL 주소
+    public String sliderModify(Model model, @ModelAttribute UploadSliderForm uploadedData) throws IOException {
+        JSArrayParser<SliderSettingModel> parser = new JSArrayParser<SliderSettingModel>();
+        ArrayList<SliderSettingModel> sliderList= parser.parse(uploadedData.getSliderjson(), SliderSettingModel.class, "slides");
+        if (sliderSettingService.modifySlider(sliderList, uploadedData.getFiles())){
+            try {
+                return "/"; // JSP 파일명
+            } catch (Exception ex) {
+                throw ex;
+
+            }
+        } else {
+            return "/error"; // 에러 발생
+        }
+
+    }
+    /*
+        소개 페이지 변경
+    */
+    @GetMapping("/admin/intro") // 비밀번호 변경 테스트
+    public String introModView(Model model) {
+        return "/admin/intro-modify"; // JSP 파일명
+    }
+
+    @PostMapping("/admin/intro/mod.do") // URL 주소
+    public String introModify(Model model, @ModelAttribute UploadIntroForm introForm) throws IOException {
+        introSettingService.updateIntro(introForm);
+        return "/";
+    }
     //  테스트용 페이지
     @GetMapping("/admin/test") // 비밀번호 변경 테스트
     public String adminTest(Model model) {
