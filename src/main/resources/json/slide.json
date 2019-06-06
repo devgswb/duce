@@ -1,0 +1,44 @@
+{
+  "slides": [
+    {
+      "content": "test1",
+      "btnContent": "test",
+      "btnUrl": "http://www.naver.com",
+      "imgUrl": "/img/slide/ca01.jpg",
+      "isUse": true,
+      "isBtnUse": true
+    },
+    {
+      "content": "",
+      "btnContent": "asdf",
+      "btnUrl": "http://www.naver.com",
+      "imgUrl": "/img/slide/ca02.jpg",
+      "isUse": true,
+      "isBtnUse": true
+    },
+    {
+      "content": "",
+      "btnContent": "",
+      "btnUrl": "http://www.naver.com",
+      "imgUrl": "/img/slide/ca03.jpg",
+      "isUse": false,
+      "isBtnUse": true
+    },
+    {
+      "content": "",
+      "btnContent": "",
+      "btnUrl": "http://www.naver.com",
+      "imgUrl": "/img/slide/ca04.jpg",
+      "isUse": false,
+      "isBtnUse": true
+    },
+    {
+      "content": "",
+      "btnContent": "",
+      "btnUrl": "http://www.naver.com",
+      "imgUrl": "/img/slide/ca05.jpg",
+      "isUse": false,
+      "isBtnUse": true
+    }
+  ]
+}

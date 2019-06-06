@@ -1,5 +1,7 @@
 package kr.ac.duce.dao;
 import java.util.List;
+
+import kr.ac.duce.model.ProjectBoardViewModel;
 import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -65,8 +67,7 @@ public interface ProjectBoardDao {
 	
 	@Select("SELECT * FROM MajorCode")
 	public List<MajorCodeModel> majorCode();
-	
-	
-	
-	
+
+	@Select("SELECT * FROM projectboard ORDER BY pNo desc LIMIT #{number}")
+    List<ProjectBoardModel> getSampleProjects(int number);
 }

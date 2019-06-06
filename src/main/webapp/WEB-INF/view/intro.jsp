@@ -14,8 +14,6 @@
     <script src="main.js"></script>
         -->
 <!-- cdn -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <!-- css -->
 <link
 	href="https://fonts.googleapis.com/css?family=Noto+Serif+KR|Titillium+Web"
@@ -25,8 +23,6 @@
 <!-- web font -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <!-- material -->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -43,24 +39,35 @@
 	<jsp:include page="header-nav.jsp" />
 	<!-- Navigation Bar -->
 	<article>
-		<div id="carou">
-			<div
-				style="background-image: url(/res/img/carousel01.jpg); background-size: 100%; height: 100%">
-
-			</div>
-			<div>ddd</div>
-		</div>
-		<!-- carousel boxslider -->
-		<!-- Cards -->
 		<div class="con">
-			<img src="/res/img/intro.jpeg" />
+			<div id="intro-contents">
+			</div>
 		</div>
-		<!-- contents box -->
 	</article>
 	<jsp:include page="footer.jsp" />
-	<!-- footer -->
-
-	<!-- scripts -->
 </body>
+<script>
+	function renderPage(Json) {
+		const content = Json.content;
+		const img = Json.img;
+		let renderHtml = "";
+		renderHtml += `<div class="intro-img"><img src=${"${img}"}></div>`;
+		renderHtml += `<div class="intro-content">${"${content}"}</div>`;
+		$('#intro-contents').html(renderHtml);
+	}
 
+	$(document).ready(function () {
+		$.ajax({
+			url: '/json/intro.json',
+			async: false,
+			dataType: 'json',
+			success: function (data) {
+				renderPage(data);
+			},
+			error: function () {
+				renderPage();
+			}
+		})
+	});
+</script>
 </html>

@@ -19,6 +19,7 @@ public class AdditionalResourceWebConfiguration implements WebMvcConfigurer {
         ProjectPath += "/src/main/resources";
         System.out.println(ProjectPath);
         registry.addResourceHandler("/img/**").addResourceLocations(ProjectPath + "/images/");
+        registry.addResourceHandler("/json/**").addResourceLocations(ProjectPath + "/json/");
         registry.addResourceHandler("/file/**").addResourceLocations(ProjectPath + "/files/");
     }
 /*

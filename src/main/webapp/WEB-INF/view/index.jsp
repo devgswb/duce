@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- list.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -14,19 +15,16 @@
     <script src="main.js"></script>
         -->
 <!-- cdn -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-<!-- css -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.15/jquery.bxslider.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.15/jquery.bxslider.min.css" rel="stylesheet" />
+	<!-- css -->
 <link
 	href="https://fonts.googleapis.com/css?family=Noto+Serif+KR|Titillium+Web"
 	rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR"
 	rel="stylesheet">
 <!-- web font -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <!-- material -->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -44,159 +42,38 @@
 	<!-- Navigation Bar -->
 	<article>
 		<div id="carou">
-			<div
-				style="background-image: url(/res/img/carousel01.jpg); background-size: 100%; height: 100%">
 
-			</div>
-			<div>ddd</div>
 		</div>
 		<!-- carousel boxslider -->
 		<!-- Cards -->
 		<div class="con">
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
+			<c:forEach var="card" items="${boardList}">
+				<a href="project?page=1&content=${card.pNo}">
+					<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
+						<div class="mdl-card__title mdl-card--expand duce-card-img"
+							 style="background-image: url(${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}); background-size: 100%;">
+							<h2 class="mdl-card__title-text"></h2>
+						</div>
+						<div class="mdl-card__supporting-text duce-card-con">
+							<div class="category">
+								<div class="major">${card.major}과</div>
+								<div class="branch">${card.branch}</div>
+								<div class="year">${card.year}년</div>
+							</div>
+							<div class="title"><c:out value="${card.title}"/></div>
+							<div class="contents"><c:out value="${card.viewContent}"/>
+							</div>
+							<div class="participant">
+								<div class="title">참여학생</div>
+								<div class="name"><c:out value="${card.viewPartStudents}"/></div>
+								<div class="title">지도교수</div>
+								<div class="name"><c:out value="${card.guide} 교수"/></div>
+							</div>
+						</div>
 					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
-			<!-- 카드 단위 -->
-
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
-					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
-			<!-- 카드 단위 -->
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
-					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
-			<!-- 카드 단위 -->
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
-					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
-			<!-- 카드 단위 -->
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
-					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
-			<!-- 카드 단위 -->
-			<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
-				<div class="mdl-card__title mdl-card--expand duce-card-img"
-					style="background-image: url(/res/img/ex0.jpg); background-size: 100%;">
-					<h2 class="mdl-card__title-text"></h2>
-				</div>
-				<div class="mdl-card__supporting-text duce-card-con">
-					<div class="category">
-						<div class="major">컴퓨터 소프트웨어과</div>
-						<div class="branch">IOT 분야</div>
-						<div class="year">2019년</div>
-					</div>
-					<div class="title">드론 워머신</div>
-					<div class="contents">무인 항공기(無人航空機, 영어: Unmanned Aerial
-						Vehicle, UAV), 무인 비행기(무인기) 또는 드론(drone)은 조종사(human pilot)가 탑승하지 않은
-						항공기(비행기)이다.</div>
-					<div class="participant">
-						<div class="title">참여학생</div>
-						<div class="name">류현진 외 3명</div>
-						<div class="title">지도교수</div>
-						<div class="name">류중경 교수</div>
-					</div>
-				</div>
-			</div>
+				</a>
+				<!-- 카드 단위 -->
+			</c:forEach>
 			<!-- 카드 단위 -->
 			<!-- cards end -->
 		</div>
@@ -207,16 +84,47 @@
 
 	<!-- scripts -->
 	<script>
+		function renderSlide(Json) {
+			const slides = Json.slides;
+			let renderHtml = "";
+			for (let slide of slides) {
+				if (!slide.isUse) continue;
+				renderHtml += '<div class="carou-slide "';
+				renderHtml += `style="background-image: url(${"${slide.imgUrl}"}); background-size: 100%; height: 100%"> `;
+				renderHtml += `<p class="carou-content">${"${slide.content}"}</p>`;
+				renderHtml +=  `<a href="${"${slide.btnUrl}"}" class="btn-outline-info">${"${slide.btnContent}"}</a> </div>`;
+			}
+			$('#carou').html(renderHtml);
+		}
+
+		$(document).ready(function () {
+			$.ajax({
+				url: '/json/slide.json',
+				async: false,
+				dataType: 'json',
+				success: function (data) {
+					renderSlide(data);
+				},
+				error: function () {
+					renderSlide();
+				}
+			})
+		});
 		$(function() {
 			$('#carou').bxSlider({
 				speed : 500,
 				auto : true,
 				autoHover : true,
-				controls : false
+				controls : true,
+				touchEnabled : (navigator.maxTouchPoints > 0)
 			});
 		});
 	</script>
-
+<%--	<div class="carou-slide"--%>
+<%--		 style="background-image: url(/img/slide/ca01.jpg); background-size: 100%; height: 100%">--%>
+<%--		<p class="carou-content"></p>--%>
+<%--		<a href="" class="btn-outline-info"></a>--%>
+<%--	</div>--%>
 </body>
 
 </html>

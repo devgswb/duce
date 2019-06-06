@@ -198,6 +198,13 @@ public class AdminPageController {
         model.addAttribute("memberList", memberList);
         return "/admin/member"; // JSP 파일명
     }
+    /*
+        슬라이더 변경
+     */
+    @GetMapping("/admin/slider") // 비밀번호 변경 테스트
+    public String sliderModify(Model model) {
+        return "/admin/slider-modify"; // JSP 파일명
+    }
 
     //  테스트용 페이지
     @GetMapping("/admin/test") // 비밀번호 변경 테스트
