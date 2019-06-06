@@ -6,14 +6,6 @@
 	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
-<script>
-function showFindId(){
-		window.open("/findid", "findid", "width=500, height=230, left=600, top = 300");
-	}
-function showFindPass(){
-	window.open("/passwordfind", "findid", "width=500, height=230, left=600, top = 300");
-}
-</script>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -110,4 +102,12 @@ function showFindPass(){
 	<jsp:include page="../footer.jsp" />
 	<!-- footer -->
 </body>
+<script>
+	function showFindId(){
+		window.open("/findid", "findid", "width=800, height=500, left=600, top = 300");
+	}
+	function showFindPass(){
+		window.open("/passwordfind", "findid", "width=800, height=500, left=600, top = 300");
+	}
+</script>
 </html>

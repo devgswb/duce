@@ -54,8 +54,8 @@
     </div>
 </div>
 <script>
-    var dialog = document.querySelector('dialog');
-    var showDialogButton = document.querySelector('#search-dialog');
+    let dialog = document.querySelector('dialog');
+    let showDialogButton = document.querySelector('#search-dialog');
     if (!dialog.showModal) {
         dialogPolyfill.registerDialog(dialog);
     }
