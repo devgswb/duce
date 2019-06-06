@@ -54,12 +54,18 @@ public class AdminPageController {
 
     @GetMapping("/admin") // URL 주소
     public String adminPage(Model model) {
-        return "/admin/view"; // JSP 파일명
+        return "redirect:/admin/slider"; // JSP 파일명
     } // 관리자 페이지뷰
 
     /*
         관리자 비밀번호 변경
      */
+
+    @GetMapping("/admin/pwdchange") // 비밀번호 변경 테스트
+    public String adminTest(Model model) {
+        return "/admin/password-search"; // JSP 파일명
+    }
+
     @PostMapping(value = "/admin/pwdchange.do", params = {"pwd", "changedpwd"})
     public String registerMember(@RequestParam(value = "pwd") String currentInputPwd, @RequestParam String changedpwd, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,7 +77,7 @@ public class AdminPageController {
             String currentDBPwd = user.getPassword();
             if (passwordEncoder.matches(currentInputPwd, currentDBPwd)) {
                 AdminPasswordService.changePassword(user.getId(), changedpwd);
-                return "/admin"; // 비번 맞는다면 패스워드 변경
+                return "/admin/pwdchange"; // 비번 맞는다면 패스워드 변경
             } else {
                 return ErrorPageHandler.throwError(model, "adminPassword", "/admin"); // 아니면 에러&이전 페이지
             }
@@ -89,11 +95,20 @@ public class AdminPageController {
 /*
     전공
  */
+    @GetMapping("/admin/mb") // 전공/분야 설정 테스트
+    public String majorTest(Model model) {
+        List<BranchCodeModel> branchList = MajorBranchService.getBranch();
+        List<MajorCodeModel> majorList = MajorBranchService.getMajor();
+        model.addAttribute("majorList", majorList);
+        model.addAttribute("branchList", branchList);
+        return "/admin/major-branch-setting"; // JSP 파일명
+    }
+
     @PostMapping("/admin/m/mod.do") // URL 주소
     public String majorAdd(Model model, @RequestParam String majorNo, @RequestParam String major) {
         try {
             MajorBranchService.addMajor(majorNo, major);
-            return "redirect:/admin/";
+            return "redirect:/admin/mb";
         } catch (Exception e) {
             return "/error";
         }
@@ -105,7 +120,7 @@ public class AdminPageController {
             JSArrayParser<MajorCodeModel> arrayParser = new JSArrayParser<MajorCodeModel>();
             Collection<MajorCodeModel> parsedMajorList = arrayParser.parse(majorList, MajorCodeModel.class);
             MajorBranchService.updateMajor(parsedMajorList);
-            return "redirect:/admin/";
+            return "redirect:/admin/mb";
         } catch (Exception e) {
             throw e;
 //            return "/error";
@@ -118,7 +133,7 @@ public class AdminPageController {
         Collection<String> parsedMajorList = arrayParser.parse(majorList, String.class);
         try {
             MajorBranchService.deleteMajor(parsedMajorList);
-            return "/";
+            return "redirect:/admin/mb";
         } catch (Exception ex) {
             if (ex instanceof DataIntegrityViolationException) {
                 return "/error"; // 해당 코드를 사용하는 게시판이 존재한다는 에러
@@ -134,7 +149,7 @@ public class AdminPageController {
     public String branchAdd(Model model, @RequestParam String branchNo, @RequestParam String branch) {
         try {
             MajorBranchService.addBranch(branchNo, branch);
-            return "redirect:/admin/";
+            return "redirect:/admin/mb";
         } catch (Exception e) {
             return "/error";
         }
@@ -146,7 +161,7 @@ public class AdminPageController {
             JSArrayParser<BranchCodeModel> arrayParser = new JSArrayParser<BranchCodeModel>();
             Collection<BranchCodeModel> parsedBranchList = arrayParser.parse(branchList, BranchCodeModel.class);
             MajorBranchService.updateBranch(parsedBranchList);
-            return "redirect:/admin/";
+            return "redirect:/admin/mb";
         } catch (Exception e) {
             return "/error";
         }
@@ -158,7 +173,7 @@ public class AdminPageController {
         Collection<String> parsedBranchList = arrayParser.parse(branchList, String.class);
         try {
             MajorBranchService.deleteBranch(parsedBranchList);
-            return "/";
+            return "redirect:/admin/mb";
         } catch (Exception ex) {
             if (ex instanceof DataIntegrityViolationException) {
                 return "/error"; // 해당 코드를 사용하는 게시판이 존재한다는 에러
@@ -193,7 +208,7 @@ public class AdminPageController {
             JSArrayParser<MemberModel> arrayParser = new JSArrayParser<MemberModel>();
             Collection<MemberModel> parsedMemberList = arrayParser.parse(memberList, MemberModel.class);
             MemberService.updateMemberByAdmin(parsedMemberList);
-            return "redirect:/admin/";
+            return "redirect:/admin/member";
         } catch (Exception e) {
             throw e;
 //            return "/error";
@@ -204,7 +219,7 @@ public class AdminPageController {
     public String memberSearch(Model model, @RequestParam String param, @RequestParam String searchWord) {
         Collection<MemberModel> memberList = MemberService.getMemberBySearch(param, searchWord);
         model.addAttribute("memberList", memberList);
-        return "/admin/member"; // JSP 파일명
+        return "redirect:/admin/member"; // JSP 파일명
     }
     /*
         슬라이더 변경
@@ -220,7 +235,7 @@ public class AdminPageController {
         ArrayList<SliderSettingModel> sliderList= parser.parse(uploadedData.getSliderjson(), SliderSettingModel.class, "slides");
         if (sliderSettingService.modifySlider(sliderList, uploadedData.getFiles())){
             try {
-                return "/"; // JSP 파일명
+                return "redirect:/admin/slider"; // JSP 파일명
             } catch (Exception ex) {
                 throw ex;
 
@@ -241,20 +256,7 @@ public class AdminPageController {
     @PostMapping("/admin/intro/mod.do") // URL 주소
     public String introModify(Model model, @ModelAttribute UploadIntroForm introForm) throws IOException {
         introSettingService.updateIntro(introForm);
-        return "/";
+        return "redirect:/admin/intro";
     }
     //  테스트용 페이지
-    @GetMapping("/admin/test") // 비밀번호 변경 테스트
-    public String adminTest(Model model) {
-        return "/admin/password-search"; // JSP 파일명
-    }
-
-    @GetMapping("/admin/test2") // 전공/분야 설정 테스트
-    public String majorTest(Model model) {
-        List<BranchCodeModel> branchList = MajorBranchService.getBranch();
-        List<MajorCodeModel> majorList = MajorBranchService.getMajor();
-        model.addAttribute("majorList", majorList);
-        model.addAttribute("branchList", branchList);
-        return "/admin/major-branch-setting"; // JSP 파일명
-    }
 }

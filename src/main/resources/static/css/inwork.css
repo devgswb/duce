@@ -734,6 +734,7 @@ footer p {
 
 .btn-wrapper {
     height: 32px;
+    padding-top: 10px;
     color: #6388c3;
 }
 
@@ -957,3 +958,151 @@ footer p {
     font-size: 12px;
     display: inline-block;
 }
+/* 관리자 페이지 */
+.admin-con {
+    font-size: 0;
+    min-height: 740px;
+}
+
+.admin-title {
+    padding-top: 20px;
+    width: 70%;
+    font-size: 36px;
+    text-align: left;
+}
+
+.admin-title hr {
+    margin-top: 20px;
+    background: #ededed;
+    margin-bottom: 0;
+}
+
+.admin-tab {
+    margin-top: 30px;
+    margin-left: 12%;
+    width: 250px;
+    float: left;
+    display: inline-block;
+}
+.admin-tab-main:first-child {
+    border-top:1px solid #ededed;
+}
+.admin-tab-main {
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    border-bottom: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+}
+.admin-tab-sub > a > div {
+    text-align: center;
+    font-size: 14px;
+    width: 250px;
+    padding: 10px;
+    border-bottom: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+    background: #fafafa;
+}
+.admin-tab-sub > a > div:hover {
+    background: #e0e0e0;
+    cursor: pointer;
+}
+.admin-tab-main:hover {
+    background: #ededed;
+    cursor: pointer;
+}
+
+.admin-tab .selected {
+    background: #ededed;
+}
+
+.admin-tab-sub {
+    display: none;
+}
+
+.admin-tab-content {
+    width: 70%;
+    float: left;
+    display: inline-block;
+    padding: 30px;
+}
+
+/* 슬라이더 수정 */
+.slider-btn-info-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.slider-btn-info-wrapper input {
+    float:left;
+    width: 75%;
+    display: inline-block;
+}
+.slider-btn-info-wrapper input:first-child {
+    float:left;
+    width: 25%;
+    display: inline-block;
+}
+
+.slide-btn-wrapper > .form-group {
+    width:48%;
+    display: inline-block;
+}
+
+.slider-change-btn-wrapper {
+    float:right;
+}
+
+.slider-submit-wrapper{
+    clear:both;
+}
+
+/* 학과 전공 관리 페이지 */
+.admin-mb-majortable-wrapper {
+    padding: 15px;
+    width:40%;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.admin-mb-majortable-wrapper p {
+    font-size: 24px;
+}
+.major-add-wrapper {
+    padding: 15px;
+    width:45%;
+    font-size: 16px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.major-add-wrapper p {
+    font-size: 24px;
+}
+.admin-mb-branchtable-wrapper {
+    padding: 15px;
+    width:40%;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.admin-mb-branchtable-wrapper p {
+    font-size: 24px;
+}
+.branch-add-wrapper {
+    padding: 15px;
+    width:45%;
+    font-size: 16px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.branch-add-wrapper p {
+    font-size: 24px;
+}
+/* 기타 */
+.none {
+    display: none;
+}
+

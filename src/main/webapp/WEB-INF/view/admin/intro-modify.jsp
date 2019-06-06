@@ -4,23 +4,80 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Duce</title>
+    <!--
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="main.js"></script>
+        -->
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR|Titillium+Web" rel="stylesheet">
+    <!-- web font -->
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <!-- material -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- bootstrap4 -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- script -->
+    <!-- local css -->
+    <link rel="stylesheet" href="/res/css/inwork.css">
 </head>
 <body>
-<h3>AJAX 기반 인트로 수정</h3><br>
-<form:form action="/admin/intro/mod.do" method="post" enctype="multipart/form-data">
-    <textarea name="content" id="content"></textarea>
-    <input type="file" name="file" id="file" accept="image/jpg, image/jpeg, image/webp, image/png">
-    <input type="hidden" name="img" id="img">
-    <input type="text" disabled id="txtimg">
-    <button id="submit">제출</button>
-</form:form>
-<button id="reload">되돌리기</button>
+<jsp:include page="../header-nav.jsp"/>
+<!-- Navigation Bar -->
+<article>
+    <div class="admin-con">
+        <jsp:include page="./admin-tab.jsp"/>
+        <div class="admin-tab-content">
+            <div class="admin-title">
+                소개글 수정
+                <hr/>
+            </div>
+            <!--     파일 추가 -->
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+                <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file" id="btn-file-upload">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                <input class="mdl-textfield__input" placeholder="이미지 업로드" type="text" id="txtimg"
+                       readonly/>
+            </div>
+            <form:form action="/admin/intro/mod.do" method="post" enctype="multipart/form-data">
+                <label for="content">내용</label>
+                <textarea class="form-control" rows="8" name="content" id="content"></textarea>
+                <input type="file" class="none" name="file" id="file"
+                       accept="image/jpg, image/jpeg, image/webp, image/png">
+                <input type="hidden" id="img">
+                <div class="btn-wrapper">
+                    <button id="submit"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">
+                        저장
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined" id="reload">
+                        되돌리기<i class="material-icons">cached</i>
+                    </button>
+                </div>
+            </form:form>
+
+        </div>
+    </div>
+    <!-- contents box -->
+</article>
+<jsp:include page="../footer.jsp"/>
+<!-- footer -->
 </body>
 <script>
     let introData;
@@ -62,6 +119,9 @@
     $(document).ready(function () {
         dataLoad();
         $('#reload').on('click', () => dataLoad());
+        $('#btn-file-upload').on('click', function () {
+            $('#file').click();
+        });
         $('#submit').on('click', function () {
             saveData();
             return true;

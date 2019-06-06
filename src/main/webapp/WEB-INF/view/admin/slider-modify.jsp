@@ -4,47 +4,113 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Duce</title>
+    <!--
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="main.js"></script>
+        -->
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR|Titillium+Web" rel="stylesheet">
+    <!-- web font -->
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <!-- material -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- bootstrap4 -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- script -->
+    <!-- local css -->
+    <link rel="stylesheet" href="/res/css/inwork.css">
 </head>
 <body>
-    <h3>AJAX 기반 슬라이더 수정</h3><br>
-        <input type="button" id="btn-file-upload" value="이미지 업로드"><br>
-        <input type="text" id="file-text" disabled>
-        <input type="hidden" id="file-refer-path">
-        내용<textarea id="content" rows="12"></textarea><br>
-        버튼 이름<input type="text" id="btnname"/><br>
-        버튼 링크<input type="text" id="btnlink"/><br>
-        슬라이드 사용
-        <select id="useSlide" title="슬라이드 사용">
-            <option value="true">사용</option>
-            <option value="false">사용 안 함</option>
-        </select><br>
-    버튼 사용
-    <select id="useBtn" title="버튼 사용">
-        <option value="true">사용</option>
-        <option value="false">사용 안 함</option>
-    </select><br>
-    <button id="btn-change-form-1">1</button>
-    <button id="btn-change-form-2">2</button>
-    <button id="btn-change-form-3">3</button>
-    <button id="btn-change-form-4">4</button>
-    <button id="btn-change-form-5">5</button>
-    <br>
-    <button id="btn-reload">현재 데이터 가져오기</button>
-    <form:form action="/admin/slider/mod.do" method="post" enctype="multipart/form-data">
-        <input type="file" id="file01" name="files" value="" accept="image/jpeg, image/jpg, image/png, image/webp">
-        <input type="file" id="file02" name="files" value="" accept="image/jpeg, image/jpg, image/png, image/webp">
-        <input type="file" id="file03" name="files" value="" accept="image/jpeg, image/jpg, image/png, image/webp">
-        <input type="file" id="file04" name="files" value="" accept="image/jpeg, image/jpg, image/png, image/webp">
-        <input type="file" id="file05" name="files" value="" accept="image/jpeg, image/jpg, image/png, image/webp">
-        <input type="hidden" id="sliderjson" name="sliderjson">
-        <button id="submit">저장</button>
-    </form:form>
+<jsp:include page="../header-nav.jsp"/>
+<!-- Navigation Bar -->
+<article>
+    <div class="admin-con">
+        <jsp:include page="./admin-tab.jsp"/>
+        <div class="admin-tab-content">
+            <div class="admin-title">
+                슬라이더 수정
+                <hr/>
+            </div>
+            <!--     파일 추가 -->
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+                <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file" id="btn-file-upload">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                <input multiple class="mdl-textfield__input" placeholder="이미지 업로드" type="text" id="file-text"
+                       readonly/>
+                <input type="hidden" id="file-refer-path">
+            </div>
+            <label for="content">내용</label>
+            <textarea class="form-control" rows="8" id="content" placeholder="내용"></textarea>
+            <div class="slider-btn-info-wrapper">
+                <label for="btnname">버튼 이름</label>
+                <input type="text" class="form-control" id="btnname" placeholder="버튼 이름">
+                <label for="btnlink">버튼 링크</label>
+                <input type="text" class="form-control" id="btnlink" placeholder="버튼 링크">
+            </div>
+            <div class="slide-btn-wrapper">
+                <div class="form-group">
+                    <label for="useSlide">슬라이드 사용</label>
+                    <select class="form-control" id="useSlide" title="슬라이드 사용">
+                        <option value="true">사용</option>
+                        <option value="false">사용 안 함</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="useBtn">버튼 사용</label>
+                    <select class="form-control" id="useBtn" title="버튼 사용">
+                        <option value="true">사용</option>
+                        <option value="false">사용 안 함</option>
+                    </select>
+                </div>
+            </div>
+            <div class="slider-change-btn-wrapper">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-ti " id="btn-reload">
+                    <i class="material-icons">cached</i>
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-1">1</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-2">2</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-3">3</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-4">4</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-5">5</button>
+            </div>
+            <div class="slider-submit-wrapper">
+                <form:form action="/admin/slider/mod.do" method="post" enctype="multipart/form-data">
+                    <input type="file" id="file01" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
+                    <input type="file" id="file02" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
+                    <input type="file" id="file03" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
+                    <input type="file" id="file04" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
+                    <input type="file" id="file05" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
+                    <input type="hidden" id="sliderjson" name="sliderjson">
+                    <div class="btn-wrapper">
+                    <button id="submit"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">저장
+                    </button>
+                    </div>
+                </form:form>
+            </div>
+        </div>
+    </div>
+    <!-- contents box -->
+</article>
+<jsp:include page="../footer.jsp"/>
+<!-- footer -->
 </body>
 <script>
     let sliderData;
