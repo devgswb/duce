@@ -311,9 +311,9 @@ public class ProjectBoardController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = auth.getPrincipal();
 		if (principal instanceof MemberModel) {
-			System.out.println(((MemberModel) principal).toString());
+//			System.out.println(((MemberModel) principal).toString());
 		} else {
-			System.out.println(principal.toString());
+//			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
 
@@ -334,7 +334,7 @@ public class ProjectBoardController {
 		}
 		else
 		{
-			System.out.println("수정 접근 - ID 불일치.");
+//			System.out.println("수정 접근 - ID 불일치.");
 			
 			return "redirect:/project?page=1";
 		}
@@ -362,14 +362,14 @@ public class ProjectBoardController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = auth.getPrincipal();
 		if (principal instanceof MemberModel) {
-			System.out.println(((MemberModel) principal).toString());
+//			System.out.println(((MemberModel) principal).toString());
 		} else {
-			System.out.println(principal.toString());
+//			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
 
 		if (loginID.equals(filedelete.getId())) {
-			System.out.println("삭제 신청 - ID 일치.");
+//			System.out.println("삭제 신청 - ID 일치.");
 			ProjectBoardService.delete(Integer.parseInt(pNo));
 			if (!imgs[0].equals("")) {
 				for (String i : imgs) {
@@ -378,12 +378,12 @@ public class ProjectBoardController {
 
 					if (file.exists()) {
 						if (file.renameTo(delfile)) {
-							System.out.println("파일삭제 성공");
+//							System.out.println("파일삭제 성공");
 						} else {
-							System.out.println("파일삭제 실패");
+//							System.out.println("파일삭제 실패");
 						}
 					} else {
-						System.out.println("파일이 존재하지 않습니다.");
+//						System.out.println("파일이 존재하지 않습니다.");
 					}
 				}
 			}
@@ -395,19 +395,19 @@ public class ProjectBoardController {
 
 					if (file.exists()) {
 						if (file.renameTo(delfile)) {
-							System.out.println("파일삭제 성공");
+//							System.out.println("파일삭제 성공");
 						} else {
-							System.out.println("파일삭제 실패");
+//							System.out.println("파일삭제 실패");
 						}
 					} else {
-						System.out.println("파일이 존재하지 않습니다.");
+//						System.out.println("파일이 존재하지 않습니다.");
 					}
 				}
 			}
-			System.out.println("Projcet 삭제 성공");
+//			System.out.println("Projcet 삭제 성공");
 		} else {
-			System.out.println("삭제 신청 - ID 불일치.");
-			System.out.println("Projcet 삭제 실패");
+//			System.out.println("삭제 신청 - ID 불일치.");
+//			System.out.println("Projcet 삭제 실패");
 		}
 
 		return "redirect:/project?page=1"; // JSP 파일명
@@ -430,14 +430,14 @@ public class ProjectBoardController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = auth.getPrincipal();
 		if (principal instanceof MemberModel) {
-			System.out.println(((MemberModel) principal).toString());
+//			System.out.println(((MemberModel) principal).toString());
 		} else {
-			System.out.println(principal.toString());
+//			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
 
 		if (loginID.equals(updateboard.getId())) {
-		System.out.println("수정 접근 - ID 일치.");
+//		System.out.println("수정 접근 - ID 일치.");
 			
 		String imgPath = "";
 		String addPath = "";
@@ -487,12 +487,12 @@ public class ProjectBoardController {
 					File delimgfile = new File(deleteimgPath + i.split("/project")[1] + ".del");
 					if (imgfile.exists()) {
 						if (imgfile.renameTo(delimgfile)) {
-							System.out.println("파일삭제 성공");
+//							System.out.println("파일삭제 성공");
 						} else {
-							System.out.println("파일삭제 실패");
+//							System.out.println("파일삭제 실패");
 						}
 					} else {
-						System.out.println("파일이 존재하지 않습니다.");
+//						System.out.println("파일이 존재하지 않습니다.");
 					}
 				}
 			}
@@ -555,12 +555,12 @@ public class ProjectBoardController {
 
 					if (addfile.exists()) {
 						if (addfile.renameTo(deladdfile)) {
-							System.out.println("파일삭제 성공");
+//							System.out.println("파일삭제 성공");
 						} else {
-							System.out.println("파일삭제 실패");
+//							System.out.println("파일삭제 실패");
 						}
 					} else {
-						System.out.println("파일이 존재하지 않습니다.");
+//						System.out.println("파일이 존재하지 않습니다.");
 					}
 				}
 			}
@@ -642,7 +642,7 @@ public class ProjectBoardController {
 		ProjectBoardService.update(modModel);	 
 		}	
 		else {
-			System.out.println("수정 접근 - ID 불일치.");
+//			System.out.println("수정 접근 - ID 불일치.");
 		}
 		
 		return "redirect:/project?page=1"; // JSP 파일명

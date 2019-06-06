@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.ac.duce.model.MemberModel;
@@ -39,11 +40,11 @@ public class MemberPageController {
         if (principal instanceof MemberModel) {
             System.out.println( ((MemberModel) principal).toString());
         } else {
-            System.out.println(principal.toString());
+//            System.out.println(principal.toString());
         }
     	String id = ((MemberModel) principal).getId();
         List<ProjectBoardModel> project = service.findproject(id);
-		model.addAttribute("user", principal);
+		model.addAttribute("user", (MemberModel) principal);
 		model.addAttribute("project", project);
 		return "/user/update"; // JSP 파일명
 	}
@@ -59,16 +60,16 @@ public class MemberPageController {
 		return "redirect:/";
     }
     
-    @PostMapping(value = "/user/check")
+    @GetMapping(value = "/user/check")
    	public String check(Model model) {
    		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            Object principal = auth.getPrincipal();
            if (principal instanceof MemberModel) {
-               System.out.println( ((MemberModel) principal).toString());
+//               System.out.println( ((MemberModel) principal).toString());
            } else {
-               System.out.println(principal.toString());
+//               System.out.println(principal.toString());
            }
-   		model.addAttribute("user", principal);
+   		model.addAttribute("user", (MemberModel)principal);
    		
    		return "/user/check"; // JSP 파일명
    	}
@@ -85,7 +86,7 @@ public class MemberPageController {
     			updatePwd.setPassword(newPw);
     			updatePwd.setId(id);
     			service.updatePw(updatePwd);
-    			System.out.println("변경되었습니다.");
+//    			System.out.println("변경되었습니다.");
     			session.invalidate() ;
     			return "redirect:/";
     	}
@@ -95,16 +96,16 @@ public class MemberPageController {
     	}
     }
     
-    @PostMapping(value = "/user/delete")
+    @GetMapping(value = "/user/delete")
    	public String delete(Model model) {
    		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            Object principal = auth.getPrincipal();
            if (principal instanceof MemberModel) {
-               System.out.println( ((MemberModel) principal).toString());
+//               System.out.println( ((MemberModel) principal).toString());
            } else {
-               System.out.println(principal.toString());
+//               System.out.println(principal.toString());
            }
-   		model.addAttribute("user", principal);
+   		model.addAttribute("user", (MemberModel)principal);
    		
    		return "/user/delete"; // JSP 파일명
    	}
@@ -120,7 +121,6 @@ public class MemberPageController {
     			deleteUser.setId(id);
     			deleteUser.setEnabled(delete);
     			service.deleteUser(deleteUser);
-    			System.out.println("변경되었습니다.");
     			session.invalidate() ;
     			return "redirect:/";
     	}

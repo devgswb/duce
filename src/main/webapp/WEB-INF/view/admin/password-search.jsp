@@ -42,7 +42,7 @@
 <article>
     <div class="admin-con">
         <jsp:include page="./admin-tab.jsp"/>
-        <div class="admin-tab-content">
+        <div class="mypage-tab-content">
             <div class="admin-title">
                 비밀번호 변경
                 <hr/>

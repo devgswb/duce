@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
             .authorizeRequests()
-//                .antMatchers("/admin", "/admin/*").access("hasAuthority('admin')")
-//                .antMatchers("/admin/*.do", "/admin/*/*.do").access("hasAuthority('admin')")
+                .antMatchers("/admin", "/admin/*").access("hasAuthority('admin')")
+                .antMatchers("/admin/*.do", "/admin/*/*.do").access("hasAuthority('admin')")
                 // 관리자 페이지 권한: 관리자만
                 .antMatchers("/notice/write", "/notice/update").access("hasAuthority('admin')")
                 .antMatchers("/notice/*.do").access("hasAuthority('admin')")
@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/project/write", "/project/update").access("hasAnyAuthority('admin', 'user')")
                 .antMatchers("/project/*.do").access("hasAnyAuthority('admin', 'user')")
                 // 프로젝트 게시판 권한: 관리자와 유저만
+                .antMatchers("/user/*", "/user/*.do").access("hasAnyAuthority('user', 'none_auth')")
+                // 회원 페이지 권한: 유저만
             .anyRequest().permitAll()
                 // 나머지 페이지 접근 권한은 자유
             .and()

@@ -48,7 +48,7 @@
 		<!-- Cards -->
 		<div class="con">
 			<c:forEach var="card" items="${boardList}">
-				<a href="project?page=1&content=${card.pNo}">
+				<a href="project?page=1&content=${card.pNo}&major=&branch=&mYear=">
 					<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
 						<div class="mdl-card__title mdl-card--expand duce-card-img"
 							 style="background-image: url(${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}); background-size: 100%;">

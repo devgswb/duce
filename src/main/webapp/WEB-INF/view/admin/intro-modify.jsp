@@ -41,8 +41,8 @@
 <!-- Navigation Bar -->
 <article>
     <div class="admin-con">
-        <jsp:include page="./admin-tab.jsp"/>
-        <div class="admin-tab-content">
+        <jsp:include page="./mypage-tab.jsp"/>
+        <div class="mypage-tab-content">
             <div class="admin-title">
                 소개글 수정
                 <hr/>

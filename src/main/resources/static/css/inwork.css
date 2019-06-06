@@ -978,17 +978,17 @@ footer p {
     margin-bottom: 0;
 }
 
-.admin-tab {
+.mypage-tab {
     margin-top: 30px;
     margin-left: 12%;
     width: 250px;
     float: left;
     display: inline-block;
 }
-.admin-tab-main:first-child {
+.mypage-tab-main:first-child {
     border-top:1px solid #ededed;
 }
-.admin-tab-main {
+.mypage-tab-main {
     text-align: center;
     font-size: 18px;
     padding: 20px;
@@ -996,7 +996,7 @@ footer p {
     border-left: 1px solid #ededed;
     border-right: 1px solid #ededed;
 }
-.admin-tab-sub > a > div {
+.mypage-tab-sub > a > div {
     text-align: center;
     font-size: 14px;
     width: 250px;
@@ -1006,24 +1006,24 @@ footer p {
     border-right: 1px solid #ededed;
     background: #fafafa;
 }
-.admin-tab-sub > a > div:hover {
+.mypage-tab-sub > a > div:hover {
     background: #e0e0e0;
     cursor: pointer;
 }
-.admin-tab-main:hover {
+.mypage-tab-main:hover {
     background: #ededed;
     cursor: pointer;
 }
 
-.admin-tab .selected {
+.mypage-tab .selected {
     background: #ededed;
 }
 
-.admin-tab-sub {
+.mypage-tab-sub {
     display: none;
 }
 
-.admin-tab-content {
+.mypage-tab-content {
     width: 70%;
     float: left;
     display: inline-block;
@@ -1235,5 +1235,10 @@ footer p {
 
 .shadow-2, .alert:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.alert-box-wrapper {
+    font-size: 16px;
+    clear: both;
 }
 /**/
