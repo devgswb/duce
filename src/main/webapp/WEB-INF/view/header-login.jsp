@@ -21,7 +21,7 @@
                 <div class="mdl-dialog__actions">
                     <button type="button"
                             class="close mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
-                        취소
+                     취소
                     </button>
                     <button type="button"
                             class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
