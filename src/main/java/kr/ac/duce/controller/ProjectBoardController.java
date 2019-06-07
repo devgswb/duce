@@ -316,8 +316,9 @@ public class ProjectBoardController {
 //			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
-
-		if (loginID.equals(board.getId())) {
+		String authority = ((MemberModel) principal).getAuthorities().toString();
+		
+		if (loginID.equals(board.getId()) || authority.equals("[admin]")) {
 			DateFormat df = new SimpleDateFormat("yyyy-MM");
 			String startDate = df.format(board.getStartDate());
 			String finishDate = df.format(board.getFinishDate());
@@ -367,8 +368,9 @@ public class ProjectBoardController {
 //			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
+		String authority = ((MemberModel) principal).getAuthorities().toString(); 
 
-		if (loginID.equals(filedelete.getId())) {
+		if (loginID.equals(filedelete.getId()) || authority.equals("[admin]")) {
 //			System.out.println("삭제 신청 - ID 일치.");
 			ProjectBoardService.delete(Integer.parseInt(pNo));
 			if (!imgs[0].equals("")) {
@@ -435,8 +437,8 @@ public class ProjectBoardController {
 //			System.out.println(principal.toString());
 		}
 		String loginID = ((MemberModel) principal).getId();
-
-		if (loginID.equals(updateboard.getId())) {
+		String authority = ((MemberModel) principal).getAuthorities().toString(); 
+		if (loginID.equals(updateboard.getId()) || authority.equals("[admin]")) {
 //		System.out.println("수정 접근 - ID 일치.");
 			
 		String imgPath = "";
