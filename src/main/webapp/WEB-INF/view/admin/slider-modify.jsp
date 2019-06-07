@@ -49,74 +49,94 @@
                 <hr/>
             </div>
             <c:if test="${!empty success}">
-            <div class="alert-box-wrapper">
-                <div class="alert alert-success" role="alert">
-                    <i class="material-icons">done</i>
-                    ${success}
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-success" role="alert">
+                        <i class="material-icons">done</i>
+                            ${success}
+                    </div>
                 </div>
-            </div>
             </c:if>
             <!--     파일 추가 -->
-            <div class="form-group">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
-                <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file" id="btn-file-upload">
-                    <i class="material-icons">attach_file</i>
-                </button>
-                <input multiple class="mdl-textfield__input" placeholder="이미지 업로드" type="text" id="file-text"
-                       readonly/>
-                <input type="hidden" id="file-refer-path">
-            </div>
-            <label for="btnname">제목</label>
-            <input type="text" class="form-control" id="title" placeholder="제목">
-            <label for="content">내용</label>
-            <textarea class="form-control" rows="8" id="content" placeholder="내용"></textarea>
-            <div class="slider-btn-info-wrapper">
-                <label for="btnname">버튼 이름</label>
-                <input type="text" class="form-control" id="btnname" placeholder="버튼 이름">
-                <label for="btnlink">버튼 링크</label>
-                <input type="text" class="form-control" id="btnlink" placeholder="버튼 링크">
-            </div>
-            <div class="slide-btn-wrapper">
-                <div class="form-group">
-                    <label for="useSlide">슬라이드 사용</label>
-                    <select class="form-control" id="useSlide" title="슬라이드 사용">
-                        <option value="true">사용</option>
-                        <option value="false">사용 안 함</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="useBtn">버튼 사용</label>
-                    <select class="form-control" id="useBtn" title="버튼 사용">
-                        <option value="true">사용</option>
-                        <option value="false">사용 안 함</option>
-                    </select>
-                </div>
-            </div>
-            <div class="slider-change-btn-wrapper">
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-ti " id="btn-reload">
-                    <i class="material-icons">cached</i>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-1">1</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-2">2</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-3">3</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-4">4</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200" id="btn-change-form-5">5</button>
-            </div>
-            <div class="slider-submit-wrapper">
-                <form:form action="/admin/slider/mod.do" method="post" enctype="multipart/form-data">
-                    <input type="file" id="file01" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
-                    <input type="file" id="file02" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
-                    <input type="file" id="file03" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
-                    <input type="file" id="file04" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
-                    <input type="file" id="file05" name="files" value="" class="none" accept="image/jpeg, image/jpg, image/png, image/webp">
-                    <input type="hidden" id="sliderjson" name="sliderjson">
-                    <div class="btn-wrapper">
-                    <button id="submit"
-                            class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">저장
-                    </button>
+            <div class="slider-modify-wrapper">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+                        <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file"
+                                id="btn-file-upload">
+                            <i class="material-icons">attach_file</i>
+                        </button>
+                        <input multiple class="mdl-textfield__input" placeholder="이미지 업로드" type="text" id="file-text"
+                               readonly/>
+                        <input type="hidden" id="file-refer-path">
                     </div>
-                </form:form>
-            </div>
+                <div class="form-group">
+                    <label for="btnname">제목</label>
+                    <input type="text" class="form-control" id="title" placeholder="제목">
+                    <label for="content">내용</label>
+                    <textarea class="form-control" rows="8" id="content" placeholder="내용"></textarea>
+                    <div class="slider-btn-info-wrapper">
+                        <label for="btnname">버튼 이름</label>
+                        <input type="text" class="form-control" id="btnname" placeholder="버튼 이름">
+                        <label for="btnlink">버튼 링크</label>
+                        <input type="text" class="form-control" id="btnlink" placeholder="버튼 링크">
+                    </div>
+                    <div class="slide-btn-wrapper">
+                        <div class="form-group">
+                            <label for="useSlide">슬라이드 사용</label>
+                            <select class="form-control" id="useSlide" title="슬라이드 사용">
+                                <option value="true">사용</option>
+                                <option value="false">사용 안 함</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="useBtn">버튼 사용</label>
+                            <select class="form-control" id="useBtn" title="버튼 사용">
+                                <option value="true">사용</option>
+                                <option value="false">사용 안 함</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="slider-change-btn-wrapper">
+                        <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-ti "
+                                id="btn-reload">
+                            <i class="material-icons">cached</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200"
+                                id="btn-change-form-1">1
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200"
+                                id="btn-change-form-2">2
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200"
+                                id="btn-change-form-3">3
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200"
+                                id="btn-change-form-4">4
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue-A200"
+                                id="btn-change-form-5">5
+                        </button>
+                    </div>
+                    <div class="slider-submit-wrapper">
+                        <form:form action="/admin/slider/mod.do" method="post" enctype="multipart/form-data">
+                            <input type="file" id="file01" name="files" value="" class="none"
+                                   accept="image/jpeg, image/jpg, image/png, image/webp">
+                            <input type="file" id="file02" name="files" value="" class="none"
+                                   accept="image/jpeg, image/jpg, image/png, image/webp">
+                            <input type="file" id="file03" name="files" value="" class="none"
+                                   accept="image/jpeg, image/jpg, image/png, image/webp">
+                            <input type="file" id="file04" name="files" value="" class="none"
+                                   accept="image/jpeg, image/jpg, image/png, image/webp">
+                            <input type="file" id="file05" name="files" value="" class="none"
+                                   accept="image/jpeg, image/jpg, image/png, image/webp">
+                            <input type="hidden" id="sliderjson" name="sliderjson">
+                            <div class="btn-wrapper">
+                                <button id="submit"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">
+                                    저장
+                                </button>
+                            </div>
+                        </form:form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -159,19 +179,19 @@
             btnContent: $('#btnname').val(),
             btnUrl: $('#btnlink').val(),
             imgUrl: $('#file-refer-path').val(),
-            isUse: ($('#useSlide').val()==='true'),
-            isBtnUse: ($('#useBtn').val()==='true')
+            isUse: ($('#useSlide').val() === 'true'),
+            isBtnUse: ($('#useBtn').val() === 'true')
         };
         sliderData[number] = data;
     }
 
     function parseImgPath(imgPath) {
         parse = imgPath.split('/');
-        return parse[(parse.length)-1];
+        return parse[(parse.length) - 1];
     }
 
     function fileUploadHandler() {
-        const id = currentInput+1;
+        const id = currentInput + 1;
         $(`#file${"0${id}"}`).click();
     }
 
@@ -194,11 +214,11 @@
 
     $(document).ready(function () {
         dataLoad();
-        $('#btn-change-form-1').on('click', () => renderInput(1-1));
-        $('#btn-change-form-2').on('click', () => renderInput(2-1));
-        $('#btn-change-form-3').on('click', () => renderInput(3-1));
-        $('#btn-change-form-4').on('click', () => renderInput(4-1));
-        $('#btn-change-form-5').on('click', () => renderInput(5-1));
+        $('#btn-change-form-1').on('click', () => renderInput(1 - 1));
+        $('#btn-change-form-2').on('click', () => renderInput(2 - 1));
+        $('#btn-change-form-3').on('click', () => renderInput(3 - 1));
+        $('#btn-change-form-4').on('click', () => renderInput(4 - 1));
+        $('#btn-change-form-5').on('click', () => renderInput(5 - 1));
         $('#btn-reload').on('click', () => dataLoad());
         $('#btn-file-upload').on('click', () => fileUploadHandler());
         let $file = $('input[type=file]');
@@ -212,7 +232,7 @@
         });
         $('#submit').on('click', function () {
             saveData(currentInput);
-            let inputData = { slides: sliderData };
+            let inputData = {slides: sliderData};
             if (!!inputData) {
                 $('#sliderjson').val(JSON.stringify(inputData));
                 return true;

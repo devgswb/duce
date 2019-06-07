@@ -835,6 +835,7 @@ footer p {
 .btn-wrapper {
     height: 32px;
     color: #6388c3;
+    padding-top: 15px;
 }
 
 .btn-wrapper * {
@@ -1140,13 +1141,9 @@ footer p {
     padding-bottom: 10px;
 }
 .slider-btn-info-wrapper input {
-    float:left;
-    width: 75%;
     display: inline-block;
 }
 .slider-btn-info-wrapper input:first-child {
-    float:left;
-    width: 25%;
     display: inline-block;
 }
 
@@ -1364,4 +1361,8 @@ footer p {
     border: inherit;
     color: inherit;
     background: inherit;
+}
+.slider-modify-wrapper {
+    font-size: 16px;
+    clear: both;
 }
