@@ -1,0 +1,80 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.example:demo >--------------------------
+[INFO] Building demo 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.1.3.RELEASE:run (default-cli) > test-compile @ demo >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ demo ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 101 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ demo ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/server/WebApp/test/duce/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.0:testCompile (default-testCompile) @ demo ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.1.3.RELEASE:run (default-cli) < test-compile @ demo <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.3.RELEASE:run (default-cli) @ demo ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.3.RELEASE)
+
+2019-06-07 17:58:29.240  INFO 3968 --- [           main] k.a.d.SpringBootJpaSecurityApplication   : Starting SpringBootJpaSecurityApplication on Webproject1 with PID 3968 (/home/server/WebApp/test/duce/target/classes started by root in /home/server/WebApp/test/duce)
+2019-06-07 17:58:29.244  INFO 3968 --- [           main] k.a.d.SpringBootJpaSecurityApplication   : The following profiles are active: live
+2019-06-07 17:58:30.727  INFO 3968 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-06-07 17:58:30.776  INFO 3968 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39ms. Found 0 repository interfaces.
+2019-06-07 17:58:31.421  INFO 3968 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$45d42382] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-06-07 17:58:32.024  INFO 3968 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-06-07 17:58:32.089  INFO 3968 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-07 17:58:32.089  INFO 3968 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.16]
+2019-06-07 17:58:32.108  INFO 3968 --- [           main] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib]
+2019-06-07 17:58:32.536  INFO 3968 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-06-07 17:58:32.550  INFO 3968 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-07 17:58:32.550  INFO 3968 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3233 ms
+2019-06-07 17:58:32.811  INFO 3968 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-06-07 17:58:33.108  INFO 3968 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-06-07 17:58:33.201  INFO 3968 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-06-07 17:58:33.350  INFO 3968 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.7.Final}
+2019-06-07 17:58:33.351  INFO 3968 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-06-07 17:58:33.545  INFO 3968 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-06-07 17:58:33.759  INFO 3968 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-06-07 17:58:34.069  INFO 3968 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.ibatis.reflection.Reflector (file:/root/.m2/repository/org/mybatis/mybatis/3.4.2/mybatis-3.4.2.jar) to method java.util.HashMap.hash(java.lang.Object)
+WARNING: Please consider reporting this to the maintainers of org.apache.ibatis.reflection.Reflector
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+2019-06-07 17:58:34.866  INFO 3968 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@111a8d1a, org.springframework.security.web.context.SecurityContextPersistenceFilter@517bab8d, org.springframework.security.web.header.HeaderWriterFilter@7ab81aaf, org.springframework.security.web.authentication.logout.LogoutFilter@5c7736da, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3724ffb6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3e0ac20d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2f944ddb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@23621d6, org.springframework.security.web.session.SessionManagementFilter@628df6d8, org.springframework.security.web.access.ExceptionTranslationFilter@79453240, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3fbfbdae]
+2019-06-07 17:58:35.137  INFO 3968 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-07 17:58:35.198  WARN 3968 --- [           main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+file:/home/server/WebApp/test/duce/src/main/resources
+2019-06-07 17:58:35.374  INFO 3968 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-06-07 17:58:35.709  INFO 3968 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-07 17:58:35.714  INFO 3968 --- [           main] k.a.d.SpringBootJpaSecurityApplication   : Started SpringBootJpaSecurityApplication in 7.415 seconds (JVM running for 12.446)
+2019-06-07 18:01:07.478  INFO 3968 --- [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-07 18:01:07.478  INFO 3968 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-07 18:01:07.490  INFO 3968 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+
+### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '05' for key 'PRIMARY'
+### The error may involve kr.ac.duce.dao.MajorCodeDao.updateMajor-Inline
+### The error occurred while setting parameters
+### SQL: UPDATE MajorCode SET MajorNo=?, Major=? Where MajorNo=?
+### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '05' for key 'PRIMARY'
+; Duplicate entry '05' for key 'PRIMARY'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '05' for key 'PRIMARY'
