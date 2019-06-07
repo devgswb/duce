@@ -63,39 +63,53 @@ public class LoginAccessContorller {
 	}
 	//비밀번호 찾기 폼 실행
 	@PostMapping(value = "findpass", params = { "id", "mail" })
-	public ModelAndView sendMail(MemberModel um, EmailModel mailmodel, @RequestParam Map<String, Object> params)
+	public ModelAndView passwordFind(HttpSession session, MemberModel um, EmailModel mailmodel, @RequestParam Map<String, Object> params)
 			throws Exception {
 		ModelAndView mav;
 		// 파라미터 값 넘겨받음
 		String id = (String) params.get("id");
 		String mail = (String) params.get("mail");
 		String pw = mailservice.getTempPassword();
-
+		boolean isMatch = true;
+		boolean second = true;
+		session.setAttribute("second", second);
+		
 		// 아이디 검색
 		um = ls.loadUserByUsername(id);
-
+		
 		String from = "ducemaster1@gmail.com";
 		// 아이디와 비밀번호가 일치한다면 임시 비밀번호 메일 발송
 		if (id.equals(um.getId()) && mail.equals(um.getMail())) {
+			isMatch = true;
+			session.setAttribute("isMatch", isMatch);
+			
 			um.setPassword(pwEncoder.encode(pw));
+			
 			ls.passowrdInsert(um);
 
 			mailmodel.setContent(id + "님의 \n임시 비밀번호는 " + pw + " 입니다."); // 본문
 			mailmodel.setReceiver(mail); // 받을 메일 주소
 			mailmodel.setSubject("캡스톤 전시관 임시 비밀번호"); // 제목
 			mailservice.sendMail(mail, mailmodel.getSubject(), mailmodel.getContent(), from);
-			mav = new ModelAndView("member/login");
+			mav = new ModelAndView("redirect:/passwordfind");
 		} else if (!id.equals(um.getId())) {
+			isMatch = false;
+			session.setAttribute("isMatch", isMatch);
 			new BadCredentialsException(id);
 			mav = new ModelAndView("redirect:/passwordfind");
 		} else if (!mail.equals(um.getMail())) {
+			isMatch = false;
+			session.setAttribute("isMatch", isMatch);
 			new BadCredentialsException(mail);
 			mav = new ModelAndView("redirect:/passwordfind");
 		} else {
+			isMatch = false;
+			session.setAttribute("isMatch", isMatch);
 			mav = new ModelAndView("redirect:/passwordfind");
 		}
 		return mav;
 	}
+	
 	//아이디찾기 폼 실행
 	@PostMapping(value = "idsearch", params = { "name", "hp" })
 	public String findId(EmailModel mailmodel, MemberModel um ,HttpSession session, @RequestParam Map<String, Object> params) throws Exception {
