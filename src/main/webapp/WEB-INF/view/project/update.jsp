@@ -119,12 +119,17 @@
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-                            <i class="material-icons">attach_file</i><input type="file" name="uploadFile" id="img-upload-btn" multiple>
+                            <i class="material-icons">attach_file</i><input type="file" name="uploadFile" id="img-upload-btn"
+                                                                            accept="image/jpeg, image/jpg, image/png, image/webp" multiple>
                         </div>
                         <input multiple class="mdl-textfield__input" placeholder="이미지 파일 추가"
                                type="text" id="img-upload-text" readonly/> 					
                     </div>
-                    <input type="checkbox" name="imgsDelete" value="true">기존이미지 삭제 </input>
+
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                        <input type="checkbox" value="true" name="imgsDelete" id="switch-1" class="mdl-switch__input" checked>
+                        <span class="mdl-switch__label">기존 이미지 삭제</span>
+                    </label>
                     <!--     파일 추가 -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                         <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
@@ -133,7 +138,10 @@
                         <input multiple class="mdl-textfield__input" placeholder="참조 파일 추가"
                                type="text" id="file-upload-text" readonly/>             
                     </div>
-                    <input type="checkbox" name="filesDelete" value="true">기존파일 삭제</input>
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
+                        <input type="checkbox" value="true" name="filesDelete" id="switch-2" class="mdl-switch__input" checked>
+                        <span class="mdl-switch__label">기존 파일 삭제</span>
+                    </label>
                 </div>
                 <input type="text" class="form-control" name="video" id="movielink"
                        value="${board.video}"
