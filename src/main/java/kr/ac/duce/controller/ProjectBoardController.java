@@ -225,9 +225,7 @@ public class ProjectBoardController {
 		int pageEnd = Math.min(pageStart + 5 - 1, pageCount);
 		boolean isPrev = Integer.parseInt(page) >= displayPageNum + 1;
 		boolean isNext = pageEnd < pageCount;
-
 		List<ProjectBoardModel> rawBoardList = ProjectBoardService.searchProjectList(query, Integer.parseInt(page));
-
 		List<MajorCodeModel> majorList = ProjectBoardService.majorCode();
 		List<BranchCodeModel> branchList = ProjectBoardService.branchCode();
 		List<ProjectBoardViewModel> boardList = BoardViewMaker.makeList(rawBoardList, majorList, branchList);
