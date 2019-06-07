@@ -91,7 +91,7 @@
 			for (let slide of slides) {
 				if (!slide.isUse) continue;
 				renderHtml += '<div class="carou-slide "';
-				renderHtml += `style="background-image: url(${"${slide.imgUrl}"}); background-size: 100%; height: 100%"> `;
+				renderHtml += `style="background-image: url('${"${slide.imgUrl}"}'); background-size: 100%; height: 100%"> `;
 				renderHtml += `<p class="carou-title">${"${slide.title}"}</p>`;
 				renderHtml += `<p class="carou-content">${"${slide.content}"}</p>`;
 				renderHtml +=  `<a href="${"${slide.btnUrl}"}" class="carou-btn">${"${slide.btnContent}"}</a> </div>`;
