@@ -69,7 +69,7 @@
                 <textarea class="form-control" rows="8" name="content" id="content"></textarea>
                 <input type="file" class="none" name="file" id="file"
                        accept="image/jpg, image/jpeg, image/webp, image/png">
-                <input type="hidden" id="img">
+                <input type="hidden" name="img" id="img" value="">
                 <div class="btn-wrapper">
                     <button id="submit"
                             class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">

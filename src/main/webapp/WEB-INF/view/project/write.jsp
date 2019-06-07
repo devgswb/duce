@@ -103,10 +103,12 @@
 			</div>
 			<div class="notice-write-attach-addr">
 				<p>처음 올린 이미지는 대표 이미지가 됩니다. </p>
-				<!--     파일 추가 -->
+				<br>
+				<!--     이미지 추가 -->
 				<div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
 					<div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
-						<i class="material-icons">attach_file</i><input type="file" id="img-upload-btn" name="uploadFile" multiple>
+						<i class="material-icons">attach_file</i><input type="file" id="img-upload-btn" name="uploadFile"
+																		accept="image/jpeg, image/jpg, image/png, image/webp" multiple>
 					</div>
 					<input multiple class="mdl-textfield__input" placeholder="이미지 파일 추가" type="text" id="img-upload-text" readonly/>
 				</div>

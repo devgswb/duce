@@ -30,4 +30,8 @@ public class UploadIntroForm {
     public void setFile(MultipartFile file) {
         this.file = file;
     }
+
+    public String toString() {
+        return "img:" + img + "\ncontent:" + content;
+    }
 }

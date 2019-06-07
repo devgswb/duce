@@ -35,9 +35,10 @@ public class IntroSettingServiceImpl implements IntroSettingService {
         JsonReader reader = new JsonReader(new FileReader(jsonpath));
         JsonParser parser = new JsonParser();
         JsonObject jsonObj = (JsonObject) parser.parse(reader);
-        String formerImg = jsonObj.get("img").toString();
-        formerImg = formerImg.replace("\"", "");
+        System.out.println(introForm.toString());
         if(!file.isEmpty()) {
+            String formerImg = jsonObj.get("img").toString();
+            formerImg = formerImg.replace("\"", "");
             fileIOService.delete(formerImg, "/images/notice/");
             fileIOService.upload(file, "/images/notice/");
         }

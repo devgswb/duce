@@ -287,6 +287,7 @@ public class AdminPageController {
 
     @PostMapping("/admin/intro/mod.do") // URL 주소
     public String introModify(Model model, @ModelAttribute UploadIntroForm introForm, RedirectAttributes redirectAttributes) throws IOException {
+//        System.out.println(introForm.toString());
         introSettingService.updateIntro(introForm);
         redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
         return "redirect:/admin/intro";

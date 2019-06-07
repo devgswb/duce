@@ -41,10 +41,11 @@ public class SliderSettingServiceImpl implements SliderSettingService {
                 currentFileList.add(slider.getImgUrl());
             }
             for (int i = 0; i < formerFileList.size(); i++) {
-                if (formerFileList.get(i).equals(currentFileList.get(i))) {
-                    continue;
+                boolean isPassed = false;
+                for (String currentFile : currentFileList) {
+                    if (formerFileList.get(i).equals(currentFile)) isPassed = true;
                 }
-                fileIOService.delete(formerFileList.get(i), "/images/slide/");
+                if (!isPassed) fileIOService.delete(formerFileList.get(i), "/images/slide/");
             }
             for (MultipartFile file : files) {
                 fileIOService.upload(file, "/images/slide/");
