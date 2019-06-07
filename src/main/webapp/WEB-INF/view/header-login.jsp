@@ -14,14 +14,14 @@
                 <div class="mdl-dialog__content">
                     <div class="mdl-textfield mdl-js-textfield">
                     	<input type="hidden" name="page" value = "1">
-                        <input class="mdl-textfield__input" type="text" id="search-textbox" name="query">
+                        <input class="header-search-text" type="text" id="search-textbox" name="query" required>
                         <label class="mdl-textfield__label" for="search-textbox"></label>
                     </div>
 
                 </div>
                 <div class="mdl-dialog__actions">
                     <button type="button"
-                            class="close mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
+                            class="close-btn mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
                      취소
                     </button>
                     <button type="submit"
@@ -62,7 +62,7 @@
     showDialogButton.addEventListener('click', function () {
         dialog.showModal();
     });
-    dialog.querySelector('.close').addEventListener('click', function () {
+    dialog.querySelector('.close-btn').addEventListener('click', function () {
         dialog.close();
     });
 </script>

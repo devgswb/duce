@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.ac.duce.model.MemberModel;
 import kr.ac.duce.model.ProjectBoardModel;
 import kr.ac.duce.service.MemberSignService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MemberPageController {
@@ -38,7 +39,7 @@ public class MemberPageController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
         if (principal instanceof MemberModel) {
-            System.out.println( ((MemberModel) principal).toString());
+//            System.out.println( ((MemberModel) principal).toString());
         } else {
 //            System.out.println(principal.toString());
         }
@@ -51,13 +52,15 @@ public class MemberPageController {
     
     @PostMapping(value = "/user/update.do",params= {"id","mail","hp"})
     public String updateUser(Model model, @RequestParam String mail, @RequestParam String hp, 
-    		@RequestParam String id) {
+    		@RequestParam String id, RedirectAttributes redirectAttributes) {
     	MemberModel updateUser = new MemberModel();
     	updateUser.setMail(mail);
     	updateUser.setHp(hp);
     	updateUser.setId(id);
 		service.updateUser(updateUser);
-		return "redirect:/";
+
+		redirectAttributes.addFlashAttribute("success", "회원정보 수정에 성공하였습니다.");
+		return "redirect:/user/update";
     }
     
     @GetMapping(value = "/user/check")
@@ -76,7 +79,7 @@ public class MemberPageController {
     
     @PostMapping(value = "/user/check.do",params= {"pw","pwd","id"})
     public String updatePw(HttpSession session, Model model, @RequestParam String pw, @RequestParam String pwd, 
-    		@RequestParam String id) {
+    		@RequestParam String id, RedirectAttributes redirectAttributes) {
     	MemberModel updatePwd = new MemberModel();
     	MemberModel user = service.getUserById(id);
     	String Password = pw; //원래 비밀번호
@@ -88,7 +91,8 @@ public class MemberPageController {
     			service.updatePw(updatePwd);
 //    			System.out.println("변경되었습니다.");
     			session.invalidate() ;
-    			return "redirect:/";
+				redirectAttributes.addFlashAttribute("success", "비밀번호 변경에 성공하였습니다.");
+    			return "redirect:/user/check";
     	}
     	else {
     		model.addAttribute("error", "현재 비밀번호를 다시 확인해 주세요");

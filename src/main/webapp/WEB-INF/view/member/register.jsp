@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 회원가입</title>
     <!--
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -59,37 +59,72 @@
                 회원가입
                 <hr/>
             </div>
+            <c:if test="${!empty error}">
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-danger" role="alert" id="isPwdSame">
+                        <i class="material-icons">error</i>
+                            ${error}
+                    </div>
+                </div>
+            </c:if>
             <div class="member-area">
-                <form action="/register" method="post">
+                <form action="/register" id="register" method="post">
                     <p class="form-group">
-                        <label for="usr" class="login-text">계정 ID</label><input
+                        <label for="usr" class="login-text">ID(학번)</label><input
                             type="text" class="form-control signin-textbox" placeholder="학번(201230232)"
+                            pattern="[0-9]{4,14}$"
+                            oninput="setCustomValidity('');
+                                checkValidity();
+                                setCustomValidity(validity.valid ? '' :'올바른 학번을 입력해주세요.');"
                             id="usr" name="id" required>
                     </p>
                     <p class="form-group">
                         <label for="pwd" class="login-text">비밀번호</label><input
-                            type="password" class="form-control signin-textbox" id="pwd" name="password" required>
+                            type="password" class="form-control signin-textbox"
+                            pattern="^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"
+                            oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'숫자, 영문자, 특수문자가 포함된 6자 이상 15자 미만의 비밀번호로 입력해주세요.');"
+                            id="pwd" name="password" required>
                     </p>
                     <p class="form-group">
                         <label for="pwdcheck" class="login-text">비밀번호 확인</label><input
-                            type="password" class="form-control signin-textbox" id="pwdcheck" required>
+                            type="password" class="form-control signin-textbox"
+                            oninput="check(this)"
+                            id="pwdcheck" required>
                     </p>
                     <p class="form-group">
                         <label for="name" class="login-text">이름</label><input type="text"
-                            class="form-control signin-textbox" id="name" name="name" required>
+                                                                              class="form-control signin-textbox"
+                                                                              pattern="^[가-힣]{2,}$"
+                                                                              oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'2자 이상의 한글 이름을 입력해주세요.');"
+                                                                              id="name" name="name" required>
                     </p>
                     <p class="form-group">
                         <label for="email" class="login-text">e-mail</label><input
-                            type="email" class="form-control signin-textbox" id="email" name="mail"
+                            type="email" class="form-control signin-textbox"
+                            pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"
+                            oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'올바른 이메일 양식대로 입력해주세요.');"
+                            id="email" name="mail"
                             placeholder="example@bar.com" required>
                     </p>
                     <p class="form-group">
                         <label for="tel" class="login-text">연락처</label><input type="tel"
-                          placeholder="010-1111-1111" class="form-control signin-textbox" id="tel" name="hp" required>
+                                                                              placeholder="010-1111-1111" class="form-control signin-textbox"
+                                                                              pattern="^\d{3}-\d{3,4}-\d{4}$"
+                                                                              oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'올바른 연락처 번호를 입력해주세요.');"
+                                                                              id="tel" name="hp" required>
                     </p>
                     <p class="member-btn-area">
-                        <button
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
+                        <button type="submit"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined"
+                        id="submit">
                             가입
                         </button>
                         <a href="${header.referer}"
@@ -104,27 +139,12 @@
 <jsp:include page="../footer.jsp"/>
 <!-- footer -->
 </body>
+<script>
+    function validatePassword() {
+        let pass1 = document.getElementById("pwd").value;
+        let pass2 = document.getElementById("pwdcheck").value;
+        pass1 != pass2 ? document.getElementById("pwdcheck").setCustomValidity("비밀번호가 일치하지 않습니다.") : document.getElementById("pwdcheck").setCustomValidity('');
+    }
+    document.getElementById("submit").onclick = validatePassword;
+</script>
 </html>
-<!--
-<html>
-<head>
-<meta charset="utf-8"/>
-<title>회원가입</title>
-</head>
-<body>
-<div>
-<h2>회원가입</h2>
-<form action={"/register"} value="register" method="post">
-
-<div><label>아이디 : <input type="text" name="id" placeholder="학번" required="required"/></label></div>
-<div><label>비밀번호 : <input type="password" name="pw" placeholder="암호" required="required"/></label></div>
-<div><label>이름 : <input type="text" name="name" placeholder="이름" required="required"/></label></div>
-<div><label>메일 <input type="text" name="mail" placeholder="암호" required="required"/></label></div>
-<div><label>연락처 <input type="text" name="hp" placeholder="암호" required="required"/></label></div>
-<input type="submit" value="회원가입"/>
-</form>
-
-</div>
-</body>
-</html>
--->

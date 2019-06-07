@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Duce</title>
+<title>대림대학교 캡스톤 전시관</title>
 <!-- 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -91,8 +91,9 @@
 				if (!slide.isUse) continue;
 				renderHtml += '<div class="carou-slide "';
 				renderHtml += `style="background-image: url(${"${slide.imgUrl}"}); background-size: 100%; height: 100%"> `;
+				renderHtml += `<p class="carou-title">${"${slide.title}"}</p>`;
 				renderHtml += `<p class="carou-content">${"${slide.content}"}</p>`;
-				renderHtml +=  `<a href="${"${slide.btnUrl}"}" class="btn-outline-info">${"${slide.btnContent}"}</a> </div>`;
+				renderHtml +=  `<a href="${"${slide.btnUrl}"}" class="carou-btn">${"${slide.btnContent}"}</a> </div>`;
 			}
 			$('#carou').html(renderHtml);
 		}
@@ -120,10 +121,10 @@
 			});
 		});
 	</script>
-<%--	<div class="carou-slide"--%>
-<%--		 style="background-image: url(/img/slide/ca01.jpg); background-size: 100%; height: 100%">--%>
-<%--		<p class="carou-content"></p>--%>
-<%--		<a href="" class="btn-outline-info"></a>--%>
+<%--	<div class="carou-slide" style="background-image: url(carousel01.jpg); background-size: 100%; height: 100%">--%>
+<%--		<p class="carou-title">우리 미래의 가능성 - 대림대학교 캡스톤 전시관</p>--%>
+<%--		<p class="carou-content">본문 내용들</p>--%>
+<%--		<a href="" class="btn-outline-info">링크 버튼</a>--%>
 <%--	</div>--%>
 </body>
 

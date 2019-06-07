@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="kr.ac.duce.controller.ProjectBoardController" %>
 <%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -9,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 관리자 페이지</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -41,12 +42,20 @@
 <!-- Navigation Bar -->
 <article>
     <div class="admin-con">
-        <jsp:include page="./mypage-tab.jsp"/>
+        <jsp:include page="./admin-tab.jsp"/>
         <div class="mypage-tab-content">
             <div class="admin-title">
                 소개글 수정
                 <hr/>
             </div>
+            <c:if test="${!empty success}">
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-success" role="alert">
+                        <i class="material-icons">done</i>
+                            ${success}
+                    </div>
+                </div>
+            </c:if>
             <!--     파일 추가 -->
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                 <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file" id="btn-file-upload">

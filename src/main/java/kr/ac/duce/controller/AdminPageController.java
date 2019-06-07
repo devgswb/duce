@@ -11,6 +11,7 @@ import kr.ac.duce.module.JSArrayParser;
 import kr.ac.duce.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
@@ -65,9 +67,9 @@ public class AdminPageController {
     public String adminTest(Model model) {
         return "/admin/password-search"; // JSP 파일명
     }
-
     @PostMapping(value = "/admin/pwdchange.do", params = {"pwd", "changedpwd"})
-    public String registerMember(@RequestParam(value = "pwd") String currentInputPwd, @RequestParam String changedpwd, Model model) {
+    public String registerMember(@RequestParam(value = "pwd") String currentInputPwd, @RequestParam String changedpwd,
+                                 Model model, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
         if (principal instanceof MemberModel) {
@@ -77,6 +79,7 @@ public class AdminPageController {
             String currentDBPwd = user.getPassword();
             if (passwordEncoder.matches(currentInputPwd, currentDBPwd)) {
                 AdminPasswordService.changePassword(user.getId(), changedpwd);
+                redirectAttributes.addFlashAttribute("success", "비밀번호 변경에 성공하였습니다.");
                 return "/admin/pwdchange"; // 비번 맞는다면 패스워드 변경
             } else {
                 return ErrorPageHandler.throwError(model, "adminPassword", "/admin"); // 아니면 에러&이전 페이지
@@ -105,40 +108,54 @@ public class AdminPageController {
     }
 
     @PostMapping("/admin/m/mod.do") // URL 주소
-    public String majorAdd(Model model, @RequestParam String majorNo, @RequestParam String major) {
+    public String majorAdd(Model model, @RequestParam String majorNo, @RequestParam String major, RedirectAttributes redirectAttributes) {
         try {
             MajorBranchService.addMajor(majorNo, major);
+            redirectAttributes.addFlashAttribute("success", "추가에 성공하였습니다.");
             return "redirect:/admin/mb";
         } catch (Exception e) {
-            return "/error";
+            System.out.println(e.getMessage());
+            if (e instanceof DuplicateKeyException) {
+                redirectAttributes.addFlashAttribute("error", "중복되는 학과 코드입니다.");
+                return "redirect:/admin/mb";
+            }
+            return "redirect:/admin/mb";
         }
     }
 
     @PatchMapping("/admin/m/mod.do") // URL 주소
-    public String majorUpdate(Model model, @RequestParam("majorlist") String majorList) {
+    public String majorUpdate(Model model, @RequestParam("majorlist") String majorList, RedirectAttributes redirectAttributes) {
         try {
             JSArrayParser<MajorCodeModel> arrayParser = new JSArrayParser<MajorCodeModel>();
             Collection<MajorCodeModel> parsedMajorList = arrayParser.parse(majorList, MajorCodeModel.class);
             MajorBranchService.updateMajor(parsedMajorList);
+            redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
             return "redirect:/admin/mb";
         } catch (Exception e) {
-            throw e;
-//            return "/error";
+            System.out.println(e.getMessage());
+            if (e instanceof DuplicateKeyException) {
+                redirectAttributes.addFlashAttribute("error", "중복되는 학과 코드입니다.");
+                return "redirect:/admin/mb";
+            }
+            return "redirect:/admin/mb";
         }
     }
 
     @DeleteMapping("/admin/m/mod.do") // URL 주소
-    public String majorDelete(Model model, @RequestParam("majorlist") String majorList) {
+    public String majorDelete(Model model, @RequestParam("majorlist") String majorList, RedirectAttributes redirectAttributes) {
         JSArrayParser<String> arrayParser = new JSArrayParser<String>();
         Collection<String> parsedMajorList = arrayParser.parse(majorList, String.class);
         try {
             MajorBranchService.deleteMajor(parsedMajorList);
+            redirectAttributes.addFlashAttribute("success", "삭제에 성공하였습니다.");
             return "redirect:/admin/mb";
         } catch (Exception ex) {
+            System.out.println(ex);
             if (ex instanceof DataIntegrityViolationException) {
-                return "/error"; // 해당 코드를 사용하는 게시판이 존재한다는 에러
+                redirectAttributes.addFlashAttribute("error", "해당 코드로 작성된 게시글이 존재합니다.");
+                return "redirect:/admin/mb"; // 해당 코드를 사용하는 게시판이 존재한다는 에러
             }
-            return "/"; // 그 외 에러
+            return "redirect:/admin/mb"; // 그 외 에러
         }
     }
 
@@ -146,39 +163,54 @@ public class AdminPageController {
         분야
      */
     @PostMapping("/admin/b/mod.do") // URL 주소
-    public String branchAdd(Model model, @RequestParam String branchNo, @RequestParam String branch) {
+    public String branchAdd(Model model, @RequestParam String branchNo, @RequestParam String branch, RedirectAttributes redirectAttributes) {
         try {
             MajorBranchService.addBranch(branchNo, branch);
+            redirectAttributes.addFlashAttribute("success", "추가에 성공하였습니다.");
             return "redirect:/admin/mb";
         } catch (Exception e) {
-            return "/error";
+            System.out.println(e.getMessage());
+            if (e instanceof DuplicateKeyException) {
+                redirectAttributes.addFlashAttribute("error", "중복되는 분야 코드입니다.");
+                return "redirect:/admin/mb";
+            }
+            return "redirect:/admin/mb";
         }
     }
 
     @PatchMapping("/admin/b/mod.do") // URL 주소
-    public String branchUpdate(Model model, @RequestParam("branchlist") String branchList) {
+    public String branchUpdate(Model model, @RequestParam("branchlist") String branchList, RedirectAttributes redirectAttributes) {
         try {
             JSArrayParser<BranchCodeModel> arrayParser = new JSArrayParser<BranchCodeModel>();
             Collection<BranchCodeModel> parsedBranchList = arrayParser.parse(branchList, BranchCodeModel.class);
             MajorBranchService.updateBranch(parsedBranchList);
+            redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
             return "redirect:/admin/mb";
         } catch (Exception e) {
-            return "/error";
+            System.out.println(e.getMessage());
+            if (e instanceof DuplicateKeyException) {
+                redirectAttributes.addFlashAttribute("error", "중복되는 분야 코드입니다.");
+                return "redirect:/admin/mb";
+            }
+            return "redirect:/admin/mb";
         }
     }
 
     @DeleteMapping("/admin/b/mod.do") // URL 주소
-    public String branchDelete(Model model, @RequestParam("branchlist") String branchList) {
+    public String branchDelete(Model model, @RequestParam("branchlist") String branchList, RedirectAttributes redirectAttributes) {
         JSArrayParser<String> arrayParser = new JSArrayParser<String>();
         Collection<String> parsedBranchList = arrayParser.parse(branchList, String.class);
         try {
             MajorBranchService.deleteBranch(parsedBranchList);
+            redirectAttributes.addFlashAttribute("success", "삭제에 성공하였습니다.");
             return "redirect:/admin/mb";
-        } catch (Exception ex) {
-            if (ex instanceof DataIntegrityViolationException) {
-                return "/error"; // 해당 코드를 사용하는 게시판이 존재한다는 에러
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            if (e instanceof DataIntegrityViolationException) {
+                redirectAttributes.addFlashAttribute("error", "해당 코드로 작성된 게시글이 존재합니다.");
+                return "redirect:/admin/mb";
             }
-            return "/"; // 그 외 에러
+            return "redirect:/admin/mb";
         }
     }
 
@@ -201,13 +233,13 @@ public class AdminPageController {
         model.addAttribute("endPage", endPage);
         return "/admin/member"; // JSP 파일명
     }
-
     @PatchMapping("/admin/member/mod.do") // URL 주소
-    public String memberUpdate(Model model, @RequestParam("memberList") String memberList) {
+    public String memberUpdate(Model model, @RequestParam("memberList") String memberList, RedirectAttributes redirectAttributes) {
         try {
             JSArrayParser<MemberModel> arrayParser = new JSArrayParser<MemberModel>();
             Collection<MemberModel> parsedMemberList = arrayParser.parse(memberList, MemberModel.class);
             MemberService.updateMemberByAdmin(parsedMemberList);
+            redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
             return "redirect:/admin/member";
         } catch (Exception e) {
             throw e;
@@ -230,15 +262,15 @@ public class AdminPageController {
     }
 
     @PostMapping("/admin/slider/mod.do") // URL 주소
-    public String sliderModify(Model model, @ModelAttribute UploadSliderForm uploadedData) throws IOException {
+    public String sliderModify(Model model, @ModelAttribute UploadSliderForm uploadedData, RedirectAttributes redirectAttributes) throws IOException {
         JSArrayParser<SliderSettingModel> parser = new JSArrayParser<SliderSettingModel>();
         ArrayList<SliderSettingModel> sliderList= parser.parse(uploadedData.getSliderjson(), SliderSettingModel.class, "slides");
         if (sliderSettingService.modifySlider(sliderList, uploadedData.getFiles())){
             try {
+                redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
                 return "redirect:/admin/slider"; // JSP 파일명
             } catch (Exception ex) {
                 throw ex;
-
             }
         } else {
             return "/error"; // 에러 발생
@@ -254,8 +286,9 @@ public class AdminPageController {
     }
 
     @PostMapping("/admin/intro/mod.do") // URL 주소
-    public String introModify(Model model, @ModelAttribute UploadIntroForm introForm) throws IOException {
+    public String introModify(Model model, @ModelAttribute UploadIntroForm introForm, RedirectAttributes redirectAttributes) throws IOException {
         introSettingService.updateIntro(introForm);
+        redirectAttributes.addFlashAttribute("success", "수정에 성공하였습니다.");
         return "redirect:/admin/intro";
     }
     //  테스트용 페이지

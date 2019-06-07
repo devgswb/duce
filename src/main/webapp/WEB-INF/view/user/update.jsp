@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 회원 정보</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -47,6 +47,14 @@
                 회원정보 수정
                 <hr/>
             </div>
+            <c:if test="${!empty success}">
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-success" role="alert">
+                        <i class="material-icons">done</i>
+                            ${success}
+                    </div>
+                </div>
+            </c:if>
             <div class="form-wrapper">
                 <div class="form-group">
                     <label for="userid">학번</label>
@@ -60,11 +68,20 @@
                     <div class="form-group">
                         <label for="mail">e-mail</label>
                         <input type="text" id="mail"
-                               name="mail" class="form-control" value="${user.mail}" placeholder="이메일" required>
+                               name="mail" class="form-control" value="${user.mail}"
+                               pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"
+                               oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'올바른 이메일 양식대로 입력해주세요.');"
+                               placeholder="이메일" required>
                     </div>
                     <div class="form-group">
                         <label for="mail">연락처</label>
                         <input type="text" id="hp"
+                               pattern="^\d{3}-\d{3,4}-\d{4}$"
+                               oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'올바른 연락처 번호를 입력해주세요.');"
                                name="hp" class="form-control" value="${user.hp}" placeholder="전화번호" required>
                     </div>
                     <div class="btn-wrapper">
@@ -98,19 +115,18 @@
                                     </td>
                                     <td><fmt:formatDate value="${user.pDate}" pattern="yyyy년 MM월 dd일"/></td>
                                     <td>
-                                        <form name="Delete" method="post" onsubmit="return projectDelete()">
-                                            <button name="pNo"
-                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
-                                                    value="${user.pNo}">삭제
-                                            </button>
-                                        </form>
-
-                                    </td>
-                                    <td>
                                         <form action="/project/update" method="post">
                                             <button name="pNo"
                                                     class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
                                                     value="${user.pNo}">수정
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form name="Delete" method="post" onsubmit="return projectDelete()">
+                                            <button name="pNo"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                                                    value="${user.pNo}">삭제
                                             </button>
                                         </form>
                                     </td>

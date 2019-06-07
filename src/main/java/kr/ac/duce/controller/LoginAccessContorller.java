@@ -61,7 +61,6 @@ public class LoginAccessContorller {
 //        } 로그인 체크
 		boolean isLoggined = !(auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS")));
 		if (isLoggined) return "redirect:" + prevPage;
-		request.getSession().setAttribute("prevPage", prevPage);
 		return "member/login"; // JSP 파일명
 	}
 	//비밀번호 찾기 페이지

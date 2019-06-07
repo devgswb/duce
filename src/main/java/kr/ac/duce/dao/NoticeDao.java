@@ -19,8 +19,8 @@ public interface NoticeDao {
 	public List<NoticeModel> findNum(@Param("noticeNum") int noticeNum);
 	
 	// 입력 
-	@Insert("INSERT INTO noticeBoard(noticeNum, noticeTitle, userID, noticeDate, noticeContent, noticeHits) "
-			+ "VALUES((SELECT IFNULL(MAX(a.noticeNum)+1, 1)FROM noticeBoard a), #{noticeTitle}, #{userID}, #{noticeDate}, #{noticeContent}, #{noticeHits})")
+	@Insert("INSERT INTO noticeBoard(noticeNum, noticeTitle, userID, noticeDate, noticeContent, noticeHits, refer) "
+			+ "VALUES((SELECT IFNULL(MAX(a.noticeNum)+1, 1)FROM noticeBoard a), #{noticeTitle}, #{userID}, #{noticeDate}, #{noticeContent}, #{noticeHits}, #{refer})")
 	public void insert(NoticeModel noticeBoard);
 	
 	// 첨부 파일 입력
@@ -29,7 +29,8 @@ public interface NoticeDao {
 	public void insertFile(NoticeFileModel noticeFile);
 	
 	// 글 수정 
-	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate} where noticeNum = #{noticeNum}")
+	@Update("UPDATE noticeBoard SET noticeTitle=#{noticeTitle}, noticeContent=#{noticeContent}, noticeDate=#{noticeDate}, " +
+			"refer=#{refer} where noticeNum = #{noticeNum}")
 	public void update(NoticeModel noticeBoard);
 	
 	// 파일 수정

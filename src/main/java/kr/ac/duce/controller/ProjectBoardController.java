@@ -41,7 +41,7 @@ public class ProjectBoardController {
 	int perPageNum = 15; // 페이징 당 글 개수 public List<ProjectBoardModel> findPage 도 수정할 것
 
 	@GetMapping(value = "/project", params = { "page", "content", "major", "branch", "mYear" }) // URL 주소
-	public String list(Model model, @RequestParam String page, @RequestParam String content,
+	public String list(Model model, @RequestParam(value="page", defaultValue = "1") String page, @RequestParam String content,
 			@RequestParam(value = "major", defaultValue = "all") String major,
 			@RequestParam(value = "branch", defaultValue = "all") String branch,
 			@RequestParam(value = "mYear", defaultValue = "all") String year) {

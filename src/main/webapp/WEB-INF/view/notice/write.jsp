@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 공지사항 수정</title>
     <!--
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -76,7 +76,12 @@
                     </div>
                 </div>
                 <input type="text" class="form-control" id="referlink"
-                       placeholder="참조 주소">
+                       placeholder="참조 주소" name="refer"
+                       pattern="^(https?):\/\/([a-z0-9-]+\.)+[a-z0-9]{2,4}.*$"
+                       oninput="setCustomValidity('');
+                                checkValidity();
+                                setCustomValidity(validity.valid ? '' :'올바른 주소를 입력해주세요.');"
+                >
                 <button type="submit"
                         class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">글쓰기
                 </button>
