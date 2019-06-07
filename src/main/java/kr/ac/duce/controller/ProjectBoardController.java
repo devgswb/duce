@@ -61,7 +61,7 @@ public class ProjectBoardController {
 
 			for (int i = 0; i < file.length; i++) {
 				String subfile = file[i].split("-")[5];
-				System.out.println(subfile);
+//				System.out.println(subfile);
 				if(subfile.length() >= 11) {
 					fileName = fileName + subfile.substring(0, 10) + "..." + ",";
 				}
