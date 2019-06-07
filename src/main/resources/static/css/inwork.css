@@ -684,6 +684,11 @@ footer p {
     border: 0;
 }
 
+.bx-wrapper, .bx-viewport {
+    height: 460px !important; /*provide height of slider*/
+}
+
+
 .ap-basic-slider-wrapper .bx-pager-item .bx-pager-link.active:before,
 .ap-basic-slider-wrapper .bx-pager-item .bx-pager-link:hover:before {
     background: #fff;
