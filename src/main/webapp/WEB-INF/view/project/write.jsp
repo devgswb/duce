@@ -88,13 +88,12 @@
 			</div>
 			<div class="project-coop-wrapper">
 				<input type="text" class="form-control" name="guide" id="professor" placeholder="지도 교수"
-					   pattern="([가-힣]){2,12}$"
+					   pattern="(([가-힣]+),?(?!.*\2))+[가-힣]$"
 					   oninput="setCustomValidity('');
                                 checkValidity();
-                                setCustomValidity(validity.valid ? '' :'2자 이상의 한국어 이름으로 입력해주세요.');"
+                                setCustomValidity(validity.valid ? '' :'올바른 양식이 아닙니다. (입력 예: 홍길동,김철수,김영희)');"
 					   required>
-				<input type="text" class="form-control" name="part" id="students" placeholder="참여 학생입니다.
-						참여 학생은 ',' 단위로 구분해주세요."
+				<input type="text" class="form-control" name="part" id="students" placeholder="참여 학생입니다. 참여 학생은 ',' 단위로 구분해주세요."
 					   pattern="(([가-힣]+),?(?!.*\2))+[가-힣]$"
 					   oninput="setCustomValidity('');
                                 checkValidity();

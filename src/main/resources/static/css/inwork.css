@@ -632,7 +632,7 @@ footer p {
 }
 .duce-card-con > div > .title {
     margin-left: 0;
-    padding-left: 4%;
+    padding-left: 3%;
     width: 16%;
     color: black;
     font-weight: bold;
@@ -643,7 +643,7 @@ footer p {
 
 .duce-card-con > div > .name {
     margin-left: 0;
-    padding-left: 4%;
+    padding-left: 2%;
     text-align: left;
     width: 26%;
     float: left;

@@ -46,6 +46,11 @@ public class BoardViewMaker {
                 if (partStudents.length != 1) viewPartStudents += " 외 " + (partStudents.length-1) + "명";
                 appendEle.setViewPartStudents(viewPartStudents);
                 // 참가학생 텍스트 생성
+                String[] partGuides = appendEle.getGuide().split(",");
+                String viewPartGuides = partGuides[0];
+                viewPartGuides += (partGuides.length != 1) ? " 교수 등" : " 교수";
+                appendEle.setViewPartGuides(viewPartGuides);
+                //
                 try {
                     String thumbnail = appendEle.getPhoto().split(",")[0];
                     thumbnail = thumbnail.replace("project/", "project/thumb/");

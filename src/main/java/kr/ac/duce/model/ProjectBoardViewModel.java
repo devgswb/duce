@@ -7,8 +7,17 @@ public class ProjectBoardViewModel extends ProjectBoardModel {
     private String viewContent;
     private String viewThumbnail;
     private String viewPartStudents;
+    private String viewPartGuides;
     public String getViewThumbnail() {
         return viewThumbnail;
+    }
+
+    public String getViewPartGuides() {
+        return viewPartGuides;
+    }
+
+    public void setViewPartGuides(String viewPartGuides) {
+        this.viewPartGuides = viewPartGuides;
     }
 
     public void setViewThumbnail(String viewThumbnail) {
