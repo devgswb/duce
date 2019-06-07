@@ -52,7 +52,7 @@
 				<a href="project?page=1&content=${card.pNo}&major=&branch=&mYear=">
 					<div class="demo-card-square mdl-card mdl-shadow--2dp duce-card">
 						<div class="mdl-card__title mdl-card--expand duce-card-img"
-							 style="background-image: url(${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}); background-size: 100%;">
+							 style="background-image: url('${(empty card.viewThumbnail) ? "/res/img/daelim_logo.gif" : card.viewThumbnail}'); background-size: 100%;">
 							<h2 class="mdl-card__title-text"></h2>
 						</div>
 						<div class="mdl-card__supporting-text duce-card-con">
