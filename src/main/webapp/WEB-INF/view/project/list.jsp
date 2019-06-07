@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -83,7 +84,7 @@
                             <div class="year">${card.year}년</div>
                         </div>
                         <div class="title"><c:out value="${card.title}"/></div>
-                        <div class="contents">${card.viewContent}
+                        <div class="contents">${fn:replace(card.viewContent, "<br/>", " ")}
                         </div>
                         <div class="participant">
                             <div class="title">참여학생</div>

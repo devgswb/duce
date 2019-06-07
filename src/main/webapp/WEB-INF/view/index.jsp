@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- list.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -61,7 +62,7 @@
 								<div class="year">${card.year}년</div>
 							</div>
 							<div class="title"><c:out value="${card.title}"/></div>
-							<div class="contents"><c:out value="${card.viewContent}"/>
+							<div class="contents">${fn:replace(card.viewContent, "<br/>", " ")}
 							</div>
 							<div class="participant">
 								<div class="title">참여학생</div>
