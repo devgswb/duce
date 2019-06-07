@@ -131,16 +131,17 @@
             </p>
             <div class="btn-wrapper">
                 <a href="/filter?page=${page}&major=${major}&branch=${branch}&mYear=${mYear} ">
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
+                        목록
                     </button>
                 </a>
                 <sec:authorize access="hasAnyAuthority('admin', 'user')">
                     <sec:authorize access="hasAuthority('admin')" var="isAdmin"/>
                     <sec:authentication var="user" property="principal"/>
                     <c:if test="${user.id eq board.id || isAdmin}">
-                        <form action="project/delete.do" method="post">
+                        <form action="project/delete.do" method="post" onsubmit="return checkNDelete()">
                             <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
-                                    name="pNo" value="${board.pNo}">삭제
+                                    name="pNo" value="${board.pNo}" >삭제
                             </button>
                         </form>
                         <form action="project/update" method="post">
@@ -162,7 +163,17 @@
 <!-- footer -->
 </body>
 <script>
-    var time = new Date().getTime();
+    let time = new Date().getTime();
+
+    function checkNDelete() {
+        var noticeDelete = confirm("삭제하시겠습니까?");
+        if (noticeDelete == true) {
+            Delete.action = "/notice/delete.do";
+        } else {
+            return false; // 삭제취소
+        }
+
+    }
 </script>
 </html>
 <%----%>

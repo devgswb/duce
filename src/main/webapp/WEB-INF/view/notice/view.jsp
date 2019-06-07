@@ -40,20 +40,6 @@
     <!-- local css -->
     <link rel="stylesheet" href="/res/css/inwork.css">
     <!--  page logic -->
-
-    <script type="text/javascript">
-        function checkNDelete() {
-            var noticeDelete = confirm("삭제하시겠습니까?")
-            if (noticeDelete == true) {
-                Delete.action = "/notice/delete.do";
-            } else {
-                return false; // 삭제취소
-            }
-
-        }
-    </script>
-
-
 </head>
 
 <body>
@@ -139,5 +125,16 @@
 </article>
 <jsp:include page="../footer.jsp"/>
 <!-- footer -->
+<script type="text/javascript">
+    function checkNDelete() {
+        var noticeDelete = confirm("삭제하시겠습니까?")
+        if (noticeDelete == true) {
+            Delete.action = "/notice/delete.do";
+        } else {
+            return false; // 삭제취소
+        }
+
+    }
+</script>
 </body>
 </html>
