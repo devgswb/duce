@@ -423,15 +423,15 @@ footer p {
 }
 .notice-btn-wrapper {
     clear: both;
-    width:85%;
+    width:100%;
     display: inline-block;
     text-align: right;
     padding-right: 15%;
 }
 
 .notice-btn-wrapper  a{
-    width: 60px;
-    height: 35px;
+    width: 120px;
+    height: 40px;
     display: inline-block;
 }
 
@@ -957,12 +957,6 @@ footer p {
     /*background: blueviolet;*/
     width: 100%;
 }
-
-.project-contents-wrapper p {
-    text-align: left;
-    font-size: 16px;
-}
-
 .project-contents-header {
     padding-top: 20px;
     padding-bottom: 20px;
