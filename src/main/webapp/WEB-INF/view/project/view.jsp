@@ -127,7 +127,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <p><c:out value="${board.content}"/>
+            <p>${board.content}
             </p>
             <div class="btn-wrapper">
                 <a href="/filter?page=${page}&major=${major}&branch=${branch}&mYear=${mYear} ">
