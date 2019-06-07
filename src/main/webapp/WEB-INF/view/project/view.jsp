@@ -78,7 +78,7 @@
                         </div>
                         <div class="info-professor">
                             <div>지도교수</div>
-                            <div><c:out value="${board.guide}"/> 교수</div>
+                            <div><c:out value="${board.guide}"/></div>
                         </div>
                         <c:choose>
                             <c:when test="${!empty board.addFile}">

@@ -67,7 +67,7 @@
 								<div class="title">참여학생</div>
 								<div class="name"><c:out value="${card.viewPartStudents}"/></div>
 								<div class="title">지도교수</div>
-								<div class="name"><c:out value="${card.guide} 교수"/></div>
+								<div class="name"><c:out value="${card.viewPartGuides}"/></div>
 							</div>
 						</div>
 					</div>

@@ -101,13 +101,13 @@
                 <div class="project-coop-wrapper">
                     <input type="text" value="${board.guide}" class="form-control" name="guide" id="professor"
                            placeholder="지도 교수"
-                           pattern="([가-힣]){2,12}$"
+                           pattern="(([가-힣]+),?(?!.*\2))+[가-힣]$"
                            oninput="setCustomValidity('');
                                 checkValidity();
-                                setCustomValidity(validity.valid ? '' :'2자 이상의 한국어 이름으로 입력해주세요.');"
+                                setCustomValidity(validity.valid ? '' :'올바른 양식이 아닙니다. (입력 예: 홍길동,김철수,김영희)');"
                            required>
                     <input type="text" value="${board.part}" class="form-control" name="part" id="students"
-                           placeholder="참여 학생. 참여 학생은 ',' 단위로 구분해주세요."
+                           placeholder="참여 학생입니다. 참여 학생은 ',' 단위로 구분해주세요."
                            pattern="(([가-힣]+),?(?!.*\2))+[가-힣]$"
                            oninput="setCustomValidity('');
                                 checkValidity();
@@ -127,7 +127,7 @@
                     </div>
 
                     <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-                        <input type="checkbox" value="true" name="imgsDelete" id="switch-1" class="mdl-switch__input" checked>
+                        <input type="checkbox" value="true" name="imgsDelete" id="switch-1" class="mdl-switch__input" >
                         <span class="mdl-switch__label">기존 이미지 삭제</span>
                     </label>
                     <!--     파일 추가 -->
@@ -139,7 +139,7 @@
                                type="text" id="file-upload-text" readonly/>             
                     </div>
                     <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
-                        <input type="checkbox" value="true" name="filesDelete" id="switch-2" class="mdl-switch__input" checked>
+                        <input type="checkbox" value="true" name="filesDelete" id="switch-2" class="mdl-switch__input" >
                         <span class="mdl-switch__label">기존 파일 삭제</span>
                     </label>
                 </div>
