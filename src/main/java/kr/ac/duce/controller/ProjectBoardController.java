@@ -60,7 +60,14 @@ public class ProjectBoardController {
 			String[] file = board.getAddFile().split(",");
 
 			for (int i = 0; i < file.length; i++) {
-				fileName = fileName + file[i].split("-")[5] + ",";
+				String subfile = file[i].split("-")[5];
+				System.out.println(subfile);
+				if(subfile.length() >= 11) {
+					fileName = fileName + subfile.substring(0, 10) + "..." + ",";
+				}
+				else {
+					fileName = fileName + subfile + ",";
+				}	
 			}
 		}
 		model.addAttribute("fileName", fileName);
