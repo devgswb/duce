@@ -56,7 +56,7 @@
 	$(document).ready(function(){
 		if(${second}==true){
 			if(${isMatch}==true){
-				alert("메일을 확인해주세요");
+				alert("가입시 입력하신 메일로 아이디를 보내드렸습니다");
 				window.close();
 			}else{
 				alert("입력 정보가 틀렸거나 가입되지 않은 사용자입니다");

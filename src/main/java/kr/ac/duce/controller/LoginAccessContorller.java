@@ -90,7 +90,7 @@ public class LoginAccessContorller {
 		um = ls.loadUserByUsername(id);
 		
 		String from = "ducemaster1@gmail.com";
-		// 아이디와 비밀번호가 일치한다면 임시 비밀번호 메일 발송
+		// 아이디와 메일이 일치한다면 임시 비밀번호 메일 발송
 		if (id.equals(um.getId()) && mail.equals(um.getMail())) {
 			isMatch = true;
 			session.setAttribute("isMatch", isMatch);
@@ -128,11 +128,14 @@ public class LoginAccessContorller {
 		String hp = (String) params.get("hp");
 		boolean isMatch = true;
 		boolean second = true;
-		session.setAttribute("second", second);
+		
+		
 		um = ls.findId(name, hp);
-//		session.setAttribute("id", uid);
+
 		try{
 			session.setAttribute("isMatch", isMatch);
+			session.setAttribute("second", second);
+			
 			String from = "ducemaster1@gmail.com";
 			String uid = um.getId();
 			String mail = um.getMail();

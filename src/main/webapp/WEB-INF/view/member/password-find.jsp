@@ -60,8 +60,6 @@ $(document).ready(function(){
 				}else{
 					alert("입력 정보가 틀렸거나 가입되지 않은 사용자입니다");
 				}
-			}else{
-				alert('쉣');
 			}
 });
 </script>
