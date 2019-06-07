@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
@@ -56,6 +57,7 @@
 </head>
 
 <body>
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 <jsp:include page="../header-nav.jsp"/>
 <!-- Navigation Bar -->
 <article>
@@ -68,7 +70,7 @@
                 </ul>
             </div> <!-- 공지사항 제목, 날짜 -->
             <div class="notice-contents-body">
-                <p>${notice.noticeContent}</p>
+                <p>${fn:replace(notice.noticeContent,newLineChar, "<br/>")}</p>
             </div> <!-- 공지사항 내용 -->
             <div class="notice-contents-footer">
                 <c:if test="${!empty notice.refer}">
