@@ -269,7 +269,7 @@ public class ProjectBoardController {
 				appendEle.setYear(df.format(finishDate));
 				// 간단히 부를 수 있게 년도값 추가
 				int viewContentLength = 140;
-				String strContent = appendEle.getContent();
+				String strContent = appendEle.getContent().replaceAll("<br/>", " ");
 				String strViewContent = strContent.substring(0,
 						(strContent.length() > viewContentLength ? viewContentLength : strContent.length()));
 				strViewContent += (strContent.length() > viewContentLength ? "..." : "");
@@ -317,6 +317,9 @@ public class ProjectBoardController {
 		}
 		String loginID = ((MemberModel) principal).getId();
 		String authority = ((MemberModel) principal).getAuthorities().toString();
+		
+		String setContent = board.getContent().replaceAll("<br/>", "\r\n");
+		board.setContent(setContent);
 		
 		if (loginID.equals(board.getId()) || authority.equals("[admin]")) {
 			DateFormat df = new SimpleDateFormat("yyyy-MM");
@@ -630,7 +633,7 @@ public class ProjectBoardController {
 		ProjectBoardModel modModel = new ProjectBoardModel();
 		modModel.setpNo(No);
 		modModel.setTitle(title);
-		modModel.setContent(content);
+		modModel.setContent(content.replaceAll("\r\n", "<br/>"));
 		modModel.setPart(part);
 		modModel.setGuide(guide);
 		modModel.setBranchNo(branch);
@@ -718,7 +721,7 @@ public class ProjectBoardController {
 		ProjectBoardModel insertModel = new ProjectBoardModel();
 		insertModel.setId(id);
 		insertModel.setTitle(title);
-		insertModel.setContent(content);
+		insertModel.setContent(content.replaceAll("\r\n", "<br/>"));
 		insertModel.setPart(part);
 		insertModel.setGuide(guide);
 		insertModel.setBranchNo(branch);

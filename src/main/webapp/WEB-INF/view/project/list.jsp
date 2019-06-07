@@ -83,7 +83,7 @@
                             <div class="year">${card.year}년</div>
                         </div>
                         <div class="title"><c:out value="${card.title}"/></div>
-                        <div class="contents"><c:out value="${card.viewContent}"/>
+                        <div class="contents">${card.viewContent}
                         </div>
                         <div class="participant">
                             <div class="title">참여학생</div>
