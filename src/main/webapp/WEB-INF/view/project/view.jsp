@@ -12,7 +12,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 캡스톤 프로젝트: ${board.title}</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -130,13 +130,14 @@
             <p><c:out value="${board.content}"/>
             </p>
             <div class="btn-wrapper">
-                <a href="/filter?page=${page}&major=${major}&branch=${branch}&mYear=${mYear}"
-                   class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined ">목록
+                <a href="/filter?page=${page}&major=${major}&branch=${branch}&mYear=${mYear} ">
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">목록
+                    </button>
                 </a>
                 <sec:authorize access="hasAnyAuthority('admin', 'user')">
-                    <sec:authentication var="user" property="principal"/>
                     <sec:authorize access="hasAuthority('admin')" var="isAdmin"/>
-                    <c:if test="${user.id = board.id || isAdmin}">
+                    <sec:authentication var="user" property="principal"/>
+                    <c:if test="${user.id eq board.id || isAdmin}">
                         <form action="project/delete.do" method="post">
                             <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
                                     name="pNo" value="${board.pNo}">삭제

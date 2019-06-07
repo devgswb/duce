@@ -1,6 +1,7 @@
 package kr.ac.duce.model;
 
 public class SliderSettingModel {
+    String title;
     String content;
     String btnContent;
     String btnUrl;
@@ -54,6 +55,14 @@ public class SliderSettingModel {
 
     public void setBtnUse(boolean btnUse) {
         isBtnUse = btnUse;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

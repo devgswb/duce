@@ -80,7 +80,7 @@ public class NoticeController {
 	
 	@PostMapping(value = "/notice/write.do", params = {"noticeTitle", "noticeContent"}) // URL 주소
 	public String writeOK(MultipartHttpServletRequest mtf, @ModelAttribute("cri")SearchCriteria cri,
-			Model model, @RequestParam String noticeTitle, @RequestParam String noticeContent)throws Exception {
+			Model model, @RequestParam String noticeTitle, @RequestParam String noticeContent, @RequestParam String refer)throws Exception {
 		List<MultipartFile> file = mtf.getFiles("inFileName");
 		NoticeModel insertModel = new NoticeModel();
 		NoticeFileModel insertFile = new NoticeFileModel();
@@ -96,7 +96,8 @@ public class NoticeController {
 		}
 		Date createDate = Calendar.getInstance().getTime();
 		insertModel.setNoticeTitle(noticeTitle);
-		insertModel.setUserID("작성자");
+		insertModel.setUserID("admin");
+		insertModel.setRefer(refer);
 		insertModel.setNoticeDate(createDate);
 		insertModel.setNoticeContent(noticeContent);
 		insertModel.setNoticeHits(1);
@@ -137,7 +138,7 @@ public class NoticeController {
 
 	@PostMapping(value = "/notice/update.do", params = { "noticeNum", "noticeTitle", "noticeContent", "deleteFile"}) // URL 주소
 	public String updateOK(MultipartHttpServletRequest mtf, Model model, @ModelAttribute("cri")SearchCriteria cri,
-			@RequestParam String noticeNum, @RequestParam String noticeTitle, 
+			@RequestParam String noticeNum, @RequestParam String noticeTitle, @RequestParam String refer,
 			@RequestParam String noticeContent, @RequestParam String deleteFile) throws Exception{
 		if (!deleteFile.equals("")) {
 			JsonParser parser = new JsonParser();
@@ -170,6 +171,7 @@ public class NoticeController {
 		Date createDate = Calendar.getInstance().getTime();
 		NoticeModel updatenotice = new NoticeModel();
 		updatenotice.setNoticeDate(createDate);
+		updatenotice.setRefer(refer);
 		updatenotice.setNoticeNum(Integer.parseInt(noticeNum));
 		updatenotice.setNoticeTitle(noticeTitle);
 		updatenotice.setNoticeContent(noticeContent);

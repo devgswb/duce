@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 공지사항: ${notice.noticeTitle}</title>
     <!--
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -71,6 +71,11 @@
                 <p>${notice.noticeContent}</p>
             </div> <!-- 공지사항 내용 -->
             <div class="notice-contents-footer">
+                <c:if test="${!empty notice.refer}">
+                <ul class="notice-contents-attach">
+                    <li>참조링크</li>
+                    <li><a href="${notice.refer}" target="_sub">${notice.refer}</a></li>
+                </c:if>
                 <c:if test="${!empty noticeFile}">
                 <ul class="notice-contents-attach">
                     <li>첨부파일</li>
@@ -110,6 +115,11 @@
                     </li>
                 </ul>
                 <div class="btn-wrapper">
+                    <a href="/notice/list">
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
+                            목록
+                        </button>
+                    </a>
                     <sec:authorize access="hasAuthority('admin')">
                     <form name="Delete" method="post" onsubmit="return checkNDelete()">
                         <input type="hidden" name="noticeNum" value="${notice.noticeNum}">
@@ -119,11 +129,6 @@
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined" name="noticeNum" value="${notice.noticeNum}">수정</button>
                     </form>
                     </sec:authorize>
-                    <a href="/notice/list">
-                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined">
-                            목록
-                        </button>
-                    </a>
                 </div>
             </div> <!-- 첨부파일 / 이전글 / 다음글 / 목록 -->
         </div>

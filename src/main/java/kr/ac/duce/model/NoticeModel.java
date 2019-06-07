@@ -9,6 +9,7 @@ public class NoticeModel {
 	private String userID;
 	private Date noticeDate;
 	private String noticeContent;
+	private String refer;
 	private int noticeHits;
 	public int getNoticeNum() {
 		return noticeNum;
@@ -46,6 +47,12 @@ public class NoticeModel {
 	public void setNoticeHits(int noticeHits) {
 		this.noticeHits = noticeHits;
 	}
-	
-	
+
+	public String getRefer() {
+		return refer;
+	}
+
+	public void setRefer(String refer) {
+		this.refer = refer;
+	}
 }

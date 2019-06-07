@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="kr.ac.duce.controller.ProjectBoardController" %>
 <%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -9,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 관리자 페이지</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -47,7 +48,16 @@
                 슬라이더 수정
                 <hr/>
             </div>
+            <c:if test="${!empty success}">
+            <div class="alert-box-wrapper">
+                <div class="alert alert-success" role="alert">
+                    <i class="material-icons">done</i>
+                    ${success}
+                </div>
+            </div>
+            </c:if>
             <!--     파일 추가 -->
+            <div class="form-group">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
                 <button class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file" id="btn-file-upload">
                     <i class="material-icons">attach_file</i>
@@ -56,6 +66,8 @@
                        readonly/>
                 <input type="hidden" id="file-refer-path">
             </div>
+            <label for="btnname">제목</label>
+            <input type="text" class="form-control" id="title" placeholder="제목">
             <label for="content">내용</label>
             <textarea class="form-control" rows="8" id="content" placeholder="내용"></textarea>
             <div class="slider-btn-info-wrapper">
@@ -105,6 +117,7 @@
                     </div>
                 </form:form>
             </div>
+            </div>
         </div>
     </div>
     <!-- contents box -->
@@ -122,12 +135,14 @@
         }
         let data = sliderData[number];
         currentInput = number;
+        title = data['title'];
         content = data['content'];
         btnContent = data.btnContent;
         btnUrl = data.btnUrl;
         imgUrl = data.imgUrl;
         isUse = data.isUse;
         isBtnUse = data.isBtnUse;
+        $('#title').val(title);
         $('#content').val(content);
         $('#btnname').val(btnContent);
         $('#btnlink').val(btnUrl);
@@ -139,6 +154,7 @@
 
     function saveData(number) {
         let data = {
+            title: $('#title').val(),
             content: $('#content').val(),
             btnContent: $('#btnname').val(),
             btnUrl: $('#btnlink').val(),

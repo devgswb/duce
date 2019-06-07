@@ -26,11 +26,66 @@ body {
     /*background: coral;*/
 }
 
+/*
+    슬라이드 관련
+ */
 #carou {
     height: 570px;
 }
 
+.carou-slide {
+    text-align: center;
+    font-family: 'Noto Sans KR', serif;
+}
 
+.carou-title {
+    margin-top: 140px;
+    padding: 10px;
+    font-size: 57px;
+    text-align: center;
+    color: white;
+    cursor: default;
+}
+
+.carou-content {
+    margin-top: 30px;
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+    color: white;
+    cursor: default;
+}
+
+.carou-btn {
+    margin-top: 1em;
+    text-align: center;
+    margin-right: 1em; /* remove this while use*/
+    margin-bottom: 1em; /* remove this while use*/
+    width: 10em;
+    display: inline-block;
+    outline: none;
+    *zoom: 1;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 300;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.01);
+    font-size: 1.5em;
+    padding: 0.5625em 1.5em;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.carou-btn:hover {
+    background: #ededed;
+    color: #888888;
+    border-color: #ffffff;
+}
+
+/*    */
 #nav-logo {
     float: left;
 }
@@ -274,7 +329,51 @@ footer p {
 .notice-write-attach-addr p {
     text-align: right;
 }
+.notice-page-wrapper {
+}
 
+.notice-search-bar {
+    width:100%;
+    padding: 10px;
+    height: 140px;
+    clear:both;
+    display: flex;
+    justify-content: center;
+}
+.notice-search-bar > form {
+    width: 100%;
+    margin-left: 25%;
+}
+.notice-search-bar > form > div > select {
+    margin-top: 14px;
+    width: 10%;
+    display: inline-block;
+    float:left;
+}
+
+.notice-search-bar > form > div >  input {
+    width: 40%;
+    display: inline-block;
+    float: left;
+}
+
+.notice-search-bar > form > button {
+    display: inline-block;
+    float:left;
+    margin: 0;
+    padding: 0;
+    height: 33px;
+    line-height: 10px;
+    font-weight: lighter;
+    background: #6388c3;
+    color: white;
+}
+
+.notice-search-bar > form > button:hover {
+    background: #01579B;
+    color: #E1F5FE;
+    border: #0277BD;
+}
 /* notice-write */
 .notice-wrapper {
     margin-top: 30px;
@@ -1242,3 +1341,22 @@ footer p {
     clear: both;
 }
 /**/
+
+.header-search-text {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    outline: none;
+}
+
+.header-search-text:focus {
+    background-color: lightblue;
+}
+
+.close {
+    border: inherit;
+    color: inherit;
+    background: inherit;
+}

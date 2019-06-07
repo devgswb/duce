@@ -4,8 +4,12 @@ import kr.ac.duce.handler.LoginSuccesHandler;
 import kr.ac.duce.handler.LogoutSuccesHandler;
 import kr.ac.duce.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.util.Locale;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+//    @Bean
+//    MessageSource messageSource() {
+//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//        messageSource.setBasename("classpath:/messages/message");
+//        messageSource.setDefaultEncoding("UTF-8");
+//        messageSource.setCacheSeconds(10);
+//        return messageSource;
+//    }
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -84,8 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Override    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(LoginService).passwordEncoder(passwordEncoder);
 //        LoginService에서 정의된 내용대로 로그인 데이터를 MemberModel에 넣고
 //        패스워드 인코딩은 BCryptoEncoder로 구현된 passwordEncoder를 사용한다.

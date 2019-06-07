@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 관리자 페이지</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -40,11 +40,27 @@
 <article>
     <div class="admin-con">
         <jsp:include page="./admin-tab.jsp"/>
-        <div class="admin-tab-content">
+        <div class="mypage-tab-content">
             <div class="admin-title">
                 학과/분야 관리
                 <hr/>
             </div>
+            <c:if test="${!empty error}">
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-danger" role="alert" id="isPwdSame">
+                        <i class="material-icons">error</i>
+                            ${error}
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${!empty success}">
+                <div class="alert-box-wrapper">
+                    <div class="alert alert-success" role="alert">
+                        <i class="material-icons">done</i>
+                            ${success}
+                    </div>
+                </div>
+            </c:if>
             <%-- 전공 --%>
             <div class="admin-mb-majortable-wrapper">
                 <p>학과 관리</p>
@@ -97,15 +113,17 @@
                     <div id="addMajorBox">
                         <p>학과 추가</p>
                         <div class="form-group">
-                        <label for="majorNo">학과 코드</label>
-                        <input type="text" class="form-control" name="majorNo" id="majorNo" required>
-                    </div>
+                            <label for="majorNo">학과 코드</label>
+                            <input type="text" class="form-control" name="majorNo" id="majorNo" required>
+                        </div>
                         <div class="form-group">
                             <label for="major">학과명</label>
                             <input type="text" class="form-control" name="major" id="major" required>
                         </div>
                     </div>
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined " id="btnAddMajor">추가</button>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                            id="btnAddMajor">추가
+                    </button>
                 </form>
             </div>
             <%-- 분야 --%>
@@ -127,8 +145,10 @@
                                 <input type="checkbox" id="chkb${branch.branchNo}" class="mdl-checkbox__input">
                             </label></td>
                             <input type="hidden" value="${branch.branchNo}" class="formerbranchno" required>
-                            <td><input type="text" value="${branch.branchNo}" class="txtbranchno mdl-textfield__input" required></td>
-                            <td><input type="text" value="${branch.branch}" class="txtbranch mdl-textfield__input" required></td>
+                            <td><input type="text" value="${branch.branchNo}" class="txtbranchno mdl-textfield__input"
+                                       required></td>
+                            <td><input type="text" value="${branch.branch}" class="txtbranch mdl-textfield__input"
+                                       required></td>
                         </tr>
                     </c:forEach>
                     </tbody>

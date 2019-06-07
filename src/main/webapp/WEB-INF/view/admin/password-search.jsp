@@ -1,3 +1,4 @@
+<%-- 관리자 비밀번호 변경 페이지 --%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="kr.ac.duce.controller.ProjectBoardController" %>
 <%@ page import="java.net.URLDecoder" %>
@@ -9,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Duce</title>
+    <title>대림대학교 캡스톤 전시관 - 관리자 페이지</title>
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
@@ -47,30 +48,37 @@
                 비밀번호 변경
                 <hr/>
             </div>
-            <div class="form-wrapper">
-            <form action="/admin/pwdchange.do" method="post">
-                <div class="form-group">
-                    <label for="pwd">현재 비밀번호</label>
-                    <input type="password" class="form-control" name="pwd" id="pwd">
-                </div>
-                <div class="form-group">
-                    <label for="changedpwd">변경 비밀번호</label>
-                    <input type="password" class="form-control" name="changedpwd" id="changedpwd">
-                </div>
-                <div class="form-group">
-                    <label for="changedpwdchk">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="changedpwdchk">
-                </div>
+            <div class="alert-box-wrapper">
                 <div class="alert alert-danger" role="alert" id="isPwdSame">
                     <i class="material-icons">error</i>
-                    변경된 비밀번호를 다시 입력했는지 확인해주세요.
+                    비밀번호를 확인해주세요.
                 </div>
-                <div class="btn-wrapper">
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
-                            id="submit">수정
-                    </button>
-                </div>
-            </form>
+            </div>
+            <div class="form-wrapper">
+                <form action="/admin/pwdchange.do" method="post">
+                    <div class="form-group">
+                        <label for="pwd">현재 비밀번호</label>
+                        <input type="password" class="form-control" name="pwd" id="pwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="changedpwd">변경 비밀번호</label>
+                        <input type="password" class="form-control"
+                               pattern="^.*(?=^.{6,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"
+                               oninput="setCustomValidity('');
+                                     checkValidity();
+                                  setCustomValidity(validity.valid ? '' :'숫자, 영문자, 특수문자가 포함된 6자 이상 15자 미만의 비밀번호로 입력해주세요.');"
+                               name="changedpwd" id="changedpwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="changedpwdchk">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="changedpwdchk">
+                    </div>
+                    <div class="btn-wrapper">
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect login-btn-text login-btn btn-outlined "
+                                id="submit">수정
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -80,29 +88,21 @@
 <!-- footer -->
 </body>
 <script>
-    let isPwdSame = false;
-    $('#isPwdSame').hide();
-    $('input').on('keyup', function () {
-        if ($('#changedpwd').val() == "" && $('#changedpwdchk').val() == "") {
-            isPwdSame = false;
-            $('#isPwdSame').hide();
-            return;
-        }
-        if ($('#changedpwd').val() == $('#changedpwdchk').val()) {
-            isPwdSame = true;
-            $('#isPwdSame').hide();
-        } else {
-            isPwdSame = false;
-            $('#isPwdSame').show();
-        }
+    $(document).ready(function () {
+        $('.alert-box-wrapper').hide();
     });
-    $('#submit').on('click', function () {
-        if (isPwdSame) {
-            return true;
-        } else {
-            alert('비밀번호가 올바르지 않습니다.');
+
+    function validatePassword() {
+        let pass1 = document.getElementById("changedpwd").value;
+        let pass2 = document.getElementById("changedpwdchk").value;
+        if (pass1 !== pass2) {
+            $('.alert-box-wrapper').show();
             return false;
+        } else {
+            return true;
         }
-    });
+    }
+
+    document.getElementById("submit").onclick = validatePassword;
 </script>
 </html>
