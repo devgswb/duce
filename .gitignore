@@ -1,5 +1,6 @@
 /target/
 /backup/
+/src/java/
 /src/main/resources/static/vendor
 !.mvn/wrapper/maven-wrapper.jar
 
