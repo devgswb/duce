@@ -30,4 +30,4 @@
 
 ## 어떻게 생겼는가?
 
-![이미지 에러](<https://i.imgur.com/456XeOO.png>"메인페이지")
+![이미지 에러](<https://i.imgur.com/456XeOO.png> "메인 페이지")
