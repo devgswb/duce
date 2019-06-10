@@ -5,8 +5,9 @@ ID=$1
 PWD=$2
 
 {
-	mkdir -p %$parent/backup
-	mysqldump -u $ID -p$PWD duce > %$parent/backup/database-backup.sql
+	cd $parent
+	mkdir -p ./backup
+	mysqldump -u $ID -p$PWD duce > ./backup/database-backup.sql
 } > /dev/null
 if [ $? -eq 0 ]; then
 	echo "데이터 백업에 성공. duce/backup/database-backup.sql"

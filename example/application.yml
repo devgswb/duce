@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: live
+---
+spring:
+  #  devtools:
+  #    livereload:
+  #       enabled: true
+  #  freemarker:
+  #    cache: false
+  profiles: live
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: {your DB logic}
+    username: 
+    password: 
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+    static-path-pattern: /res/**
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+server:
+  port: 8080
